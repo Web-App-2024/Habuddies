@@ -145,7 +145,7 @@ header li a:hover {
   width: 2rem;
 }
 
-.sidebar ul a:hover {
+.sidebar ul a:hover, .sidebar ul .active a{
   padding-left: 4rem;
   color: var(--main-color);
   border-right: 1rem solid var(--main-color);
@@ -168,7 +168,7 @@ main, footer {
   header .profile-picture:hover {border-color: var(--hover-border-color); transition: 500ms;}
 
   main, footer {margin-left: 3rem;}
-  
+
   label #open-nav, label #close-nav {
     position: fixed;
     top: 1.4rem;

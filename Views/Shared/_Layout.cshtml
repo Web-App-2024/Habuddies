@@ -37,17 +37,18 @@
     <div class="sidebar">
         <div class="header-nav">Main Menu</div>
         <ul>
-            <li>
+            <!-- This current view checking will break at any time, looking for a better solution -->
+            <li class=" @(ViewContext.RouteData.Values["Controller"].ToString()=="Home"?"active":"")"> 
                 <a class="home-nav" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-house"></i> Home</a>
             </li>
             <li>
-                <a class="my-profile-nav" asp-area="" asp-controller="Home" asp-action=""><i class="fa-solid fa-address-card"></i> My Profile</a>
+                <a class="my-profile-nav" asp-area="" asp-controller="" asp-action=""><i class="fa-solid fa-address-card"></i> My Profile</a>
             </li>
             <li>
-                <a class="my-post-nav" asp-area="" asp-controller="Home" asp-action=""><i class="fa-solid fa-calendar"></i> My Post</a>
+                <a class="my-post-nav" asp-area="" asp-controller="" asp-action=""><i class="fa-solid fa-calendar"></i> My Post</a>
             </li>
             <li>
-                <a class="history-nav" asp-area="" asp-controller="Home" asp-action=""><i class="fa-solid fa-clock-rotate-left"></i> History</a>
+                <a class="history-nav" asp-area="" asp-controller="" asp-action=""><i class="fa-solid fa-clock-rotate-left"></i> History</a>
             </li>
         </ul>
     </div>
