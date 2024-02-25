@@ -29,20 +29,25 @@
         </ul>
     </header>
 
+    <input type="checkbox" id="toggle-nav">
+    <label for="toggle-nav">
+        <i class="fa-solid fa-bars" id="open-nav"></i>
+        <i class="fa-solid fa-times" id="close-nav"></i>
+    </label>
     <div class="sidebar">
-        <div>Main Menu</div>
+        <div class="header-nav">Main Menu</div>
         <ul>
             <li>
-                <a class="REPLACE-nav" asp-area="" asp-controller="Home" asp-action="">subject1</a>
+                <a class="home-nav" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-house"></i> Home</a>
             </li>
             <li>
-                <a class="REPLACE-nav" asp-area="" asp-controller="Home" asp-action="">subject2</a>
+                <a class="my-profile-nav" asp-area="" asp-controller="Home" asp-action=""><i class="fa-solid fa-address-card"></i> My Profile</a>
             </li>
             <li>
-                <a class="REPLACE-nav" asp-area="" asp-controller="Home" asp-action="">subject3</a>
+                <a class="my-post-nav" asp-area="" asp-controller="Home" asp-action=""><i class="fa-solid fa-calendar"></i> My Post</a>
             </li>
             <li>
-                <a class="REPLACE-nav" asp-area="" asp-controller="Home" asp-action="">subject4</a>
+                <a class="history-nav" asp-area="" asp-controller="Home" asp-action=""><i class="fa-solid fa-clock-rotate-left"></i> History</a>
             </li>
         </ul>
     </div>
