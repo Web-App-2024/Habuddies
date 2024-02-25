@@ -1,22 +1,105 @@
-html {
-  font-size: 14px;
+:root {
+  --light-grey: #e3e3e3;
+  --normal-grey: #5e5e5e;
+  --light-blue: #97cdff;
+  --normal-blue: #2898FF;
+  --dark-blue: #006acd;
+  --main-color: var(--normal-blue);
+  --border-color: var(--light-grey);
+  --hover-border-color: var(--light-blue);
+  --hover-dark-color: var(--dark-blue);
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+* {
+  margin:0;
+  font-family: Helvetica;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+header {
+  height: 6rem;
+  width: 100%;
+  border-bottom: solid black;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+header * {
+  text-decoration: none;
+  list-style: none;
 }
 
-body {
-  margin-bottom: 60px;
+header .logo {
+  color: var(--main-color);
+  font-size: 40px;
+  font-weight: bold;
+  line-height: 6rem;
+  margin-left: 3rem;
+}
+
+header ul {
+  float: right;
+  margin-right: 3rem;
+}
+
+header li {
+  display: inline-block;
+  line-height: 6rem;
+  margin: 0 0.5rem;
+}
+
+header li a{
+  color: var(--normal-grey);
+  font-size: 18px;
+  padding: 0.6rem 0.8rem;
+  border: 2px solid var(--border-color);
+  border-radius: 30px;
+}
+
+header .new-post-button {
+  background-color: var(--main-color);
+  color: white;
+  border: none;
+}
+
+header .new-post-button span {
+  padding-left: 0.3rem;
+}
+
+header .profile-button {
+  margin-right: 0;
+  padding-right: 0;
+}
+
+header .profile-name {
+  margin-right: 0.2rem;
+}
+
+header .profile-picture {
+  display: inline-block;
+  background-color: var(--light-grey);
+  transform: translateY(0.88rem);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+}
+
+header .new-post-button:hover {
+  color: white;
+  background-color: var(--hover-dark-color);
+  transition: 500ms;
+}
+
+header li a:hover {
+  color: var(--main-color);
+  border-color: var(--hover-border-color);
+  transition: 500ms;
+}
+
+@media (max-width: 768px) {
+  header .logo {margin-left: 1rem;}
+  header ul {margin-right: 1rem;}
+  header li {margin: 0 0.2rem;}
+  header .new-post-button span {display: none;}
+  header .profile-button {padding: 0; border: none;}
+  header .profile-name {display: none;}
+  header .profile-picture {border: 2px solid var(--border-color);}
+  header .profile-picture:hover {border-color: var(--hover-border-color); transition: 500ms;}
 }
