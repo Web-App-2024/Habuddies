@@ -1,0 +1,13 @@
+/* @import "https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400;1,500;1,700;1,900&display=swap"; */
+
+:root {
+    --light-grey: #e3e3e3;
+    --normal-grey: #5e5e5e;
+    --light-blue: #97cdff;
+    --normal-blue: #2898FF;
+    --dark-blue: #006acd;
+    --main-color: var(--normal-blue);
+    --border-color: var(--light-grey);
+    --hover-border-color: var(--light-blue);
+    --hover-dark-color: var(--dark-blue);
+  }
