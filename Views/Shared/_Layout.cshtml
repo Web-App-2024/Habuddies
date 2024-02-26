@@ -10,6 +10,13 @@
     <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
 </head>
 <body>
+
+    @{
+        string controllerName = "";
+        var controller = ViewContext.RouteData.Values["Controller"];
+        if (controller != null) controllerName = controller.ToString()!;
+    }
+
     <header>
         <a class="logo" asp-area="" asp-controller="Home" asp-action="Index">HaBuddies</a>
         <ul>
@@ -38,8 +45,8 @@
     <div class="sidebar">
         <div class="header-nav">Main Menu</div>
         <ul>
-            <!-- This current view checking will break at any time, looking for a better solution -->
-            <li class=" @(ViewContext.RouteData.Values["Controller"].ToString()=="Home"?"active":"")"> 
+            <!-- This current view checking could break at any time, looking for a better solution -->
+            <li class=" @(controllerName=="Home"?"active":"")"> 
                 <a class="home-nav" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-house"></i> Home</a>
             </li>
             <li>
