@@ -1,4 +1,5 @@
 using HaBuddies.Models;
+using HaBuddies.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.Configure<HaBuddiesDatabaseSettings>(
     builder.Configuration.GetSection("HaBuddiesDatabase"));
+builder.Services.AddSingleton<MongoService>();
+builder.Services.AddSingleton<UserService>();
 
 var app = builder.Build();
 
