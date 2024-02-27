@@ -1,7 +1,7 @@
 using HaBuddies.Models;
 using HaBuddies.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace HaBuddies.Controllers
 {
@@ -13,6 +13,84 @@ namespace HaBuddies.Controllers
 
         public UserController(UserService userService) =>
             _userService = userService;
+
+        [HttpPost("register")]
+        public async Task<ActionResult> Register([FromBody] User user)
+        {
+            var id = await _userService.Register(user);
+
+            if (id == null)
+            {
+                return Unauthorized();
+            }
+
+            HttpContext.Session.SetString("userId", id);
+            // return RedirectToAction();
+            return Ok(id);
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] UserDto userDto)
+        {
+            var id = await _userService.Login(userDto);
+
+            if (id == null)
+            {
+                return Unauthorized();
+            }
+
+            HttpContext.Session.SetString("userId", id);
+            // return RedirectToAction();
+            return Ok("Login Success!");
+        }
+
+        // [Authorize]
+        [HttpGet("logout")]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return Ok("Logout Success!");
+        }
+
+        // [Authorize]
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdateUser updateUser)
+        {
+            string id = HttpContext.Session.GetString("userId");
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest("User not authenticated");
+            }
+
+            var user = await _userService.UpdateUser(id, updateUser);
+
+            if (user == null)
+            {
+                return NotFound("User not Found");
+            }
+            // return RedirectToAction();
+            return Ok(user);
+        }
+
+        // [Authorize]
+        [HttpGet("me")]
+        public async Task<ActionResult<UserNoPassword>> GetProfile()
+        {
+            string id = HttpContext.Session.GetString("userId");
+
+            if (string.IsNullOrEmpty(id)) {
+                return BadRequest("User not authenticated");
+            }
+
+            var user = await _userService.GetUserById(id);
+
+            if (user == null)
+            {
+                return NotFound("User not Found");
+            }
+            // return RedirectToAction();
+            return Ok(user);
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<UserNoPassword>> GetUserById(string id)
@@ -26,66 +104,5 @@ namespace HaBuddies.Controllers
 
             return user;
         }
-
-        [HttpPost("register")]
-        public async Task<ActionResult> Register(User user)
-        {
-            var token = await _userService.Register(user);
-
-            if (token == null) {
-                return Unauthorized();
-            }
-
-            return Ok(token);
-        }
-
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(UserDto userDto)
-        {
-            var token = await _userService.Login(userDto);
-
-            if (token == null) {
-                return Unauthorized();
-            }
-
-            return Ok(token);
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(string id, UpdateUser updateUser)
-        {
-            var user = await _userService.UpdateUser(id, updateUser);
-
-            if (user == null)
-            {
-                return NotFound("User not Found");
-            }
-
-            return Ok(user);
-        }
-        // [HttpPost]
-        // public async Task<IActionResult> Login([FromBody] UserDto userDto)
-        // {
-        //     var token = await _userService.login(userDto);
-
-        //     if (token == null) {
-        //         return Unauthorized();
-        //     }
-
-        //     return RedirectToAction("Profile", new { accessToken = token });
-        // }
-
-        // [HttpPut]
-        // public async Task<IActionResult> Update(string id, [FromBody] UpdateUser updateUser)
-        // {
-        //     var user = await _userService.updateUser(id, updateUser);
-
-        //     if (user == null)
-        //     {
-        //         return NotFound("User not found");
-        //     }
-
-        //     return RedirectToAction("Profile", new { user });
-        // }
     }
 }
