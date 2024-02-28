@@ -4,9 +4,7 @@ using HaBuddies.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddLogging(builder => builder.AddConsole());
-builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
 builder.Services.Configure<HaBuddiesDatabaseSettings>(
     builder.Configuration.GetSection("HaBuddiesDatabase"));
@@ -21,14 +19,13 @@ builder.Services.AddSession();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<MongoService>();
 builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<EventService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -47,5 +44,7 @@ app.UseMiddleware<UserIdentityMiddleware>();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Services.GetRequiredService<EventService>();
 
 app.Run();
