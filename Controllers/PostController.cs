@@ -1,7 +1,6 @@
 using HaBuddies.Models;
 using HaBuddies.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace HaBuddies.Controllers
 {
