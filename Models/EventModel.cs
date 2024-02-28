@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace HaBuddies.Models;
 
-public class Post
+public class Event
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]

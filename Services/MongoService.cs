@@ -4,12 +4,12 @@ using MongoDB.Driver;
 
 namespace HaBuddies.Services;
 public class MongoService {
-    public readonly IMongoCollection<Post> _postsCollection;
+    public readonly IMongoCollection<Event> _eventsCollection;
 
     public MongoService(IOptions<HaBuddiesDatabaseSettings> mongoDBSettings) 
     {
         MongoClient client = new MongoClient(mongoDBSettings.Value.ConnectionString);
         IMongoDatabase database = client.GetDatabase(mongoDBSettings.Value.DatabaseName);
-        _postsCollection = database.GetCollection<Post>("Posts");
+        _eventsCollection = database.GetCollection<Event>("Events");
     }
 }
