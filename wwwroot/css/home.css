@@ -1,0 +1,49 @@
+@import "./theme.css";
+
+.search-section {
+    margin: 1rem 2rem;
+    /* display: inline-block; */
+}
+
+.filter, .search-box {
+  display: inline-block;
+  background-color: white;
+  color: var(--normal-grey);
+  font-size: 18px;
+  padding: 0.6rem 0.8rem;
+  border: 2px solid var(--light-grey);
+  border-radius: 30px;
+}
+
+.filter {
+    cursor: pointer;
+}
+
+.search-box {
+  margin-left: 0.5rem;
+}
+
+input[name=search] {
+  font-size: 18px;
+  width: 30rem;
+  border: none;
+  margin: 0 0.3rem;
+}
+
+input[name=search]:focus {
+  outline:none;
+}
+
+.filter:hover {
+  color: var(--main-color);
+  border-color: var(--hover-border-color);
+  transition: 500ms;
+}
+
+@media (max-width: 992px) {
+  input[name=search] {width: 16rem;}
+}
+
+@media (max-width: 768px) {
+  .search-section {margin: 1rem auto; width: 23.9rem;} 
+}
