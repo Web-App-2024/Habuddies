@@ -1,9 +1,12 @@
 using HaBuddies.Models;
 using HaBuddies.Services;
+using HaBuddies.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddLogging(builder => builder.AddConsole());
+builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
 builder.Services.Configure<HaBuddiesDatabaseSettings>(
     builder.Configuration.GetSection("HaBuddiesDatabase"));
@@ -15,6 +18,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 builder.Services.AddSession();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<MongoService>();
 builder.Services.AddSingleton<UserService>();
 
@@ -36,6 +40,9 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.UseSession();
+
+var excludedRoutes = new string[] { "/api/user/login", "/api/user/register" };
+app.UseMiddleware<UserIdentityMiddleware>();
 
 app.MapControllerRoute(
     name: "default",
