@@ -1,6 +1,5 @@
 using HaBuddies.Models;
 using HaBuddies.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HaBuddies.Controllers
@@ -44,7 +43,6 @@ namespace HaBuddies.Controllers
             return Ok("Login Success!");
         }
 
-        // [Authorize]
         [HttpGet("logout")]
         public IActionResult Logout()
         {
@@ -52,7 +50,6 @@ namespace HaBuddies.Controllers
             return Ok("Logout Success!");
         }
 
-        // [Authorize]
         [HttpPut]
         public async Task<IActionResult> Update(UpdateUser updateUser)
         {
@@ -72,7 +69,6 @@ namespace HaBuddies.Controllers
             return Ok(user);
         }
 
-        // [Authorize]
         [HttpGet("me")]
         public async Task<ActionResult<UserNoPassword>> GetProfile()
         {
