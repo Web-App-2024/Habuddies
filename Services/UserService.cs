@@ -19,7 +19,7 @@ namespace HaBuddies.Services
 
         public async Task<UserNoPassword> GetUserById(string id)
         {
-            User user = await _userCollection.Find(_user => _user.id == id).SingleOrDefaultAsync();
+            User user = await _userCollection.Find(_user => _user.Id == id).SingleOrDefaultAsync();
             UserNoPassword userNoPassword = (UserNoPassword)user;
             return userNoPassword;
         }
@@ -33,18 +33,21 @@ namespace HaBuddies.Services
             };
 
             var update = Builders<User>.Update
-                .Set("name", updateUser.name)
-                .Set("surname", updateUser.surname)
-                .Set("password", updateUser.password); // Note: In a production scenario, you should hash the password
+                .Set("Name", updateUser.Name)
+                .Set("Surname", updateUser.Surname)
+                .Set("Password", updateUser.Password)
+                .Set("Age", updateUser.Age)
+                .Set("Gender", updateUser.Gender)
+                .Set("Bio", updateUser.Bio);
 
-            User user = await _userCollection.FindOneAndUpdateAsync<User>(_user => _user.id == id, update, option);
+            User user = await _userCollection.FindOneAndUpdateAsync<User>(_user => _user.Id == id, update, option);
             UserNoPassword _user = (UserNoPassword)user;
             return _user;
         }
 
         public async Task<string?> Register(User user)
         {
-            var existingUser = await _userCollection.Find(_user => _user.email == user.email).SingleOrDefaultAsync();
+            var existingUser = await _userCollection.Find(_user => _user.Email == user.Email).SingleOrDefaultAsync();
             if (existingUser != null)
             {
                 return null;
@@ -52,26 +55,29 @@ namespace HaBuddies.Services
 
             var newUser = new User
             {
-                email = user.email,
-                name = user.name,
-                surname = user.surname,
-                password = user.password
+                Email = user.Email,
+                Name = user.Name,
+                Surname = user.Surname,
+                Password = user.Password,
+                Age = user.Age,
+                Gender = user.Gender,
+                Bio = user.Bio,
+                JoinedEvent = []
             };
 
             await _userCollection.InsertOneAsync(newUser);
-            return newUser.id;
+            return newUser.Id;
         }
 
         public async Task<string?> Login(UserDto user)
         {
-            var existingUser = await _userCollection.Find(_user => _user.email == user.email).SingleOrDefaultAsync();
+            var existingUser = await _userCollection.Find(_user => _user.Email == user.Email).SingleOrDefaultAsync();
 
-            if (existingUser == null || existingUser.password != user.password)
+            if (existingUser == null || existingUser.Password != user.Password)
             {
-                // Not found or wrong password
                 return null;
             }
-            return existingUser.id;
+            return existingUser.Id;
         }
     }
 }
