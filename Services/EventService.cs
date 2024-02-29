@@ -26,7 +26,7 @@ namespace HaBuddies.Services
             FilterDefinition<Event> filter;
             if (!string.IsNullOrEmpty(category))
             {
-                filter = Builders<Event>.Filter.Eq(evt => evt.category, category);
+                filter = Builders<Event>.Filter.Eq(evt => evt.Category, category);
             }
             else
             {
@@ -45,16 +45,16 @@ namespace HaBuddies.Services
         }
 
         public async Task<Event?> GetOneAsync(string id) =>
-            await _eventsCollection.Find(evt => evt.id == id).FirstOrDefaultAsync();
+            await _eventsCollection.Find(evt => evt.Id == id).FirstOrDefaultAsync();
 
         public async Task CreateAsync(Event newEvent) =>
             await _eventsCollection.InsertOneAsync(newEvent);
 
         public async Task UpdateAsync(string id, Event updatedEvent) =>
-            await _eventsCollection.ReplaceOneAsync(evt => evt.id == id, updatedEvent);
+            await _eventsCollection.ReplaceOneAsync(evt => evt.Id == id, updatedEvent);
 
-        public async Task RemoveAsync(string id) =>
-            await _eventsCollection.DeleteOneAsync(evt => evt.id == id);
+        public async Task RemoveAsync(string Id) =>
+            await _eventsCollection.DeleteOneAsync(evt => evt.Id == Id);
 
         public async Task UpdateEventsAsync()
         {

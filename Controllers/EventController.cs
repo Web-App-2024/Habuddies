@@ -40,7 +40,7 @@ namespace HaBuddies.Controllers
         {
             await _eventService.CreateAsync(newEvent);
 
-            return RedirectToAction(nameof(Details), new { id = newEvent.id });
+            return RedirectToAction(nameof(Details), new { Id = newEvent.Id });
         }
 
         public async Task<IActionResult> Edit(string id)
@@ -65,11 +65,11 @@ namespace HaBuddies.Controllers
                 return NotFound();
             }
 
-            updatedEvent.id = evt.id;
+            updatedEvent.Id = evt.Id;
 
             await _eventService.UpdateAsync(id, updatedEvent);
 
-            return RedirectToAction(nameof(Details), new { id = updatedEvent.id });
+            return RedirectToAction(nameof(Details), new { Id = updatedEvent.Id });
         }
 
         [HttpDelete]
