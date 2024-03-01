@@ -8,11 +8,3 @@
 body {
   background-color: var(--bg-color);
 }
-
-main, footer {
-    margin-left: 18rem;
-}
-
-@media (max-width: 768px) {
-  main, footer {margin-left: 0;}
-}
