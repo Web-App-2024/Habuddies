@@ -1,6 +1,5 @@
 using HaBuddies.Models;
 using HaBuddies.Services;
-using HaBuddies.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HaBuddies.Controllers
@@ -17,11 +16,6 @@ namespace HaBuddies.Controllers
             return View();
         }
 
-        public IActionResult Register()
-        {
-            return View();
-        }
-
         public IActionResult MyProfile(UserNoPassword user)
         {
             return View(user);
@@ -32,26 +26,28 @@ namespace HaBuddies.Controllers
             return View(user);
         }
 
-        public async Task<IActionResult> Register([FromBody] User user)
+        [HttpPost]
+        public async Task<ActionResult> Register([FromBody] User user)
         {
             var id = await _userService.Register(user);
 
             if (id == null)
             {
-                return LoginAndRegister();
+                return RedirectToAction(nameof(LoginAndRegister));
             }
 
             HttpContext.Session.SetString("userId", id);
             return RedirectToAction("Index", "Event");
         }
 
-        public async Task<IActionResult> Login([FromBody] UserDto userDto)
+        [HttpPost]
+        public async Task<ActionResult> Login([FromBody] UserDto userDto)
         {
             var id = await _userService.Login(userDto);
 
             if (id == null)
             {
-                return LoginAndRegister();
+                return RedirectToAction(nameof(LoginAndRegister));
             }
 
             HttpContext.Session.SetString("userId", id);
@@ -64,46 +60,47 @@ namespace HaBuddies.Controllers
             return LoginAndRegister();
         }
 
-        public async Task<IActionResult> Update(UpdateUser updateUser)
+        [HttpPut]
+        public async Task<ActionResult> Update(UpdateUser updateUser)
         {
             string id = HttpContext.Session.GetString("userId")!;
             if (string.IsNullOrEmpty(id))
             {
-                return LoginAndRegister();
+                return RedirectToAction(nameof(LoginAndRegister));
             }
 
             var user = await _userService.UpdateUser(id, updateUser);
 
             if (user == null)
             {
-                return LoginAndRegister();
+                return RedirectToAction("LoginAndRegister");
             }
-            return MyProfile(user);
+            return RedirectToAction(nameof(MyProfile), new { user });
         }
 
-        public async Task<IActionResult> GetMyProfile()
+        public async Task<ActionResult> GetMyProfile()
         {
             string id = HttpContext.Session.GetString("userId")!;
 
             if (string.IsNullOrEmpty(id))
             {
-                return LoginAndRegister();
+                return RedirectToAction(nameof(LoginAndRegister));
             }
 
             var user = await _userService.GetUserById(id);
-            return MyProfile(user);
+            return RedirectToAction(nameof(MyProfile), new { user });
         }
 
-        public async Task<IActionResult> GetUserById(string id)
+        public async Task<ActionResult> GetUserById(string id)
         {
             var user = await _userService.GetUserById(id);
 
             if (user == null)
             {
-                return LoginAndRegister();
+                return RedirectToAction(nameof(LoginAndRegister));
             }
 
-            return OtherProfile(user);
+            return RedirectToAction(nameof(OtherProfile), new { user });;
         }
     }
 }
