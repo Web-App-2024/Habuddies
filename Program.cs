@@ -1,6 +1,5 @@
 using HaBuddies.Models;
 using HaBuddies.Services;
-using HaBuddies.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,9 +36,6 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.UseSession();
-
-var excludedRoutes = new string[] { "/api/user/login", "/api/user/register" };
-app.UseMiddleware<UserIdentityMiddleware>();
 
 app.MapControllerRoute(
     name: "default",

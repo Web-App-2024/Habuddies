@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HaBuddies.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
     public class UserController : Controller
     {
         private readonly UserService _userService;
@@ -13,92 +11,100 @@ namespace HaBuddies.Controllers
         public UserController(UserService userService) =>
             _userService = userService;
 
-        [HttpPost("register")]
-        public async Task<ActionResult> Register([FromBody] User user)
+        public IActionResult LoginAndRegister()
+        {
+            return View();
+        }
+
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        public IActionResult MyProfile(UserNoPassword user)
+        {
+            return View(user);
+        }
+
+        public IActionResult OtherProfile(UserNoPassword user)
+        {
+            return View(user);
+        }
+
+        public async Task<IActionResult> Register([FromBody] User user)
         {
             var id = await _userService.Register(user);
 
             if (id == null)
             {
-                return Unauthorized();
+                return LoginAndRegister();
             }
 
             HttpContext.Session.SetString("userId", id);
-            // return RedirectToAction();
-            return Ok(id);
+            // redirect or return to event view
+            return View();
         }
 
-        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserDto userDto)
         {
             var id = await _userService.Login(userDto);
 
             if (id == null)
             {
-                return Unauthorized();
+                return LoginAndRegister();
             }
 
             HttpContext.Session.SetString("userId", id);
-            // return RedirectToAction();
-            return Ok("Login Success!");
+            // redirect or return to event view
+            return View();
         }
 
-        [HttpGet("logout")]
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return Ok("Logout Success!");
+            return LoginAndRegister();
         }
 
-        [HttpPut]
         public async Task<IActionResult> Update(UpdateUser updateUser)
         {
             string id = HttpContext.Session.GetString("userId");
             if (string.IsNullOrEmpty(id))
             {
-                return BadRequest("User not authenticated");
+                return LoginAndRegister();
             }
 
             var user = await _userService.UpdateUser(id, updateUser);
 
             if (user == null)
             {
-                return NotFound("User not Found");
+                return LoginAndRegister();
             }
-            // return RedirectToAction();
-            return Ok(user);
+            return MyProfile(user);
         }
 
-        [HttpGet("me")]
-        public async Task<ActionResult<UserNoPassword>> GetProfile()
+        public async Task<IActionResult> GetMyProfile()
         {
             string id = HttpContext.Session.GetString("userId");
 
-            if (string.IsNullOrEmpty(id)) {
-                return BadRequest("User not authenticated");
+            if (string.IsNullOrEmpty(id))
+            {
+                return LoginAndRegister();
             }
 
             var user = await _userService.GetUserById(id);
-
-            if (user == null)
-            {
-                return NotFound("User not Found");
-            }
-            // return RedirectToAction();
-            return Ok(user);
+            return MyProfile(user);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<UserNoPassword>> GetUserById(string id)
+        public async Task<IActionResult> GetUserById(string id)
         {
             var user = await _userService.GetUserById(id);
 
             if (user == null)
             {
-                return NotFound("User not Found");
+                return LoginAndRegister();
             }
 
-            return user;
+            return OtherProfile(user);
         }
     }
 }
