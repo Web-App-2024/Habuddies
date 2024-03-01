@@ -19,16 +19,16 @@
     }
 
     <header>
-        <a class="logo" asp-area="" asp-controller="Home" asp-action="Index">HaBuddies</a>
+        <a class="logo" asp-area="" asp-controller="Event" asp-action="Index">HaBuddies</a>
         <ul>
             <li>
-                <a class="new-post-button" asp-area="" asp-controller="Home" asp-action=""><i class="fa-regular fa-plus"></i><span>New</span></a>
+                <a class="new-post-button" asp-area="" asp-controller="Event" asp-action=""><i class="fa-regular fa-plus"></i><span>New</span></a>
             </li>
             <li>
-                <a class="notification-button" asp-area="" asp-controller="Home" asp-action=""><i class="fa-solid fa-bell"></i></a>
+                <a class="notification-button" asp-area="" asp-controller="Event" asp-action=""><i class="fa-solid fa-bell"></i></a>
             </li>
             <li>
-                <a class="profile-button" asp-area="" asp-controller="Home" asp-action="">
+                <a class="profile-button" asp-area="" asp-controller="Event" asp-action="">
                     <span class="profile-name">Something Name</span>
                     <div class="profile-picture">
                         
@@ -47,8 +47,8 @@
         <div class="header-nav">Main Menu</div>
         <ul>
             <!-- This current view checking could break at any time, looking for a better solution -->
-            <li class=" @(controllerName=="Home"?"active":"")"> 
-                <a class="home-nav" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa-solid fa-house"></i> Home</a>
+            <li class=" @(controllerName=="Event"?"active":"")"> 
+                <a class="home-nav" asp-area="" asp-controller="Event" asp-action="Index"><i class="fa-solid fa-house"></i> Home</a>
             </li>
             <li>
                 <a class="my-profile-nav" asp-area="" asp-controller="" asp-action=""><i class="fa-solid fa-address-card"></i> My Profile</a>
