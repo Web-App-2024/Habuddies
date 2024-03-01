@@ -1,5 +1,6 @@
 using HaBuddies.Models;
 using HaBuddies.Services;
+using HaBuddies.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HaBuddies.Controllers
@@ -41,8 +42,7 @@ namespace HaBuddies.Controllers
             }
 
             HttpContext.Session.SetString("userId", id);
-            // redirect or return to event view
-            return View();
+            return RedirectToAction("Index", "Event");
         }
 
         public async Task<IActionResult> Login([FromBody] UserDto userDto)
@@ -55,8 +55,7 @@ namespace HaBuddies.Controllers
             }
 
             HttpContext.Session.SetString("userId", id);
-            // redirect or return to event view
-            return View();
+            return RedirectToAction("Index", "Event");
         }
 
         public IActionResult Logout()
@@ -67,7 +66,7 @@ namespace HaBuddies.Controllers
 
         public async Task<IActionResult> Update(UpdateUser updateUser)
         {
-            string id = HttpContext.Session.GetString("userId");
+            string id = HttpContext.Session.GetString("userId")!;
             if (string.IsNullOrEmpty(id))
             {
                 return LoginAndRegister();
@@ -84,7 +83,7 @@ namespace HaBuddies.Controllers
 
         public async Task<IActionResult> GetMyProfile()
         {
-            string id = HttpContext.Session.GetString("userId");
+            string id = HttpContext.Session.GetString("userId")!;
 
             if (string.IsNullOrEmpty(id))
             {

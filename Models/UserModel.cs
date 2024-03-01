@@ -33,7 +33,7 @@ namespace HaBuddies.Models
     {
         public static explicit operator UserNoPassword(User obj)
         {
-            return JsonConvert.DeserializeObject<UserNoPassword>(JsonConvert.SerializeObject(obj));
+            return JsonConvert.DeserializeObject<UserNoPassword>(JsonConvert.SerializeObject(obj))!;
         }
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
