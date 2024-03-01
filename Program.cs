@@ -24,7 +24,7 @@ var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Event/Error");
     app.UseHsts();
 }
 
@@ -39,7 +39,7 @@ app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Event}/{action=Index}/{id?}");
 
 app.Services.GetRequiredService<EventService>();
 
