@@ -1,0 +1,24 @@
+@model PaginationResponse<HaBuddies.Models.Event>
+
+<div>
+    hello world
+    @if (Model.Count > 0) {
+        @foreach (HaBuddies.Models.Event evt in Model.Data)
+        {
+            <div>id = @evt.id</div>
+            <div>title = @evt.title</div>
+            <div>description = @evt.description</div>
+            <div>category = @evt.category</div>
+            <div>enrollSize = @evt.enrollSize</div>
+            <div>endDate = @evt.endDate</div>
+            <div>coverImage = @evt.coverImage</div>
+            <div>isOpen = @evt.isOpen</div>
+            <br>
+        }
+    }
+    else {
+        <div>
+            <span>nothing</span>
+        </div>
+    }
+</div>
