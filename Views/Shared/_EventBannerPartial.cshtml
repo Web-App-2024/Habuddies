@@ -1,24 +1,31 @@
 @model PaginationResponse<HaBuddies.Models.Event>
 
-<div>
-    hello world
-    @if (Model.Count > 0) {
-        @foreach (HaBuddies.Models.Event evt in Model.Data)
-        {
-            <div>id = @evt.id</div>
-            <div>title = @evt.title</div>
-            <div>description = @evt.description</div>
-            <div>category = @evt.category</div>
-            <div>enrollSize = @evt.enrollSize</div>
-            <div>endDate = @evt.endDate</div>
-            <div>coverImage = @evt.coverImage</div>
-            <div>isOpen = @evt.isOpen</div>
-            <br>
+@{
+    Dictionary<string, string> iconDict = new Dictionary<string, string>();
+    iconDict.Add("Meeting", "<i class=\"fa-solid fa-heart\"></i>");
+    iconDict.Add("Exercise", "<i class=\"fa-solid fa-dumbbell\"></i>");
+}
+
+@if (Model.Count > 0) {
+    @foreach (HaBuddies.Models.Event evt in Model.Data)
+    {
+        if (evt.isOpen == true) {
+            <div class="banner">
+                <div class="evt-heading">
+                    <span class="evt-category">@Html.Raw(iconDict[evt.category]) category = @evt.category</span>
+                    <span class="evt-title">title = @evt.title</span>
+                    <span class="evt-enrollsize">enrollSize = @evt.enrollSize</span>
+                </div>
+                <div class="evt-body">
+                    <div class="evt-description">description = @evt.description</div>
+                    <div class="evt-enddate">endDate = @evt.endDate</div>
+                </div>
+            </div>
         }
     }
-    else {
-        <div>
-            <span>nothing</span>
-        </div>
-    }
-</div>
+}
+else {
+    <div>
+        <span>nothing</span>
+    </div>
+}

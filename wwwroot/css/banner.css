@@ -1,0 +1,47 @@
+@import "./theme.css";
+
+.banner {
+    position: relative;
+    display: block;
+    margin-left: 2rem;
+    margin-right: 3rem;
+    margin-bottom: 1.5rem;
+    background-color: white;
+    --xpadding: 2rem;
+}
+
+.banner .evt-heading {
+    height: 3rem;
+    padding: 0 var(--xpadding);
+}
+
+.banner .evt-heading * {
+    line-height: 3rem;
+}
+
+.banner .evt-category {
+    display: inline-block;
+}
+
+.banner .evt-title {
+    display: inline-block;
+}
+
+.banner .evt-enrollsize {
+    position: absolute;
+    top: 0;
+    right: var(--xpadding);
+    display: inline-block;
+}
+
+.banner .evt-body {
+    padding: 1rem var(--xpadding);
+}
+
+.banner .evt-description {
+    display: inline-block;
+}
+
+.banner .evt-enddate {
+    display: inline-block;
+}
