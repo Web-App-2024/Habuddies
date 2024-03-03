@@ -151,7 +151,7 @@ header li a:hover {
   transition: 300ms;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   main, footer {margin-left: 0;}
 
   header .logo {margin-left: 4.5rem;}
