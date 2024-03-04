@@ -13,6 +13,7 @@ namespace HaBuddies.Constants
 
         public static readonly string Meeting = "Meeting";
         public static readonly string Exercise = "Exercise";
+        public static readonly string Working = "Working";
 
         public static readonly Dictionary<string, ICategoryData> DataDict = new Dictionary<string, ICategoryData>(){
             { 
@@ -25,6 +26,12 @@ namespace HaBuddies.Constants
                 Exercise, new CategoryData {
                     IconHtml = "<i class=\"fa-solid fa-dumbbell\"></i>", 
                     ColorHex = "#72c357"
+                } 
+            },
+            { 
+                Working, new CategoryData {
+                    IconHtml = "<i class=\"fa-solid fa-briefcase\"></i>", 
+                    ColorHex = "#f1bd00"
                 } 
             }
         };
