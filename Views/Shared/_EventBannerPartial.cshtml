@@ -6,6 +6,7 @@
     {
         if (evt.isOpen == true) {
             var category = evt.category;
+            var currentEnroll = 0;
             
             <div class="banner">
                 <div class="evt-heading">
@@ -14,11 +15,13 @@
                         <span class="evt-category">@category</span>
                     </div>
                     <span class="evt-title">@evt.title</span>
-                    <span class="evt-enrollsize">@evt.enrollSize</span>
+                    <span class="evt-enrollsize @(currentEnroll<evt.enrollSize?"vacant":"full")">
+                        @currentEnroll/@evt.enrollSize <i class="fa-solid fa-user-group"></i>
+                    </span>
                 </div>
                 <div class="evt-body">
-                    <div class="evt-description">@evt.description</div>
-                    <div class="evt-enddate">End Date<br>@evt.endDate</div>
+                    <span class="evt-description">@evt.description</span>
+                    <span class="evt-enddate">Close Date<br>@evt.endDate.ToShortDateString()</span>
                     <button type="button" class="evt-join">เข้าร่วม</button>
                 </div>
             </div>
