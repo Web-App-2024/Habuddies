@@ -1,7 +1,12 @@
 @import "./theme.css";
 
+main, footer {
+  margin-left: 18rem;
+}
+
 header {
-  height: 6rem;
+  --head-height: 4rem;
+  height: var(--head-height);
   width: 100%;
   background-color: white;
 }
@@ -14,9 +19,9 @@ header * {
   
 header .logo {
   color: var(--main-color);
-  font-size: 40px;
-  font-weight: bold;
-  line-height: 6rem;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: var(--head-height);
   margin-left: 3rem;
 }
   
@@ -24,18 +29,20 @@ header ul {
   float: right;
   margin-right: 3rem;
   padding: 0;
+  height: var(--head-height);
 }
   
 header li {
   display: inline-block;
-  line-height: 6rem;
-  margin: 0 0.5rem;
+  line-height: var(--head-height);
+  margin: 0 0.3rem;
 }
 
 header li a{
   color: var(--normal-grey);
-  font-size: 18px;
-  padding: 0.6rem 0.8rem;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 0.5rem 0.7rem;
   border: 2px solid var(--border-color);
   border-radius: 25px;
 }
@@ -60,12 +67,22 @@ header .profile-name {
 }
 
 header .profile-picture {
+  position: relative;
+  width: 2.1rem;
+  height: 2.1rem;
+  right: 0;
+  top: 0.72rem;
   display: inline-block;
-  background-color: var(--light-grey);
-  transform: translateY(0.96rem);
-  width: 2.7rem;
-  height: 2.7rem;
   border-radius: 50%;
+  background-color: var(--border-color);
+  overflow: hidden;
+}
+
+header .profile-picture img{
+  position: absolute;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }
 
 header .new-post-button:hover {
@@ -96,23 +113,24 @@ header li a:hover {
 .sidebar * {
   text-decoration: none;
   list-style: none;
-  font-size: 24px;
+  font-size: 20px;
   padding: 0;
   user-select: none;
 }
 
 .sidebar .header-nav {
   padding-left: 3rem;
-  line-height: 6rem;
+  line-height: 5rem;
   color: var(--main-color);
   border-bottom: 1px solid var(--border-color);
+  font-weight: 500;
 }
 
 .sidebar ul a {
   display: block;
   box-sizing: border-box;
   padding-left: 3rem;
-  line-height: 5rem;
+  line-height: 4rem;
   width: 100%;
   height: 100%;
   color: var(--normal-grey);
@@ -134,26 +152,34 @@ header li a:hover {
 }
 
 @media (max-width: 768px) {
-  header .logo {margin-left: 5.5rem;}
-  /* header ul {margin-right: 1rem;} */
+  main, footer {margin-left: 0;}
+
+  header .logo {margin-left: 4.5rem;}
+  header ul {margin-right: 1rem;}
   header li {margin: 0 0.2rem;}
   header .new-post-button span {display: none;}
   header .profile-button {padding: 0; border: none;}
   header .profile-name {display: none;}
-  header .profile-picture {border: 2px solid var(--border-color);transform: translateY(1.05rem);}
+  header .profile-picture {border: 2px solid var(--border-color); top:0.9rem}
   header .profile-picture:hover {border-color: var(--hover-border-color); transition: 500ms;}
 
   label #open-nav, label #close-nav {
     position: fixed;
-    top: 1.4rem;
+    top: 1rem;
     left: 1rem;
-    font-size: 40px;
-    width: 2.4rem;
+    font-size: 22px;
+    width: 2rem;
     text-align: center;
-    padding: 0.3rem 0.5rem;
+    padding: 0.2rem 0.2rem;
     border: 2px solid var(--border-color);
     border-radius: 0.5rem;
     cursor: pointer;
+  }
+
+  label #open-nav:hover, label #close-nav:hover {
+    border-color: var(--hover-border-color); 
+    color: var(--main-color); transition: 
+    500ms;
   }
 
   label #open-nav {display: inline-block;}

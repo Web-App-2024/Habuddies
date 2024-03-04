@@ -1,6 +1,5 @@
 using HaBuddies.Models;
 using HaBuddies.Services;
-using HaBuddies.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +24,7 @@ var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Event/Error");
     app.UseHsts();
 }
 
@@ -38,12 +37,9 @@ app.UseAuthorization();
 
 app.UseSession();
 
-var excludedRoutes = new string[] { "/api/user/login", "/api/user/register" };
-app.UseMiddleware<UserIdentityMiddleware>();
-
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Event}/{action=Index}/{id?}");
 
 app.Services.GetRequiredService<EventService>();
 
