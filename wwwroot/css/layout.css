@@ -1,11 +1,17 @@
 @import "./theme.css";
 
+body {
+  --head-height: 4rem;
+}
+
 main, footer {
   margin-left: 18rem;
+  margin-top: calc(1rem + var(--head-height));
 }
 
 header {
-  --head-height: 4rem;
+  position: fixed;
+  top: 0;
   height: var(--head-height);
   width: 100%;
   background-color: white;
@@ -103,6 +109,7 @@ header li a:hover {
 
 .sidebar {
   position: fixed;
+  top: var(--head-height);
   left: 0;
   width: 18rem;
   height: 100%;
