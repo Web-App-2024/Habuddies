@@ -1,7 +1,14 @@
 @{
     ViewData["Title"] = "Not Found";
 }
-<h1>@ViewData["Title"]</h1>
 
-<h1>Not Found</h1>
-<p>@ViewBag.id</p>
+@section Stylesheets {
+    <link rel="stylesheet" href="~/css/notFound.css" asp-append-version="true">
+}
+
+<div class="container">
+    <img src="https://static.vecteezy.com/system/resources/previews/011/189/168/non_2x/illustrations-emotional-woman-for-oops-404-error-design-concept-landing-page-vector.jpg" alt="not_found">
+    <h2>Oops...Nothing was found.</h2>
+    <p>Now website don't have post</p>
+    <a class="create-post" asp-area="" asp-controller="Event" asp-action="Create">Create Post</a>
+</div>

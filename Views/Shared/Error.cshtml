@@ -1,6 +1,13 @@
-﻿@{
+@{
     ViewData["Title"] = "Error";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>dada</p>
+@section Stylesheets {
+    <link rel="stylesheet" href="~/css/notFound.css" asp-append-version="true">
+}
+
+<div class="container">
+    <img class="error" src="https://celtathens.com/wp-content/uploads/2024/02/errors.jpg" alt="error">
+    <h2>Oops.... Something went wrong</h2>
+    <p>Now website have an error</p>
+</div>
