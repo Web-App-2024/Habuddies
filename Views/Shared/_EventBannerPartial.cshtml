@@ -4,25 +4,25 @@
 @if (Model.Count > 0) {
     @foreach (HaBuddies.Models.Event evt in Model.Data)
     {
-        if (evt.isOpen == true) {
-            var category = evt.category;
+        if (evt.IsOpen == true) {
+            var category = evt.Category;
             var currentEnroll = 0;
             
-            <div class="banner" id="@evt.id">
-                <a draggable="false" asp-controller="Event" asp-action="Details" asp-route-id="@evt.id">
+            <div class="banner" id="@evt.Id">
+                <a draggable="false" asp-controller="Event" asp-action="Details" asp-route-id="@evt.Id">
                     <div class="evt-heading">
                         <div class="category" style="background-color: @Category.GetColorHex(category)">
                             @Html.Raw(Category.GetIconHtml(category))
                             <span class="evt-category">@category</span>
                         </div>
-                        <h2 class="evt-title">@evt.title</h2>
-                        <span class="evt-enrollsize @(currentEnroll<evt.enrollSize?"vacant":"full")">
-                            @currentEnroll/@evt.enrollSize <i class="fa-solid fa-user-group"></i>
+                        <h2 class="evt-title">@evt.Title</h2>
+                        <span class="evt-enrollsize @(currentEnroll<evt.EnrollSize?"vacant":"full")">
+                            @currentEnroll/@evt.EnrollSize <i class="fa-solid fa-user-group"></i>
                         </span>
                     </div>
                     <div class="evt-body">
-                        <span class="evt-description">@evt.description</span>
-                        <span class="evt-enddate">Close Date<br>@evt.endDate.ToShortDateString()</span>
+                        <span class="evt-description">@evt.Description</span>
+                        <span class="evt-enddate">Close Date<br>@evt.EndDate.ToShortDateString()</span>
                     </div>
                 </a>
                 <button type="button" class="evt-join" onclick="myFunction(this, 'red')">เข้าร่วม</button>
