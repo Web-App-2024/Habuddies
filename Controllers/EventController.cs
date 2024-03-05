@@ -56,13 +56,13 @@ namespace HaBuddies.Controllers
         public async Task<IActionResult> Create([FromBody] CreateEventDTO newEventDTO)
         {
             try {
-                string userId = HttpContext.Session.GetString("userId")!;
+                UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
 
-                if (userId == null) {
+                if (user == null) {
                     throw new UnauthorizedAccessException();
                 }
 
-                Event newEvent = await _eventService.CreateAsync(newEventDTO, userId);
+                Event newEvent = await _eventService.CreateAsync(newEventDTO, user.Id!);
 
                 return RedirectToAction("Details", new { Id = newEvent.Id });
             } 
@@ -128,11 +128,11 @@ namespace HaBuddies.Controllers
         public async Task<IActionResult> Subscribe(string id)
         {
             try {
-                string userId = HttpContext.Session.GetString("userId")!;
-                if (userId == null) {
+                UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
+                if (user == null) {
                     throw new UnauthorizedAccessException();
                 }
-                await _eventService.SubscribeEvent(id, userId);
+                await _eventService.SubscribeEvent(id, user.Id!);
                 return RedirectToAction("Details", new { Id = id });
             } 
             catch(UnauthorizedAccessException){
