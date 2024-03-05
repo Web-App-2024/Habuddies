@@ -18,9 +18,34 @@ namespace HaBuddies.Controllers
             return View();
         }
 
-        public IActionResult MyProfile(UserNoPassword user)
+        public async Task<IActionResult> MyPost()
         {
-            return View(user);
+            string userExist = HttpContext.Session.GetString("user")!;
+
+            if (string.IsNullOrEmpty(userExist))
+            {
+                return RedirectToAction(nameof(LoginAndRegister));
+            }
+
+            dynamic userObject = JsonConvert.DeserializeObject(userExist)!;
+            string userId = userObject.Id;
+            var events = await _userService.GetMyPost(userId);
+            return View(events);
+        }
+
+        public async Task<IActionResult> History()
+        {
+            string userExist = HttpContext.Session.GetString("user")!;
+
+            if (string.IsNullOrEmpty(userExist))
+            {
+                return RedirectToAction(nameof(LoginAndRegister));
+            }
+
+            dynamic userObject = JsonConvert.DeserializeObject(userExist)!;
+            string userId = userObject.Id;
+            var events = await _userService.GetHistory(userId);
+            return View(events);
         }
 
         [HttpPost]
@@ -66,32 +91,39 @@ namespace HaBuddies.Controllers
         [HttpPut]
         public async Task<ActionResult> Update(UpdateUser updateUser)
         {
-            string id = HttpContext.Session.GetString("user")!;
-            if (string.IsNullOrEmpty(id))
+           string userExist = HttpContext.Session.GetString("user")!;
+
+            if (string.IsNullOrEmpty(userExist))
             {
                 return RedirectToAction(nameof(LoginAndRegister));
             }
 
-            var user = await _userService.UpdateUser(id, updateUser);
+            dynamic userObject = JsonConvert.DeserializeObject(userExist)!;
+            string userId = userObject.Id;
+
+            var user = await _userService.UpdateUser(userId, updateUser);
 
             if (user == null)
             {
                 return RedirectToAction("LoginAndRegister");
             }
+
             return RedirectToAction(nameof(MyProfile), new { user });
         }
 
-        public async Task<ActionResult> GetMyProfile()
+        public async Task<IActionResult> MyProfile()
         {
-            string id = HttpContext.Session.GetString("userId")!;
+            string userExist = HttpContext.Session.GetString("user")!;
 
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(userExist))
             {
                 return RedirectToAction(nameof(LoginAndRegister));
             }
+            dynamic userObject = JsonConvert.DeserializeObject(userExist)!;
+            string userId = userObject.Id;
 
-            var user = await _userService.GetUserById(id);
-            return RedirectToAction(nameof(MyProfile), new { user });
+            var user = await _userService.GetUserById(userId);
+            return View(user);
         }
 
         public async Task<ActionResult> GetUserById(string id)

@@ -1,6 +1,5 @@
 using HaBuddies.Models;
 using MongoDB.Driver;
-using Microsoft.AspNetCore.Mvc;
 
 namespace HaBuddies.Services
 {
@@ -8,12 +7,14 @@ namespace HaBuddies.Services
     {
         private readonly MongoService _mongoService;
         private readonly IMongoCollection<User> _userCollection;
+        private readonly IMongoCollection<Event> _eventsCollection;
         private readonly IConfiguration _configuration;
 
         public UserService(MongoService mongoService, IConfiguration configuration)
         {
             _mongoService = mongoService;
             _userCollection = _mongoService._userCollection;
+             _eventsCollection = _mongoService._eventsCollection;
             _configuration = configuration;
         }
 
@@ -80,6 +81,42 @@ namespace HaBuddies.Services
             }
             UserNoPassword userNoPassword = (UserNoPassword)existingUser;
             return userNoPassword;
+        }
+
+        public async Task<Event[]> GetHistory(string Id)
+        {
+            var existingUser = await _userCollection.Find(_user => _user.Id == Id).SingleOrDefaultAsync();
+            var joinedEventIds = existingUser.JoinedEvent;
+
+            var historyEvents = await _eventsCollection.Find(
+                _event => joinedEventIds!.Contains(_event.Id) && (!_event.IsOpen)
+            ).ToListAsync();
+
+            foreach(var evt in historyEvents)
+            {
+                var user = await _userCollection.Find(user => user.Id == evt.OwnerId).FirstOrDefaultAsync();
+                UserNoPassword userNoPassword = (UserNoPassword)user;
+                evt.Owner = userNoPassword;
+            }
+            
+            return historyEvents.ToArray();
+        }
+
+        public async Task<Event[]> GetMyPost(string Id)
+        {
+            var existingUser = await _userCollection.Find(_user => _user.Id == Id).SingleOrDefaultAsync();
+            var myEvents = await _eventsCollection.Find(
+                _event => _event.OwnerId == existingUser.Id
+            ).ToListAsync();
+
+            foreach(var evt in myEvents)
+            {
+                var user = await _userCollection.Find(user => user.Id == evt.OwnerId).FirstOrDefaultAsync();
+                UserNoPassword userNoPassword = (UserNoPassword)user;
+                evt.Owner = userNoPassword;
+            }
+
+            return myEvents.ToArray();
         }
     }
 }
