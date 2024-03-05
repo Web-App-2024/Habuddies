@@ -77,6 +77,13 @@
                 <a class="history-nav" asp-area="" asp-controller="" asp-action=""><i class="fa-solid fa-clock-rotate-left"></i> History</a>
             </li>
         </ul>
+        @if (userExist != null) {
+            <div class="logout">
+                <a class="logout-button" asp-area="" asp-controller="User" asp-action="Logout">
+                    Logout
+                </a>
+            </div>
+        }
     </div>
 
     <main role="main">
