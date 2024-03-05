@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Newtonsoft.Json;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -15,7 +17,7 @@
 
     @{
         string currentRoute = Url.RouteUrl(ViewContext.RouteData.Values);
-        var user = ViewContext.HttpContext.Session.GetString("userId");
+        string userExist = ViewContext.HttpContext.Session.GetString("user")!;
     }
 
     <header>
@@ -29,9 +31,13 @@
             </li>
             <li>
                 @{
-                    if (user != null) {
+                    if (userExist != null) {
+                        dynamic userObject = JsonConvert.DeserializeObject(userExist)!;
+                        string uName = userObject.Name;
+                        string uSurname = userObject.Surname;
+
                         <a class="profile-button" asp-area="" asp-controller="User" asp-action="MyProfile">
-                            <span class="profile-name">@user</span>
+                            <span class="profile-name">@uName @uSurname</span>
                             <div class="profile-picture">
                                 <img alt="Profile picture" src="~/img/default.jpg" draggable="false">
                             </div>
