@@ -45,7 +45,7 @@ namespace HaBuddies.Services
             return _user;
         }
 
-        public async Task<string?> Register(User user)
+        public async Task<UserNoPassword?> Register(User user)
         {
             var existingUser = await _userCollection.Find(_user => _user.Email == user.Email).SingleOrDefaultAsync();
             if (existingUser != null)
@@ -65,11 +65,12 @@ namespace HaBuddies.Services
                 JoinedEvent = []
             };
 
+            UserNoPassword userNoPassword = (UserNoPassword)newUser;
             await _userCollection.InsertOneAsync(newUser);
-            return newUser.Id;
+            return userNoPassword;
         }
 
-        public async Task<string?> Login(UserDto user)
+        public async Task<UserNoPassword?> Login(UserDto user)
         {
             var existingUser = await _userCollection.Find(_user => _user.Email == user.Email).SingleOrDefaultAsync();
 
@@ -77,7 +78,8 @@ namespace HaBuddies.Services
             {
                 return null;
             }
-            return existingUser.Id;
+            UserNoPassword userNoPassword = (UserNoPassword)existingUser;
+            return userNoPassword;
         }
     }
 }

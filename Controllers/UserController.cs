@@ -1,6 +1,8 @@
+using System.Text;
 using HaBuddies.Models;
 using HaBuddies.Services;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace HaBuddies.Controllers
 {
@@ -24,28 +26,32 @@ namespace HaBuddies.Controllers
         [HttpPost]
         public async Task<ActionResult> Register([FromBody] User user)
         {
-            var id = await _userService.Register(user);
+            var userExist = await _userService.Register(user);
 
-            if (id == null)
+            if (userExist == null)
             {
                 return RedirectToAction(nameof(LoginAndRegister));
             }
 
-            HttpContext.Session.SetString("userId", id);
+            string serializedUser = JsonConvert.SerializeObject(userExist);
+            HttpContext.Session.SetString("user", serializedUser);
+            Console.WriteLine(HttpContext.Session.GetString("user"));
             return RedirectToAction("Index", "Event");
         }
 
         [HttpPost]
         public async Task<ActionResult> Login([FromBody] UserDto userDto)
         {
-            var id = await _userService.Login(userDto);
+            var userExist = await _userService.Login(userDto);
 
-            if (id == null)
+            if (userExist == null)
             {
                 return RedirectToAction(nameof(LoginAndRegister));
             }
 
-            HttpContext.Session.SetString("userId", id);
+            string serializedUser = JsonConvert.SerializeObject(userExist);
+            HttpContext.Session.SetString("user", serializedUser);
+            Console.WriteLine(HttpContext.Session.GetString("user"));
             return RedirectToAction("Index", "Event");
         }
 
@@ -60,7 +66,7 @@ namespace HaBuddies.Controllers
         [HttpPut]
         public async Task<ActionResult> Update(UpdateUser updateUser)
         {
-            string id = HttpContext.Session.GetString("userId")!;
+            string id = HttpContext.Session.GetString("user")!;
             if (string.IsNullOrEmpty(id))
             {
                 return RedirectToAction(nameof(LoginAndRegister));
