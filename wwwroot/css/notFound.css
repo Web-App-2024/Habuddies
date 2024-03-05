@@ -17,6 +17,10 @@ h2, p {
     margin: 10px 0px;
 }
 
+.error {
+    width: 80%;
+}
+
 .create-post {
     display: inline-block;
     width: 150px;
