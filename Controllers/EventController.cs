@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using HaBuddies.DTOs;
 using HaBuddies.Models;
 using HaBuddies.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -14,77 +15,131 @@ namespace HaBuddies.Controllers
 
         public async Task<IActionResult> Index(string category = null!, int page = 1, int perPage = 10)
         {
-            var paginationResponse = await _eventService.GetAllAsync(page, perPage, category);
-            return View(paginationResponse);
+            try {
+                var paginationResponse = await _eventService.GetAllAsync(page, perPage, category);
+                return View(paginationResponse);
+            }
+            catch (Exception) {
+                return View("Error");
+            }
         }
 
         public async Task<IActionResult> Details(string id)
         {
-            var evt = await _eventService.GetOneAsync(id);
+            try { 
+                var evt = await _eventService.GetOneAsync(id);
 
-            if (evt == null)
-            {
-                return NotFound("Event Not Found");
+                if (evt == null)
+                {
+                    return View("NotFound");
+                }
+
+                return View(evt);
             }
-
-            return View(evt);
+            catch (Exception) {
+                return View("Error");
+            }
         }
 
         public IActionResult Create()
         {
-            return View();
+            try {
+                return View();
+            }
+            catch (Exception) {
+                return View("Error");
+            }
         }
-
+            
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Event newEvent)
+        public async Task<IActionResult> Create([FromBody] CreateEventDTO newEventDTO)
         {
-            await _eventService.CreateAsync(newEvent);
+            try {
+                string userId = HttpContext.Session.GetString("userId")!;
 
-            return RedirectToAction(nameof(Details), new { Id = newEvent.Id });
+                if (userId == null) {
+                    throw new UnauthorizedAccessException();
+                }
+
+                Event newEvent = await _eventService.CreateAsync(newEventDTO, userId);
+
+                return RedirectToAction("Details", new { Id = newEvent.Id });
+            } 
+            catch (UnauthorizedAccessException) {
+                return RedirectToAction("LoginAndRegister", "User");
+            }
+            catch (Exception) {
+                return View("Error");
+            }
         }
 
         public async Task<IActionResult> Edit(string id)
         {
-            var evt = await _eventService.GetOneAsync(id);
+            try {
+                var evt = await _eventService.GetOneAsync(id);
 
-            if (evt == null)
-            {
-                return NotFound();
+                if (evt == null)
+                {
+                    return View("NotFound");
+                }
+
+                return View(evt);
             }
-
-            return View(evt);
+            catch (Exception) {
+                return View("Error");
+            }
         }
 
         [HttpPut]
-        public async Task<IActionResult> Edit(string id, [FromBody] Event updatedEvent)
+        public async Task<IActionResult> Edit(string id, [FromBody] EditEventDTO editedEventDTO)
         {
-            var evt = await _eventService.GetOneAsync(id);
+            try {
+                var editedEvent = await _eventService.EditAsync(id, editedEventDTO);
 
-            if (evt == null)
-            {
-                return NotFound();
+                return RedirectToAction("Details", new { Id = editedEvent.Id });
             }
-
-            updatedEvent.Id = evt.Id;
-
-            await _eventService.UpdateAsync(id, updatedEvent);
-
-            return RedirectToAction(nameof(Details), new { Id = updatedEvent.Id });
+            catch (Exception) {
+                return View("Error");
+            }
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
-            var evt = await _eventService.GetOneAsync(id);
+            try {
+                var evt = await _eventService.GetOneAsync(id);
 
-            if (evt == null)
-            {
-                return NotFound();
+                if (evt == null)
+                {
+                    return View("NotFound");
+                }
+
+                await _eventService.RemoveAsync(id);
+
+                return RedirectToAction("Index");
             }
+            catch (Exception) {
+                return View("Error");
+            }
+        }
 
-            await _eventService.RemoveAsync(id);
-
-            return RedirectToAction(nameof(Index));
+        [HttpPatch]
+        public async Task<IActionResult> Subscribe(string id)
+        {
+            try {
+                string userId = HttpContext.Session.GetString("userId")!;
+                if (userId == null) {
+                    throw new UnauthorizedAccessException();
+                }
+                await _eventService.SubscribeEvent(id, userId);
+                return RedirectToAction("Details", new { Id = id });
+            } 
+            catch(UnauthorizedAccessException){
+                return RedirectToAction("LoginAndRegister", "User");
+            }
+            catch(Exception){
+                return View("Error");
+            }
         }
     }
 }
