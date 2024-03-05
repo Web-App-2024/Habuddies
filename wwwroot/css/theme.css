@@ -6,6 +6,8 @@
     --normal-blue: #2898FF;
     --dark-blue: #006acd;
     --bg-color: #f5f5f5;
+    --green-color: #7ede00;
+    --red-color: #ff3939;
     --main-color: var(--normal-blue);
     --border-color: var(--light-grey);
     --hover-border-color: var(--light-blue);

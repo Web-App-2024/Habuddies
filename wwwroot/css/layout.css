@@ -1,20 +1,28 @@
 @import "./theme.css";
 
+body {
+  --head-height: 4rem;
+}
+
 main, footer {
   margin-left: 18rem;
+  margin-top: calc(1rem + var(--head-height));
 }
 
 header {
-  --head-height: 4rem;
+  position: fixed;
+  top: 0;
   height: var(--head-height);
   width: 100%;
   background-color: white;
+  z-index: 4;
 }
   
 header * {
   text-decoration: none;
   list-style: none;
   user-select: none;
+  z-index: 5;
 }
   
 header .logo {
@@ -99,15 +107,18 @@ header li a:hover {
 
 #toggle-nav, label #open-nav, label #close-nav {
   display: none;
+  z-index: 4;
 }
 
 .sidebar {
   position: fixed;
+  top: var(--head-height);
   left: 0;
   width: 18rem;
   height: 100%;
   background-color: white;
   transition: all 300ms ease;
+  z-index: 4;
 }
 
 .sidebar * {
@@ -151,7 +162,7 @@ header li a:hover {
   transition: 300ms;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   main, footer {margin-left: 0;}
 
   header .logo {margin-left: 4.5rem;}

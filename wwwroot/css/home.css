@@ -23,7 +23,3 @@
   border-color: var(--hover-border-color);
   transition: 500ms;
 }
-
-@media (max-width: 768px) {
-  .search-section {margin: 1rem auto; width: 23.9rem;} 
-}

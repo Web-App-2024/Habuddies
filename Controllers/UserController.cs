@@ -21,11 +21,6 @@ namespace HaBuddies.Controllers
             return View(user);
         }
 
-        public IActionResult OtherProfile(UserNoPassword user)
-        {
-            return View(user);
-        }
-
         [HttpPost]
         public async Task<ActionResult> Register([FromBody] User user)
         {
@@ -54,10 +49,12 @@ namespace HaBuddies.Controllers
             return RedirectToAction("Index", "Event");
         }
 
+        [HttpPost]
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return LoginAndRegister();
+            Console.WriteLine("logout already");
+            return RedirectToAction(nameof(LoginAndRegister));
         }
 
         [HttpPut]
@@ -100,7 +97,9 @@ namespace HaBuddies.Controllers
                 return RedirectToAction(nameof(LoginAndRegister));
             }
 
-            return RedirectToAction(nameof(OtherProfile), new { user });;
+            ViewBag.UserDetails = user;
+            // popup
+            return PartialView("UserProfilePartial");
         }
     }
 }
