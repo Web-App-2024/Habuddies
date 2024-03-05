@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using System.Reflection;
 using HaBuddies.DTOs;
 using HaBuddies.Models;
 using HaBuddies.Services;
@@ -17,6 +17,12 @@ namespace HaBuddies.Controllers
         {
             try {
                 var paginationResponse = await _eventService.GetAllAsync(page, perPage, category);
+
+                foreach (var evt in paginationResponse.Data)
+                {
+                    Console.WriteLine(evt.ToString());
+                }
+
                 return View(paginationResponse);
             }
             catch (Exception) {

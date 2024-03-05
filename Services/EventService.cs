@@ -2,7 +2,6 @@ using HaBuddies.Models;
 using MongoDB.Driver;
 using AutoMapper;
 using HaBuddies.DTOs;
-using MongoDB.Bson;
 
 namespace HaBuddies.Services
 {
@@ -10,6 +9,7 @@ namespace HaBuddies.Services
     {
         private readonly MongoService _mongoService;
         private readonly IMongoCollection<Event> _eventsCollection;
+        private readonly IMongoCollection<User> _usersCollection;
         private readonly Timer _timer;
         private readonly IMapper _mapper;
 
@@ -17,6 +17,7 @@ namespace HaBuddies.Services
         {
             _mongoService = mongoService;
             _eventsCollection = _mongoService._eventsCollection;
+            _usersCollection = _mongoService._userCollection;
 
             TimeSpan timeUntilMidnight = CalculateTimeUntilMidnight();
             _timer = new Timer(
@@ -36,7 +37,8 @@ namespace HaBuddies.Services
 
         public async Task<PaginationResponse<Event>> GetAllAsync(int page, int perPage, string category)
         {
-            try {
+            try 
+            {
                 var paginationParams = Pagination.BuildPaginationLimit(page, perPage, 32);
 
                 FilterDefinition<Event> filter;
@@ -49,51 +51,28 @@ namespace HaBuddies.Services
                     filter = Builders<Event>.Filter.Empty;
                 }
 
-                var lookupStage = new BsonDocument("$lookup",
-                new BsonDocument
+                var data = await _eventsCollection.Find(filter)
+                                                .Skip(paginationParams.Skip)
+                                                .Limit(paginationParams.PerPage)
+                                                .ToListAsync();
+
+                foreach(var evt in data)
                 {
-                    { "from", "Users" },
-                    { "localField", "OwnerId" },
-                    { "foreignField", "_id" },
-                    { "as", "Owner" }
-                });
+                    evt.Owner = await _usersCollection.Find(u => u.Id == evt.OwnerId).FirstOrDefaultAsync();
+                }
 
-                var unwindStage = new BsonDocument("$unwind", "$Owner");
-
-                var setStage = new BsonDocument("$set", 
-                    new BsonDocument
-                    {
-                        { "OwnerId", "$Owner" }
-                    });
-
-                var matchStage = new BsonDocument("$match", filter.ToBsonDocument());
-
-                var skipStage = new BsonDocument("$skip", paginationParams.Skip);
-                var limitStage = new BsonDocument("$limit", paginationParams.PerPage);
-
-                var pipelineStages = new List<IPipelineStageDefinition>
-                {
-                    new BsonDocumentPipelineStageDefinition<Event, Event>(lookupStage),
-                    new BsonDocumentPipelineStageDefinition<Event, Event>(unwindStage),
-                    new BsonDocumentPipelineStageDefinition<Event, Event>(setStage),
-                    new BsonDocumentPipelineStageDefinition<Event, Event>(matchStage),
-                    new BsonDocumentPipelineStageDefinition<Event, Event>(skipStage),
-                    new BsonDocumentPipelineStageDefinition<Event, Event>(limitStage)
-                };
-
-                var pipeline = PipelineDefinition<Event, Event>.Create(pipelineStages);
-
-                var data = await _eventsCollection.Aggregate(pipeline).ToListAsync();
                 var totalCount = await _eventsCollection.CountDocumentsAsync(filter);
 
                 var paginationResponse = Pagination.BuildResponsePagination(data, page, perPage, (int)totalCount);
 
                 return paginationResponse;
             }
-            catch (Exception) {
+            catch (Exception) 
+            {
                 throw;
             }
         }
+
 
         public async Task<Event?> GetOneAsync(string id) 
         {

@@ -19,4 +19,7 @@ public class Event
     public List<string> Queue { get; set; } = [];
     public int? AgeRequirement { get; set; }
     public string? GenderRequirement { get; set; }
+
+    [BsonIgnore]
+    public required User Owner { get; set; }
 }
