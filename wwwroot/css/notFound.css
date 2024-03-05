@@ -1,3 +1,5 @@
+@import "./theme.css";
+
 .container {
     display: flex;
     flex-direction: column;
@@ -8,7 +10,7 @@
     padding: 10px;
 }
 
-img {
+.container img {
     width: 50%;
     height: auto;
 }
@@ -25,8 +27,8 @@ h2, p {
     display: inline-block;
     width: 150px;
     padding: 10px 15px;
-    background-color: #2898FF;
-    color: #ffff;
+    background-color: var(--main-color);
+    color: white;
     text-decoration: none;
     border: none;
     font-size: 16px;
@@ -37,5 +39,5 @@ h2, p {
 }
 
 .create-post:hover {
-    background-color: #5DAEF9;
+    background-color: var(--hover-dark-color);
 }
