@@ -7,20 +7,23 @@ public class Event
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public string? id { get; set; }
+    public required string Id { get; set; }
+    public required string Title { get; set; }
+    public required string OwnerId { get; set; }
+    public required string Category { get; set; }
+    public int EnrollSize { get; set; }
+    public string Description { get; set; } = "";
+    public DateTime EndDate { get; set; }
+    public bool IsOpen { get; set; } = true;
+    public List<string> SubscribersId { get; set; } = [];
+    public List<string> QueueId { get; set; } = [];
+    public int? AgeRequirement { get; set; }
+    public string? GenderRequirement { get; set; }
 
-    public required string title { get; set; }
-
-    public string? description { get; set; } = null!;
-
-    public required string category { get; set; }
-
-    public required int enrollSize { get; set; }
-
-    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
-    public required DateTime endDate { get; set; }
-
-    public string? coverImage { get; set; } = null!;
-
-    public bool? isOpen { get; set; } = true;
+    [BsonIgnore]
+    public required User Owner { get; set; }
+    [BsonIgnore]
+    public List<User> Subscribers { get; set; } = [];
+    [BsonIgnore]
+    public List<User> Queue { get; set; } = [];
 }
