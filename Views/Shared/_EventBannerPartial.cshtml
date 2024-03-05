@@ -8,25 +8,33 @@
             var category = evt.category;
             var currentEnroll = 0;
             
-            <div class="banner">
-                <div class="evt-heading">
-                    <div class="category" style="background-color: @Category.GetColorHex(category)">
-                        @Html.Raw(Category.GetIconHtml(category))
-                        <span class="evt-category">@category</span>
+            <div class="banner" id="@evt.id">
+                <a draggable="false" asp-controller="Event" asp-action="Details" asp-route-id="@evt.id">
+                    <div class="evt-heading">
+                        <div class="category" style="background-color: @Category.GetColorHex(category)">
+                            @Html.Raw(Category.GetIconHtml(category))
+                            <span class="evt-category">@category</span>
+                        </div>
+                        <h2 class="evt-title">@evt.title</h2>
+                        <span class="evt-enrollsize @(currentEnroll<evt.enrollSize?"vacant":"full")">
+                            @currentEnroll/@evt.enrollSize <i class="fa-solid fa-user-group"></i>
+                        </span>
                     </div>
-                    <h2 class="evt-title">@evt.title</h2>
-                    <span class="evt-enrollsize @(currentEnroll<evt.enrollSize?"vacant":"full")">
-                        @currentEnroll/@evt.enrollSize <i class="fa-solid fa-user-group"></i>
-                    </span>
-                </div>
-                <div class="evt-body">
-                    <span class="evt-description">@evt.description</span>
-                    <span class="evt-enddate">Close Date<br>@evt.endDate.ToShortDateString()</span>
-                    <button type="button" class="evt-join">เข้าร่วม</button>
-                </div>
+                    <div class="evt-body">
+                        <span class="evt-description">@evt.description</span>
+                        <span class="evt-enddate">Close Date<br>@evt.endDate.ToShortDateString()</span>
+                    </div>
+                </a>
+                <button type="button" class="evt-join" onclick="myFunction(this, 'red')">เข้าร่วม</button>
             </div>
         }
     }
+    <script>
+        function myFunction(element, color) {
+            var bannerId = element.parentElement.id;
+            alert("Join " + bannerId);
+        }
+    </script>
 }
 else {
     <div class="no-event">
