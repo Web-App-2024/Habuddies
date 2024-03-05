@@ -22,7 +22,7 @@ public class Event
     public List<string> GenderRequirement { get; set; } = [];
 
     [BsonIgnore]
-    public required User Owner { get; set; }
+    public required UserNoPassword Owner { get; set; }
     [BsonIgnore]
     public List<User> Subscribers { get; set; } = [];
     [BsonIgnore]

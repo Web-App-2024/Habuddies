@@ -59,7 +59,9 @@ namespace HaBuddies.Services
 
                 foreach(var evt in data)
                 {
-                    evt.Owner = await _usersCollection.Find(u => u.Id == evt.OwnerId).FirstOrDefaultAsync();
+                    var user = await _usersCollection.Find(u => u.Id == evt.OwnerId).FirstOrDefaultAsync();
+                    UserNoPassword userNoPassword = (UserNoPassword)user;
+                    evt.Owner = userNoPassword;
                 }
 
                 var totalCount = await _eventsCollection.CountDocumentsAsync(filter);
@@ -82,7 +84,9 @@ namespace HaBuddies.Services
                 if (evt == null){
                     return evt;
                 }
-                evt.Owner = await _usersCollection.Find(u => u.Id == evt.OwnerId).FirstOrDefaultAsync();
+                var user = await _usersCollection.Find(u => u.Id == evt.OwnerId).FirstOrDefaultAsync();
+                UserNoPassword userNoPassword = (UserNoPassword)user;
+                evt.Owner = userNoPassword;
 
                 var subscriberIds = evt.SubscribersId;
                 evt.Subscribers = await _usersCollection.Find(u => subscriberIds.Contains(u.Id)).ToListAsync();
