@@ -2,6 +2,7 @@ using HaBuddies.Models;
 using MongoDB.Driver;
 using AutoMapper;
 using HaBuddies.DTOs;
+using System.Diagnostics.Tracing;
 
 namespace HaBuddies.Services
 {
@@ -77,7 +78,19 @@ namespace HaBuddies.Services
         public async Task<Event?> GetOneAsync(string id) 
         {
             try {
-                return await _eventsCollection.Find(evt => evt.Id == id).FirstOrDefaultAsync();
+                Event evt = await _eventsCollection.Find(evt => evt.Id == id).FirstOrDefaultAsync();
+                if (evt == null){
+                    return evt;
+                }
+                evt.Owner = await _usersCollection.Find(u => u.Id == evt.OwnerId).FirstOrDefaultAsync();
+
+                var subscriberIds = evt.SubscribersId;
+                evt.Subscribers = await _usersCollection.Find(u => subscriberIds.Contains(u.Id)).ToListAsync();
+
+                var QueueIdIds = evt.QueueId;
+                evt.Queue = await _usersCollection.Find(u => QueueIdIds.Contains(u.Id)).ToListAsync();
+
+                return evt;
             }
             catch (Exception) {
                 throw;
@@ -144,33 +157,33 @@ namespace HaBuddies.Services
             try {
                 var evt = await GetOneAsync(id) ?? throw new Exception("Event not found.");
                 var filter = Builders<Event>.Filter.Eq(evt => evt.Id, id);
-                if (!evt.Subscribers.Contains(userId) && !evt.Queue.Contains(userId))
+                if (!evt.SubscribersId.Contains(userId) && !evt.QueueId.Contains(userId))
                 {
-                    if (evt.Subscribers.Count <= evt.EnrollSize){
+                    if (evt.SubscribersId.Count < evt.EnrollSize){
                         await _eventsCollection.UpdateOneAsync(filter, 
-                            Builders<Event>.Update.Push(evt => evt.Subscribers, userId));
+                            Builders<Event>.Update.Push(evt => evt.SubscribersId, userId));
                     }
-                    else if (evt.Subscribers.Count >= evt.EnrollSize){
+                    else if (evt.SubscribersId.Count >= evt.EnrollSize){
                         await _eventsCollection.UpdateOneAsync(filter, 
-                            Builders<Event>.Update.Push(evt => evt.Queue, userId));
+                            Builders<Event>.Update.Push(evt => evt.QueueId, userId));
                     }
                 } 
                 else {
-                    if(evt.Subscribers.Contains(userId)){
+                    if(evt.SubscribersId.Contains(userId)){
                         await _eventsCollection.UpdateOneAsync(filter,
-                            Builders<Event>.Update.Pull(evt => evt.Subscribers, userId));
+                            Builders<Event>.Update.Pull(evt => evt.SubscribersId, userId));
 
-                        if (evt.Queue.Count > 0)
+                        if (evt.QueueId.Count > 0)
                         {
-                            var userFromQueue = evt.Queue[0];
+                            var userFromQueueId = evt.QueueId[0];
                             await _eventsCollection.UpdateOneAsync(filter,
-                                Builders<Event>.Update.Push(evt => evt.Subscribers, userFromQueue)
-                                    .Pull(evt => evt.Queue, userFromQueue));
+                                Builders<Event>.Update.Push(evt => evt.SubscribersId, userFromQueueId)
+                                    .Pull(evt => evt.QueueId, userFromQueueId));
                         }
                     }
                     else {
                         await _eventsCollection.UpdateOneAsync(filter, 
-                            Builders<Event>.Update.Pull(evt => evt.Queue, userId));
+                            Builders<Event>.Update.Pull(evt => evt.QueueId, userId));
                     }
                 }
             }

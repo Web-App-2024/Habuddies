@@ -15,11 +15,15 @@ public class Event
     public string Description { get; set; } = "";
     public DateTime EndDate { get; set; }
     public bool IsOpen { get; set; } = true;
-    public List<string> Subscribers { get; set; } = [];
-    public List<string> Queue { get; set; } = [];
+    public List<string> SubscribersId { get; set; } = [];
+    public List<string> QueueId { get; set; } = [];
     public int? AgeRequirement { get; set; }
     public string? GenderRequirement { get; set; }
 
     [BsonIgnore]
     public required User Owner { get; set; }
+    [BsonIgnore]
+    public List<User> Subscribers { get; set; } = [];
+    [BsonIgnore]
+    public List<User> Queue { get; set; } = [];
 }
