@@ -2,6 +2,7 @@ using System.Text;
 using HaBuddies.Models;
 using HaBuddies.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.WebEncoders.Testing;
 using Newtonsoft.Json;
 
 namespace HaBuddies.Controllers
@@ -20,31 +21,27 @@ namespace HaBuddies.Controllers
 
         public async Task<IActionResult> MyPost()
         {
-            string userExist = HttpContext.Session.GetString("user")!;
+            UserNoPassword userExist = HttpContext.Session.Get<UserNoPassword>("user")!;
 
-            if (string.IsNullOrEmpty(userExist))
+            if (userExist == null)
             {
                 return RedirectToAction(nameof(LoginAndRegister));
             }
 
-            dynamic userObject = JsonConvert.DeserializeObject(userExist)!;
-            string userId = userObject.Id;
-            var events = await _userService.GetMyPost(userId);
+            var events = await _userService.GetMyPost(userExist.Id!);
             return View(events);
         }
 
         public async Task<IActionResult> History()
         {
-            string userExist = HttpContext.Session.GetString("user")!;
+            UserNoPassword userExist = HttpContext.Session.Get<UserNoPassword>("user")!;
 
-            if (string.IsNullOrEmpty(userExist))
+            if (userExist == null)
             {
                 return RedirectToAction(nameof(LoginAndRegister));
             }
 
-            dynamic userObject = JsonConvert.DeserializeObject(userExist)!;
-            string userId = userObject.Id;
-            var events = await _userService.GetHistory(userId);
+            var events = await _userService.GetHistory(userExist.Id!);
             return View(events);
         }
 
@@ -58,9 +55,7 @@ namespace HaBuddies.Controllers
                 return RedirectToAction(nameof(LoginAndRegister));
             }
 
-            string serializedUser = JsonConvert.SerializeObject(userExist);
-            HttpContext.Session.SetString("user", serializedUser);
-            Console.WriteLine(HttpContext.Session.GetString("user"));
+            HttpContext.Session.Set("user", userExist);
             return RedirectToAction("Index", "Event");
         }
 
@@ -74,9 +69,7 @@ namespace HaBuddies.Controllers
                 return RedirectToAction(nameof(LoginAndRegister));
             }
 
-            string serializedUser = JsonConvert.SerializeObject(userExist);
-            HttpContext.Session.SetString("user", serializedUser);
-            Console.WriteLine(HttpContext.Session.GetString("user"));
+            HttpContext.Session.Set("user", userExist); 
             return RedirectToAction("Index", "Event");
         }
 
@@ -91,17 +84,14 @@ namespace HaBuddies.Controllers
         [HttpPut]
         public async Task<ActionResult> Update(UpdateUser updateUser)
         {
-           string userExist = HttpContext.Session.GetString("user")!;
+           UserNoPassword userExist = HttpContext.Session.Get<UserNoPassword>("user")!;
 
-            if (string.IsNullOrEmpty(userExist))
+            if (userExist == null)
             {
                 return RedirectToAction(nameof(LoginAndRegister));
             }
 
-            dynamic userObject = JsonConvert.DeserializeObject(userExist)!;
-            string userId = userObject.Id;
-
-            var user = await _userService.UpdateUser(userId, updateUser);
+            var user = await _userService.UpdateUser(userExist.Id!, updateUser);
 
             if (user == null)
             {
@@ -113,16 +103,14 @@ namespace HaBuddies.Controllers
 
         public async Task<IActionResult> MyProfile()
         {
-            string userExist = HttpContext.Session.GetString("user")!;
+            UserNoPassword userExist = HttpContext.Session.Get<UserNoPassword>("user")!;
 
-            if (string.IsNullOrEmpty(userExist))
+            if (userExist == null)
             {
                 return RedirectToAction(nameof(LoginAndRegister));
             }
-            dynamic userObject = JsonConvert.DeserializeObject(userExist)!;
-            string userId = userObject.Id;
 
-            var user = await _userService.GetUserById(userId);
+            var user = await _userService.GetUserById(userExist.Id!);
             return View(user);
         }
 
