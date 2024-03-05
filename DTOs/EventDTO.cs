@@ -8,8 +8,9 @@ namespace HaBuddies.DTOs
         public required int EnrollSize { get; set; }
         public string? Description { get; set; }
         public required DateTime EndDate { get; set; }
-        public int? AgeRequirement { get; set; }
-        public string? GenderRequirement { get; set; }
+        public int? MinAgeRequirement { get; set; }
+        public int? MaxAgeRequirement { get; set; }
+        public List<string>? GenderRequirement { get; set; }
     }
 
     public class EditEventDTO
@@ -19,8 +20,9 @@ namespace HaBuddies.DTOs
         public int? EnrollSize { get; set; }
         public string? Description { get; set; }
         public DateTime? EndDate { get; set; }
-        public int? AgeRequirement { get; set; }
-        public string? GenderRequirement { get; set; }
+        public int? MinAgeRequirement { get; set; }
+        public int? MaxAgeRequirement { get; set; }
+        public List<string>? GenderRequirement { get; set; }
         public bool? IsOpen { get; set; }
     }
 }

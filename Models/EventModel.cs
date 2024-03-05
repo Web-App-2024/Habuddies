@@ -17,8 +17,9 @@ public class Event
     public bool IsOpen { get; set; } = true;
     public List<string> SubscribersId { get; set; } = [];
     public List<string> QueueId { get; set; } = [];
-    public int? AgeRequirement { get; set; }
-    public string? GenderRequirement { get; set; }
+    public int? MinAgeRequirement { get; set; }
+    public int? MaxAgeRequirement { get; set; }
+    public List<string> GenderRequirement { get; set; } = [];
 
     [BsonIgnore]
     public required User Owner { get; set; }

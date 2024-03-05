@@ -99,6 +99,14 @@ namespace HaBuddies.Services
         public async Task<Event> CreateAsync(CreateEventDTO newEventDTO, string userId) 
         {
             try {
+                if (newEventDTO.MinAgeRequirement != null || newEventDTO.MaxAgeRequirement != null){
+                    if (newEventDTO.MinAgeRequirement == null || newEventDTO.MaxAgeRequirement == null){
+                        throw new Exception("Bad Request");
+                    }
+                }
+                if (newEventDTO.GenderRequirement == null){
+                    newEventDTO.GenderRequirement = ["Male", "Female", "Others"];
+                }
                 Event newEvent = _mapper.Map<Event>(newEventDTO);
                 newEvent.OwnerId = userId;
                 await _eventsCollection.InsertOneAsync(newEvent);
@@ -155,8 +163,17 @@ namespace HaBuddies.Services
         public async Task SubscribeEvent(string id, string userId)
         {
             try {
+                var user = await _usersCollection.Find(u => u.Id == userId).FirstOrDefaultAsync();
                 var evt = await GetOneAsync(id) ?? throw new Exception("Event not found.");
                 var filter = Builders<Event>.Filter.Eq(evt => evt.Id, id);
+
+                if(user.Age < evt.MinAgeRequirement || user.Age > evt.MaxAgeRequirement){
+                    throw new Exception("User Not Suit");
+                }
+                else if(!evt.GenderRequirement.Contains(user.Gender)){
+                    throw new Exception("User Not Suit");
+                }
+
                 if (!evt.SubscribersId.Contains(userId) && !evt.QueueId.Contains(userId))
                 {
                     if (evt.SubscribersId.Count < evt.EnrollSize){
