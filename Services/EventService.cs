@@ -24,7 +24,7 @@ namespace HaBuddies.Services
             _timer = new Timer(
                 async state => await UpdateEventsAsync(), 
                 null, 
-                timeUntilMidnight,
+                CalculateTimeUntilMidnight(),
                 TimeSpan.FromDays(1)
             );
 
@@ -194,16 +194,17 @@ namespace HaBuddies.Services
 
         public async Task UpdateEventsAsync()
         {
-            var filter = Builders<Event>.Filter.Empty;
+            var filter = Builders<Event>.Filter.Eq(evt => evt.IsOpen, true);
             var events = await _eventsCollection.Find(filter).ToListAsync();
 
-            foreach (var ev in events)
+            foreach (var evt in events)
             {
-                if (DateTime.UtcNow > ev.EndDate)
+                if (DateTime.UtcNow > evt.EndDate)
                 {
-                    ev.IsOpen = false;
+                    evt.IsOpen = false;
                     var update = Builders<Event>.Update.Set(e => e.IsOpen, false);
-                    await _eventsCollection.UpdateOneAsync(e => e.Id == ev.Id, update);
+                    await _eventsCollection.UpdateOneAsync(e => e.Id == evt.Id, update);
+                    Console.WriteLine($"Close Event Id{evt.Id}");
                 }
             }
         }
