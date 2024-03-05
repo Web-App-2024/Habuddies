@@ -14,9 +14,8 @@
 <body>
 
     @{
-        string controllerName = "";
-        var controller = ViewContext.RouteData.Values["Controller"];
-        if (controller != null) controllerName = controller.ToString()!;
+        string currentRoute = Url.RouteUrl(ViewContext.RouteData.Values);
+        var user = ViewContext.HttpContext.Session.GetString("userId");
     }
 
     <header>
@@ -29,23 +28,23 @@
                 <a class="notification-button" asp-area="" asp-controller="Event" asp-action=""><i class="fa-solid fa-bell"></i></a>
             </li>
             <li>
-                <a class="profile-button" asp-area="" asp-controller="User" asp-action="MyProfile">
-                    @{
-                    @* var user = ViewContext.HttpContext.Session.Get("UserId"); *@
-                    var user = "Something Tester";
+                @{
                     if (user != null) {
-                        <span class="profile-name">@user</span>
-                        <div class="profile-picture">
-                            <img alt="Profile picture" src="~/img/default.jpg" draggable="false">
-                        </div>
+                        <a class="profile-button" asp-area="" asp-controller="User" asp-action="MyProfile">
+                            <span class="profile-name">@user</span>
+                            <div class="profile-picture">
+                                <img alt="Profile picture" src="~/img/default.jpg" draggable="false">
+                            </div>
+                        </a>
                     }
                     else {
-                        <span class="profile-name">Login</span>
-                        <div class="profile-picture">
-                        </div>
+                        <a class="profile-button" asp-area="" asp-controller="User" asp-action="LoginAndRegister">
+                            <span class="profile-name">Login</span>
+                            <div class="profile-picture">
+                            </div>
+                        </a>
                     }
-                    }
-                </a>
+                }
             </li>
         </ul>
     </header>
@@ -59,16 +58,16 @@
         <div class="header-nav">Main Menu</div>
         <ul>
             <!-- This current view checking could break at any time, looking for a better solution -->
-            <li class=" @(controllerName=="Event"?"active":"")"> 
+            <li class=" @(currentRoute==Url.Action("Index", "Event")?"active":"")"> 
                 <a class="home-nav" asp-area="" asp-controller="Event" asp-action="Index"><i class="fa-solid fa-house"></i> Home</a>
             </li>
-            <li>
+            <li class=" @(currentRoute==Url.Action("MyProfile", "User")?"active":"")">
                 <a class="my-profile-nav" asp-area="" asp-controller="User" asp-action="MyProfile"><i class="fa-solid fa-address-card"></i> My Profile</a>
             </li>
-            <li>
+            <li class=" @(currentRoute==Url.Action("MyPost", "User")?"active":"")">
                 <a class="my-post-nav" asp-area="" asp-controller="" asp-action=""><i class="fa-solid fa-calendar"></i> My Post</a>
             </li>
-            <li>
+            <li class=" @(currentRoute==Url.Action("History", "User")?"active":"")">
                 <a class="history-nav" asp-area="" asp-controller="" asp-action=""><i class="fa-solid fa-clock-rotate-left"></i> History</a>
             </li>
         </ul>
