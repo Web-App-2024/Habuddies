@@ -1,12 +1,51 @@
 @model PaginationResponse<HaBuddies.Models.Event>
 @using HaBuddies.Constants
+@using Newtonsoft.Json;
+
+@functions {
+    public bool IsOwnedEvent(dynamic userObj, HaBuddies.Models.Event evt) {
+        if (userObj != null) {
+            if (evt.OwnerId == userObj.Id.ToString()) return true;
+        }
+        return false;
+    }
+
+    public bool IsJoinable(dynamic userObj, HaBuddies.Models.Event evt) {
+        if (userObj != null) {
+            if (userObj.Age >= evt.MinAgeRequirement && userObj.Age <= evt.MaxAgeRequirement && 
+                evt.GenderRequirement.Any(s => s.Contains(userObj.Gender.ToString()))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool IsCurrentlyJoined(dynamic userObj, HaBuddies.Models.Event evt) {
+        if (userObj != null) {
+            if (evt.SubscribersId.Any(s => s.Contains(userObj.Id.ToString()))) return true;
+        }
+        return false;
+    }
+}
+
+@{
+    string userExist = ViewContext.HttpContext.Session.GetString("user")!;
+    dynamic userObject = null!;
+    if (userExist != null) {
+        userObject = JsonConvert.DeserializeObject(userExist)!;
+    }
+}
 
 @if (Model.Count > 0) {
     @foreach (HaBuddies.Models.Event evt in Model.Data)
     {
         if (evt.IsOpen == true) {
             var category = evt.Category;
-            var currentEnroll = 0;
+            int currentEnroll = evt.SubscribersId.Count + evt.QueueId.Count;
+
+            bool selfOwned = IsOwnedEvent(userObject, evt);
+            bool canJoin = IsJoinable(userObject, evt);
+            bool currentlyJoin = IsCurrentlyJoined(userObject, evt);
             
             <div class="banner" id="@evt.Id">
                 <a draggable="false" asp-controller="Event" asp-action="Details" asp-route-id="@evt.Id">
@@ -25,14 +64,28 @@
                         <span class="evt-enddate">Close Date<br>@evt.EndDate.ToShortDateString()</span>
                     </div>
                 </a>
-                <button type="button" class="evt-join" onclick="myFunction(this, 'red')">เข้าร่วม</button>
+                @if (!selfOwned) {
+                    <button type="button" class="evt-join @(canJoin?"active":"") @(currentlyJoin?"leave":"join")" onclick=@(canJoin?"myFunction(this)":"")>
+                        @if (currentlyJoin) {
+                            <text>ออก</text>
+                        }
+                        else {
+                            <text>เข้าร่วม</text>
+                        }
+                    </button>
+                }
             </div>
         }
     }
     <script>
-        function myFunction(element, color) {
+        function myFunction(element) {
             var bannerId = element.parentElement.id;
-            alert("Join " + bannerId);
+            if (element.classList.contains("join")) {
+                alert("Joined " + bannerId);
+            }
+            else {
+                alert("Left " + bannerId);
+            }
         }
     </script>
 }
