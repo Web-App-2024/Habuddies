@@ -3,6 +3,7 @@ using HaBuddies.DTOs;
 using HaBuddies.Models;
 using HaBuddies.Services;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace HaBuddies.Controllers
 {
@@ -56,7 +57,9 @@ namespace HaBuddies.Controllers
         public async Task<IActionResult> Create([FromBody] CreateEventDTO newEventDTO)
         {
             try {
-                string userId = HttpContext.Session.GetString("userId")!;
+                string userExist = HttpContext.Session.GetString("user")!;
+                dynamic userObject = JsonConvert.DeserializeObject(userExist)!;
+                string userId = userObject.Id;
 
                 if (userId == null) {
                     throw new UnauthorizedAccessException();
@@ -128,7 +131,9 @@ namespace HaBuddies.Controllers
         public async Task<IActionResult> Subscribe(string id)
         {
             try {
-                string userId = HttpContext.Session.GetString("userId")!;
+                string userExist = HttpContext.Session.GetString("user")!;
+                dynamic userObject = JsonConvert.DeserializeObject(userExist)!;
+                string userId = userObject.Id;
                 if (userId == null) {
                     throw new UnauthorizedAccessException();
                 }
