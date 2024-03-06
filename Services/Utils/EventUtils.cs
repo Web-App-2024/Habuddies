@@ -6,7 +6,7 @@ namespace HaBuddies.Services.Utils
     public static class EventUtil {
         public static bool IsOwnedEvent(UserNoPassword userObj, Event evt) {
             if (userObj != null) {
-                if (evt.OwnerId.ToString() == userObj.Id!.ToString()) return true;
+                if (evt.OwnerId.ToString() == userObj.Id.ToString()) return true;
             }
             return false;
         }
@@ -23,7 +23,7 @@ namespace HaBuddies.Services.Utils
 
         public static bool IsCurrentlyJoined(UserNoPassword userObj, Event evt) {
             if (userObj != null) {
-                if (evt.SubscribersId.Any(s => s.Contains(userObj.Id!.ToString()))) return true;
+                if (evt.SubscribersId.Any(s => s.Contains(userObj.Id.ToString()))) return true;
             }
             return false;
         }

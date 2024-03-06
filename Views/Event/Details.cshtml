@@ -52,7 +52,7 @@
 
         <div class="evt-member">
             <h2>Member</h2>
-            @foreach (User member in Model.Subscribers) {
+            @foreach (UserNoPassword member in Model.Subscribers) {
                 <div class="member">
                     <div class="member-picture">
                         <img alt="member picture" src="~/img/default.jpg" draggable="false">
@@ -64,7 +64,7 @@
 
         <div class="evt-q-user">
             <h2>Queue</h2>
-            @foreach (User qUser in Model.Queue) {
+            @foreach (UserNoPassword qUser in Model.Queue) {
                 <div class="q-user">
                     <div class="q-user-picture">
                         <img alt="q-user picture" src="~/img/default.jpg" draggable="false">
