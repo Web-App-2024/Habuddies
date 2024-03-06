@@ -24,7 +24,7 @@ public class Event
     [BsonIgnore]
     public required UserNoPassword Owner { get; set; }
     [BsonIgnore]
-    public List<User> Subscribers { get; set; } = [];
+    public List<UserNoPassword> Subscribers { get; set; } = [];
     [BsonIgnore]
-    public List<User> Queue { get; set; } = [];
+    public List<UserNoPassword> Queue { get; set; } = [];
 }
