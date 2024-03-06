@@ -16,7 +16,7 @@
 <body>
 
     @{
-        string currentRoute = Url.RouteUrl(ViewContext.RouteData.Values);
+        string currentRoute = Url.RouteUrl(ViewContext.RouteData.Values)!;
         string userExist = ViewContext.HttpContext.Session.GetString("user")!;
     }
 
