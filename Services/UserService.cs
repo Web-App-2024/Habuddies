@@ -66,8 +66,9 @@ namespace HaBuddies.Services
                 JoinedEvent = []
             };
 
-            UserNoPassword userNoPassword = (UserNoPassword)newUser;
             await _userCollection.InsertOneAsync(newUser);
+            var thisUser = await _userCollection.Find(_user => _user.Email == user.Email).SingleOrDefaultAsync();
+            UserNoPassword userNoPassword = (UserNoPassword)thisUser;
             return userNoPassword;
         }
 
