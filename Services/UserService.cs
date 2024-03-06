@@ -1,3 +1,5 @@
+using AutoMapper;
+using HaBuddies.DTOs;
 using HaBuddies.Models;
 using MongoDB.Driver;
 
@@ -8,6 +10,7 @@ namespace HaBuddies.Services
         private readonly MongoService _mongoService;
         private readonly IMongoCollection<User> _userCollection;
         private readonly IMongoCollection<Event> _eventsCollection;
+        private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
 
         public UserService(MongoService mongoService, IConfiguration configuration)
@@ -16,6 +19,13 @@ namespace HaBuddies.Services
             _userCollection = _mongoService._userCollection;
              _eventsCollection = _mongoService._eventsCollection;
             _configuration = configuration;
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<CreateUserDTO, User>();
+            });
+
+            _mapper = config.CreateMapper();
         }
 
         public async Task<UserNoPassword> GetUserById(string id)
@@ -25,58 +35,49 @@ namespace HaBuddies.Services
             return userNoPassword;
         }
 
-        public async Task<UserNoPassword> UpdateUser(string id, UpdateUser updateUser)
+        public async Task<UserNoPassword> UpdateUser(string id, EditUserDTO editUserDTO)
         {
-            var option = new FindOneAndUpdateOptions<User, User>
-            {
-                IsUpsert = false,
-                ReturnDocument = ReturnDocument.After
-            };
+            var filter = Builders<User>.Filter.Eq(u => u.Id, id);
+            var userExist = await _userCollection.Find(filter).FirstOrDefaultAsync();
+
+            if (userExist == null) {
+                throw new Exception("User Not Found");
+            }
 
             var update = Builders<User>.Update
-                .Set("Name", updateUser.Name)
-                .Set("Surname", updateUser.Surname)
-                .Set("Password", updateUser.Password)
-                .Set("Age", updateUser.Age)
-                .Set("Gender", updateUser.Gender)
-                .Set("Bio", updateUser.Bio);
+                .Set("Name", editUserDTO.Name)
+                .Set("Surname", editUserDTO.Surname)
+                .Set("Password", editUserDTO.Password)
+                .Set("Age", editUserDTO.Age)
+                .Set("Gender", editUserDTO.Gender)
+                .Set("Bio", editUserDTO.Bio);
 
-            User user = await _userCollection.FindOneAndUpdateAsync<User>(_user => _user.Id == id, update, option);
+            User user = await _userCollection.FindOneAndUpdateAsync<User>(_user => _user.Id == id, update);
             UserNoPassword _user = (UserNoPassword)user;
             return _user;
         }
 
-        public async Task<UserNoPassword?> Register(User user)
+        public async Task<UserNoPassword?> Register(CreateUserDTO createUserDTO)
         {
-            var existingUser = await _userCollection.Find(_user => _user.Email == user.Email).SingleOrDefaultAsync();
+            var existingUser = await _userCollection.Find(_user => _user.Email == createUserDTO.Email).SingleOrDefaultAsync();
             if (existingUser != null)
             {
                 return null;
             }
 
-            var newUser = new User
-            {
-                Email = user.Email,
-                Name = user.Name,
-                Surname = user.Surname,
-                Password = user.Password,
-                Age = user.Age,
-                Gender = user.Gender,
-                Bio = user.Bio,
-                JoinedEvent = []
-            };
+            User newUser = _mapper.Map<User>(createUserDTO);
+            newUser.JoinedEvent = [];
 
             await _userCollection.InsertOneAsync(newUser);
-            var thisUser = await _userCollection.Find(_user => _user.Email == user.Email).SingleOrDefaultAsync();
-            UserNoPassword userNoPassword = (UserNoPassword)thisUser;
+            UserNoPassword userNoPassword = (UserNoPassword)newUser;
             return userNoPassword;
         }
 
-        public async Task<UserNoPassword?> Login(UserDto user)
+        public async Task<UserNoPassword?> Login(LoginUserDTO loginUserDTO)
         {
-            var existingUser = await _userCollection.Find(_user => _user.Email == user.Email).SingleOrDefaultAsync();
+            var existingUser = await _userCollection.Find(_user => _user.Email == loginUserDTO.Email).SingleOrDefaultAsync();
 
-            if (existingUser == null || existingUser.Password != user.Password)
+            if (existingUser == null || existingUser.Password != loginUserDTO.Password)
             {
                 return null;
             }
