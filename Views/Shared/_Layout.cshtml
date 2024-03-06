@@ -79,9 +79,24 @@
         </ul>
         @if (userExist != null) {
             <div class="logout">
-                <a class="logout-button" asp-area="" asp-controller="User" asp-action="Logout">
+                <a class="logout-button" onclick="logout();">
                     Logout
                 </a>
+                <script>
+                    function logout() {
+                        var xmlhttp = new XMLHttpRequest();
+
+                        xmlhttp.onreadystatechange = function() {
+                            if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200) {
+                                alert("You have logged out!")
+                                window.location.href = '@Url.Action("LoginAndRegister", "User")';
+                            }
+                        };
+
+                        xmlhttp.open("POST", '@Url.Action("Logout", "User")', true);
+                        xmlhttp.send();
+                    }
+                </script>
             </div>
         }
     </div>
