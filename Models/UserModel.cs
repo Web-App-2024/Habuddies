@@ -8,7 +8,7 @@ namespace HaBuddies.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; } = null!;
         public string Surname { get; set; } = null!;
         public string Email { get; set; } = null!;
@@ -37,7 +37,7 @@ namespace HaBuddies.Models
         }
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string? Id { get; set; }
+        public required string Id { get; set; }
         public string Name { get; set; } = null!;
         public string Surname { get; set; } = null!;
         public string Email { get; set; } = null!;

@@ -79,10 +79,14 @@ namespace HaBuddies.Controllers
         {
             try {
                 var evt = await _eventService.GetOneAsync(id);
+                UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
 
                 if (evt == null)
                 {
                     return View("NotFound");
+                }
+                else if (user.Id != evt.OwnerId) {
+                    throw new Exception("Forbidden");
                 }
 
                 return View(evt);
@@ -96,7 +100,8 @@ namespace HaBuddies.Controllers
         public async Task<IActionResult> Edit(string id, [FromBody] EditEventDTO editedEventDTO)
         {
             try {
-                var editedEvent = await _eventService.EditAsync(id, editedEventDTO);
+                UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
+                var editedEvent = await _eventService.EditAsync(id, editedEventDTO, user.Id);
 
                 return RedirectToAction("Details", new { Id = editedEvent.Id });
             }
@@ -109,14 +114,9 @@ namespace HaBuddies.Controllers
         public async Task<IActionResult> Delete(string id)
         {
             try {
-                var evt = await _eventService.GetOneAsync(id);
+                UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
 
-                if (evt == null)
-                {
-                    return View("NotFound");
-                }
-
-                await _eventService.RemoveAsync(id);
+                await _eventService.RemoveAsync(id, user.Id);
 
                 return RedirectToAction("Index");
             }

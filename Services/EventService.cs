@@ -84,22 +84,36 @@ namespace HaBuddies.Services
                 if (evt == null){
                     return evt;
                 }
-                var user = await _usersCollection.Find(u => u.Id == evt.OwnerId).FirstOrDefaultAsync();
-                UserNoPassword userNoPassword = (UserNoPassword)user;
-                evt.Owner = userNoPassword;
+
+                var projection = Builders<User>.Projection
+                    .Exclude(u => u.Password)
+                    .Exclude(u => u.JoinedEvent);
+
+                var user = await _usersCollection
+                    .Find(u => u.Id == evt.OwnerId)
+                    .Project<UserNoPassword>(projection)
+                    .FirstOrDefaultAsync();
 
                 var subscriberIds = evt.SubscribersId;
-                evt.Subscribers = await _usersCollection.Find(u => subscriberIds.Contains(u.Id)).ToListAsync();
+                evt.Subscribers = await _usersCollection
+                    .Find(u => subscriberIds.Contains(u.Id))
+                    .Project<UserNoPassword>(projection)
+                    .ToListAsync();
 
                 var QueueIdIds = evt.QueueId;
-                evt.Queue = await _usersCollection.Find(u => QueueIdIds.Contains(u.Id)).ToListAsync();
+                evt.Queue = await _usersCollection
+                    .Find(u => QueueIdIds.Contains(u.Id))
+                    .Project<UserNoPassword>(projection)
+                    .ToListAsync();
 
                 return evt;
             }
-            catch (Exception) {
+            catch (Exception ex) {
+                Console.WriteLine(ex);
                 throw;
             }
         }
+
         public async Task<Event> CreateAsync(CreateEventDTO newEventDTO, string userId) 
         {
             try {
@@ -119,7 +133,8 @@ namespace HaBuddies.Services
                 throw;
             }
         }
-        public async Task<Event> EditAsync(string id, EditEventDTO editedEventDTO) 
+
+        public async Task<Event> EditAsync(string id, EditEventDTO editedEventDTO, string userId) 
         {
             try {
                 var filter = Builders<Event>.Filter.Eq(evt => evt.Id, id);
@@ -127,6 +142,9 @@ namespace HaBuddies.Services
 
                 if (evt == null) {
                     throw new Exception("Event Not Found");
+                }
+                else if (userId != evt.OwnerId) {
+                    throw new Exception("Forbidden");
                 }
 
                 foreach (var property in typeof(EditEventDTO).GetProperties())
@@ -147,7 +165,7 @@ namespace HaBuddies.Services
             }
         }
 
-        public async Task RemoveAsync(string id) 
+        public async Task RemoveAsync(string id, string userId) 
         {
             try {
                 var filter = Builders<Event>.Filter.Eq(evt => evt.Id, id);
@@ -155,6 +173,9 @@ namespace HaBuddies.Services
 
                 if (evt == null) {
                     throw new Exception("Event Not Found");
+                } 
+                else if (userId != evt.OwnerId) {
+                    throw new Exception("Forbidden");
                 }
 
                 await _eventsCollection.DeleteOneAsync(evt => evt.Id == id);
@@ -168,7 +189,15 @@ namespace HaBuddies.Services
         {
             try {
                 var user = await _usersCollection.Find(u => u.Id == userId).FirstOrDefaultAsync();
-                var evt = await GetOneAsync(id) ?? throw new Exception("Event not found.");
+                var evt = await GetOneAsync(id);
+
+                if (evt == null) {
+                    throw new Exception("Event Not Found");
+                } 
+                else if (userId == evt.OwnerId) {
+                    throw new Exception("Forbidden");
+                }
+
                 var filter = Builders<Event>.Filter.Eq(evt => evt.Id, id);
 
                 if(user.Age < evt.MinAgeRequirement || user.Age > evt.MaxAgeRequirement){
