@@ -1,8 +1,37 @@
+@model HaBuddies.Models.Event
+@using HaBuddies.Constants
+@using Newtonsoft.Json;
+
 @{
     ViewData["Title"] = "Details";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="evt-detail" id="@evt.Id">
+    <div class="evt-heading">
+        <div class="category" style="background-color: @Category.GetColorHex(category)">
+            @Html.Raw(Category.GetIconHtml(category))
+            <span class="evt-category">@category</span>
+        </div>
+        <h1 class="evt-title">@Model.Id</h1>
+        @* <p>@Model.Owner.Name</p> *@
+        <div class="owner">
+            <div class="owner-picture">
+                <img alt="Owner picture" src="~/img/default.jpg" draggable="false">
+            </div>
+            @* <span class="owner-name">@evt.Owner.Name @evt.Owner.Surname</span> *@
+            <span class="owner-name">Somethinglong SomethinglongToo</span>
+        </div>
+    </div>
+    <div class="evt-body">
+        <p class="evt-description">@evt.Description</p>
+        <span class="evt-enddate">Close Date<br>@evt.EndDate.ToShortDateString()</span>
+        <span class="evt-enrollsize @(currentEnroll<evt.EnrollSize?"vacant":"full")">
+            @currentEnroll/@evt.EnrollSize <i class="fa-solid fa-user-group"></i>
+        </span>
+        <div class="evt-member">
+            <h2>Member</h2>
+            
+        </div>
+    </div>
+    
 </div>
