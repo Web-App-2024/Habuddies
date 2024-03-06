@@ -1,36 +1,77 @@
 @model HaBuddies.Models.Event
+@using HaBuddies.Models
 @using HaBuddies.Constants
+@using static HaBuddies.Services.Utils.EventUtil
 @using Newtonsoft.Json;
 
 @{
     ViewData["Title"] = "Details";
+
+    string userExist = ViewContext.HttpContext.Session.GetString("user")!;
+    UserNoPassword userObject = null!;
+    if (userExist != null) {
+        userObject = JsonConvert.DeserializeObject<UserNoPassword>(userExist)!;
+    }
+
+    int currentEnroll = Model.SubscribersId.Count + Model.QueueId.Count;
+    bool selfOwned = IsOwnedEvent(userObject, Model);
+    bool canJoin = IsJoinable(userObject, Model);
+    bool currentlyJoin = IsCurrentlyJoined(userObject, Model);
 }
 
-<div class="evt-detail" id="@evt.Id">
+<div class="evt-detail" id="@Model.Id">
     <div class="evt-heading">
-        <div class="category" style="background-color: @Category.GetColorHex(category)">
-            @Html.Raw(Category.GetIconHtml(category))
-            <span class="evt-category">@category</span>
+        <div class="category" style="background-color: @Category.GetColorHex(Model.Category)">
+            @Html.Raw(Category.GetIconHtml(Model.Category))
+            <span class="evt-category">@Model.Category</span>
         </div>
-        <h1 class="evt-title">@Model.Id</h1>
-        @* <p>@Model.Owner.Name</p> *@
+        <h1 class="evt-title">@Model.Title</h1>
         <div class="owner">
             <div class="owner-picture">
                 <img alt="Owner picture" src="~/img/default.jpg" draggable="false">
             </div>
-            @* <span class="owner-name">@evt.Owner.Name @evt.Owner.Surname</span> *@
-            <span class="owner-name">Somethinglong SomethinglongToo</span>
+            <span class="owner-name">@Model.Owner.Name @Model.Owner.Surname</span>
         </div>
     </div>
     <div class="evt-body">
-        <p class="evt-description">@evt.Description</p>
-        <span class="evt-enddate">Close Date<br>@evt.EndDate.ToShortDateString()</span>
-        <span class="evt-enrollsize @(currentEnroll<evt.EnrollSize?"vacant":"full")">
-            @currentEnroll/@evt.EnrollSize <i class="fa-solid fa-user-group"></i>
+        <p class="evt-description">@Model.Description</p>
+        <span class="evt-enddate">Close Date<br>@Model.EndDate.ToShortDateString()</span>
+        <span class="evt-enrollsize @(currentEnroll<Model.EnrollSize?"vacant":"full")">
+            @currentEnroll/@Model.EnrollSize <i class="fa-solid fa-user-group"></i>
         </span>
+        @if (!selfOwned) {
+            <button type="button" class="evt-join @(canJoin?"active":"") @(currentlyJoin?"leave":"join")" onclick=@(canJoin?"myFunction(this)":"")>
+                @if (currentlyJoin) {
+                    <text>ออก</text>
+                }
+                else {
+                    <text>เข้าร่วม</text>
+                }
+            </button>
+        }
+
         <div class="evt-member">
             <h2>Member</h2>
-            
+            @foreach (User member in Model.Subscribers) {
+                <div class="member">
+                    <div class="member-picture">
+                        <img alt="member picture" src="~/img/default.jpg" draggable="false">
+                    </div>
+                    <span class="member-name">@member.Name @member.Surname</span>
+                </div>
+            }
+        </div>
+
+        <div class="evt-q-user">
+            <h2>Queue</h2>
+            @foreach (User qUser in Model.Queue) {
+                <div class="q-user">
+                    <div class="q-user-picture">
+                        <img alt="q-user picture" src="~/img/default.jpg" draggable="false">
+                    </div>
+                    <span class="q-user-name">@qUser.Name @qUser.Surname</span>
+                </div>
+            }
         </div>
     </div>
     
