@@ -1,4 +1,5 @@
 using System.Text;
+using HaBuddies.DTOs;
 using HaBuddies.Models;
 using HaBuddies.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,6 @@ namespace HaBuddies.Controllers
     public class UserController : Controller
     {
         private readonly UserService _userService;
-
         public UserController(UserService userService) =>
             _userService = userService;
 
@@ -46,9 +46,9 @@ namespace HaBuddies.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Register(User user)
+        public async Task<ActionResult> Register(CreateUserDTO createUserDTO)
         {
-            var userExist = await _userService.Register(user);
+            var userExist = await _userService.Register(createUserDTO);
 
             if (userExist == null)
             {
@@ -60,9 +60,9 @@ namespace HaBuddies.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login(UserDto userDto)
+        public async Task<ActionResult> Login(LoginUserDTO loginUserDto)
         {
-            var userExist = await _userService.Login(userDto);
+            var userExist = await _userService.Login(loginUserDto);
 
             if (userExist == null)
             {
@@ -82,7 +82,7 @@ namespace HaBuddies.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> Update(UpdateUser updateUser)
+        public async Task<ActionResult> Update(EditUserDTO editUserDTO)
         {
            UserNoPassword userExist = HttpContext.Session.Get<UserNoPassword>("user")!;
 
@@ -91,7 +91,7 @@ namespace HaBuddies.Controllers
                 return RedirectToAction(nameof(LoginAndRegister));
             }
 
-            var user = await _userService.UpdateUser(userExist.Id!, updateUser);
+            var user = await _userService.UpdateUser(userExist.Id!, editUserDTO);
 
             if (user == null)
             {
