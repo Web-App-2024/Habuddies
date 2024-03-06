@@ -46,7 +46,7 @@ namespace HaBuddies.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Register([FromBody] User user)
+        public async Task<ActionResult> Register(User user)
         {
             var userExist = await _userService.Register(user);
 
@@ -60,7 +60,7 @@ namespace HaBuddies.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login([FromBody] UserDto userDto)
+        public async Task<ActionResult> Login(UserDto userDto)
         {
             var userExist = await _userService.Login(userDto);
 

@@ -1,8 +1,113 @@
 @{
     ViewData["Title"] = "Login";
 }
-
+@{
+    Layout = "";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
 <div class="text-center">
-    <h1 class="display-4">Login And Register Page</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="container">
+      <div class="login-register">
+        <form class="login" method="post" action="@Url.Action("Login", "User")">
+          <h2 class="title">Login</h2>
+          <div class="input-field">
+            <i class="fa fa-envelope"></i>
+            <input type="text" class="email" placeholder="Email" name="email" />
+          </div>
+          <div class="input-field">
+            <i class="fa fa-lock"></i>
+            <input type="password" class="password" placeholder="Password" name="password" />
+          </div>
+          <input type="submit" value="Login" class="bt" />
+          <p class="account-text">
+            Don't have an account?
+            <a href="#" class="register_btn2">Register</a>
+          </p>
+        </form>
+
+        <form class="register" method="post" action="@Url.Action("Register", "User")">
+          <h2 class="title">Register</h2>
+          <div class="input-field">
+            <i class="fa fa-envelope"></i>
+            <input type="text" class="email" placeholder="Email"  name="email"/>
+          </div>
+          <div class="input-field">
+            <i class="fa fa-lock"></i>
+            <input type="password" class="password" placeholder="Password"  name="password"/>
+          </div>
+          <div class="input-field">
+            <i class="fa fa-calendar"></i>
+            <input type="text" class="age" placeholder="Age"  name="age"/>
+          </div>
+          <div class="input-field">
+            <i class="fa fa-venus-mars"></i>
+            <select name="gender">
+              <option value="Gender">Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Others">Others</option>
+              </select>
+          </div>
+          <input type="submit" value="Register" class="bt" />
+          <p class="account-text">
+            Already have an account? <a href="#" class="login_btn2">Login</a>
+          </p>
+        </form>
+      </div>
+      <div class="panel-containers">
+        <div class="panel left-panel">
+          <div class="content">
+            <h3>HaBudies</h3>
+            <p>
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto
+              atque minima doloremque blanditiis eaque voluptas ad magnam
+              explicabo! Quod, voluptatibus?
+            </p>
+            <button class="btn login_btn">Login</button>
+          </div>
+          <img
+            src="~/img/new2.svg"
+            alt=""
+            class="image"
+          />
+        </div>
+        <div class="panel right-panel">
+          <div class="content">
+            <h3>HaBudies</h3>
+            <p>
+              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto
+              atque minima doloremque blanditiis eaque voluptas ad magnam
+              explicabo! Quod, voluptatibus?
+            </p>
+            <button class="btn register_btn">Register</button>
+          </div>
+          <img
+            src="~/img/register.svg"
+            alt=""
+            class="image"
+          />
+        </div>
+      </div>
+    </div>
+    <script>
+const login_btns = document.querySelectorAll(".login_btn");
+const register_btns = document.querySelectorAll(".register_btn");
+const container = document.querySelector(".container");
+
+register_btns.forEach((register_btn) => {
+  register_btn.addEventListener("click", () => {
+    container.classList.add("register-btn-mode");
+  });
+});
+
+login_btns.forEach((login_btn) => {
+  login_btn.addEventListener("click", () => {
+    container.classList.remove("register-btn-mode");
+  });
+});
+
+
+
+    </script>
 </div>
