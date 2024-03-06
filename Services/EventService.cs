@@ -94,6 +94,8 @@ namespace HaBuddies.Services
                     .Project<UserNoPassword>(projection)
                     .FirstOrDefaultAsync();
 
+                evt.Owner = user;
+
                 var subscriberIds = evt.SubscribersId;
                 evt.Subscribers = await _usersCollection
                     .Find(u => subscriberIds.Contains(u.Id))
