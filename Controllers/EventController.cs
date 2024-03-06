@@ -54,7 +54,7 @@ namespace HaBuddies.Controllers
         }
             
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateEventDTO newEventDTO)
+        public async Task<IActionResult> Create(CreateEventDTO newEventDTO)
         {
             try {
                 UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
@@ -97,7 +97,7 @@ namespace HaBuddies.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Edit(string id, [FromBody] EditEventDTO editedEventDTO)
+        public async Task<IActionResult> Edit(string id, EditEventDTO editedEventDTO)
         {
             try {
                 UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
