@@ -30,8 +30,10 @@ namespace HaBuddies.Controllers
                 if (user != null) userId = user.Id;
                 var paginationResponse = await _eventService.GetAllAsync(page, perPage, category, userId);
 
-                if (paginationResponse.Data.Count <= 0) return StatusCode(204);
-
+                if (paginationResponse.Data.Count <= 0 && paginationResponse.PrevPage != null) {
+                    return StatusCode(204);
+                }
+                
                 return PartialView("_EventBannerPartial", paginationResponse);
             }
             catch (Exception)
