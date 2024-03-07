@@ -14,10 +14,11 @@ namespace HaBuddies.Controllers
         public EventController(EventService eventService) =>
             _eventService = eventService;
 
-        public async Task<IActionResult> Index(string category = null!, int page = 1, int perPage = 10)
+        public async Task<IActionResult> Index(string category = null!, int perPage = 10)
         {
             try {
-                var paginationResponse = await _eventService.GetAllAsync(page, perPage, category);
+                UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
+                var paginationResponse = await _eventService.GetAllAsync(1, perPage, category, user.Id);
 
                 return View(paginationResponse);
             }

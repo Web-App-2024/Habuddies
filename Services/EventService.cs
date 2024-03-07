@@ -36,7 +36,7 @@ namespace HaBuddies.Services
             _mapper = config.CreateMapper();
         }
 
-        public async Task<PaginationResponse<Event>> GetAllAsync(int page, int perPage, string category)
+        public async Task<PaginationResponse<Event>> GetAllAsync(int page, int perPage, string category, string userId)
         {
             try 
             {
@@ -45,14 +45,24 @@ namespace HaBuddies.Services
                 FilterDefinition<Event> filter;
                 if (!string.IsNullOrEmpty(category))
                 {
-                    filter = Builders<Event>.Filter.Eq(evt => evt.Category, category);
+                    filter = Builders<Event>.Filter.And(
+                        Builders<Event>.Filter.Eq(evt => evt.Category, category),
+                        Builders<Event>.Filter.Ne(evt => evt.OwnerId, userId),
+                        Builders<Event>.Filter.Eq(evt => evt.IsOpen, true)
+                    );
                 }
                 else
                 {
-                    filter = Builders<Event>.Filter.Empty;
+                    filter = Builders<Event>.Filter.And(
+                        Builders<Event>.Filter.Ne(evt => evt.OwnerId, userId),
+                        Builders<Event>.Filter.Eq(evt => evt.IsOpen, true)
+                    );
                 }
 
+                var sortDefinition = Builders<Event>.Sort.Descending(evt => evt.CreatedAt);
+
                 var data = await _eventsCollection.Find(filter)
+                                                .Sort(sortDefinition)
                                                 .Skip(paginationParams.Skip)
                                                 .Limit(paginationParams.PerPage)
                                                 .ToListAsync();
