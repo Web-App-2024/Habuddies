@@ -43,21 +43,11 @@ namespace HaBuddies.Services
                 var paginationParams = Pagination.BuildPaginationLimit(page, perPage, 32);
 
                 FilterDefinition<Event> filter;
+                filter = Builders<Event>.Filter.Eq(evt => evt.IsOpen, true);
+                if (!string.IsNullOrEmpty(userId))
+                    filter &= Builders<Event>.Filter.Ne(evt => evt.OwnerId, userId);
                 if (!string.IsNullOrEmpty(category))
-                {
-                    filter = Builders<Event>.Filter.And(
-                        Builders<Event>.Filter.Eq(evt => evt.Category, category),
-                        Builders<Event>.Filter.Ne(evt => evt.OwnerId, userId),
-                        Builders<Event>.Filter.Eq(evt => evt.IsOpen, true)
-                    );
-                }
-                else
-                {
-                    filter = Builders<Event>.Filter.And(
-                        Builders<Event>.Filter.Ne(evt => evt.OwnerId, userId),
-                        Builders<Event>.Filter.Eq(evt => evt.IsOpen, true)
-                    );
-                }
+                    filter &= Builders<Event>.Filter.Eq(evt => evt.Category, category);
 
                 var sortDefinition = Builders<Event>.Sort.Descending(evt => evt.CreatedAt);
 
