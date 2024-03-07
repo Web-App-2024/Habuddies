@@ -63,7 +63,6 @@
     <div class="sidebar">
         <div class="header-nav">Main Menu</div>
         <ul>
-            <!-- This current view checking could break at any time, looking for a better solution -->
             <li class=" @(currentRoute==Url.Action("Index", "Event")?"active":"")"> 
                 <a class="home-nav" asp-area="" asp-controller="Event" asp-action="Index"><i class="fa-solid fa-house"></i> Home</a>
             </li>
@@ -105,9 +104,6 @@
         @RenderBody()
     </main>
 
-    <footer>
-        &copy; 2024 - Web_App - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

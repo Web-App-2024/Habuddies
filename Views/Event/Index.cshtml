@@ -1,3 +1,5 @@
+@using HaBuddies.Models
+
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -11,4 +13,57 @@
     <button type="button" class="filter"><i class="fa-solid fa-sliders"></i></button>
 </div>
 
-<partial name="../Shared/_EventBannerPartial.cshtml" />
+<div id="event-banner"></div>
+
+@section Scripts{
+    <script>
+        function EventInfiniteScroll(divId) {
+            var xmlhttp = new XMLHttpRequest();
+            const divBody = document.getElementById(divId);
+            this.loading = false;
+            this.category = "";
+            this.page = 1;
+            this.perPage = 10;
+            this.data = ""
+            var self = this;
+
+            this.setCategory = function(category) {
+                self.category = category;
+            }
+
+            this.loadEvent = function(refresh=false) {
+                xmlhttp.onreadystatechange = function() {
+                    if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200) {
+                        divBody.insertAdjacentHTML('beforeEnd', xmlhttp.responseText);
+                        self.loading = false;
+                        self.page += 1;
+                    }
+                };
+
+                if (refresh) {
+                    divBody.innerHTML = "";
+                    self.page = 1;
+                }
+
+                self.data = 'category=' + encodeURIComponent(self.category) +
+                            '&page=' + encodeURIComponent(self.page) +
+                            '&perPage=' + encodeURIComponent(self.perPage);
+
+                self.loading = true;
+                xmlhttp.open("POST", '@Url.Action("LoadEvent", "Event")', true);
+                xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xmlhttp.send(self.data);
+            };
+
+            window.onscroll = function (ev) {
+                if ((window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight)) {
+                    if (!self.loading) {
+                        self.loadEvent(false);
+                    }
+                }
+            };
+        };
+        var infiniteScroll = new EventInfiniteScroll("event-banner");
+        infiniteScroll.loadEvent(false);
+    </script>
+}
