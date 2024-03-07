@@ -1,16 +1,16 @@
-@model PaginationResponse<HaBuddies.Models.Event>
-@using HaBuddies.Models
-@using HaBuddies.Constants
-@using static HaBuddies.Services.Utils.EventUtil
-@using Newtonsoft.Json;
+    @model PaginationResponse<HaBuddies.Models.Event>
+    @using HaBuddies.Models
+    @using HaBuddies.Constants
+    @using static HaBuddies.Services.Utils.EventUtil
+    @using Newtonsoft.Json;
 
-@{
-    string userExist = ViewContext.HttpContext.Session.GetString("user")!;
-    UserNoPassword userObject = null!;
-    if (userExist != null) {
-        userObject = JsonConvert.DeserializeObject<UserNoPassword>(userExist)!;
+    @{
+        string userExist = ViewContext.HttpContext.Session.GetString("user")!;
+        UserNoPassword userObject = null!;
+        if (userExist != null) {
+            userObject = JsonConvert.DeserializeObject<UserNoPassword>(userExist)!;
+        }
     }
-}
 
 @if (Model.Count > 0) {
     @foreach (Event evt in Model.Data)
@@ -68,13 +68,23 @@
                 alert("Left " + bannerId);
             }
         }
-    </script>
-}
-else {
-    <div class="no-event">
-        <img src="https://img.freepik.com/free-vector/group-therapy-illustration-concept_52683-45727.jpg?t=st=1709623373~exp=1709626973~hmac=78df7e8d67f4c5f6b0d06d0113b240ce820bf4d30f74051aaf195c505371a8d0" alt="no_event">
-        <h2>No events yet</h2>
-        <p>It has been quiet recently. Let's create some new events!</p>
-        <a class="create-event" asp-area="" asp-controller="Event" asp-action="Create">Create event</a>
-    </div>
-}
+        <script>
+            function myFunction(element) {
+                var bannerId = element.parentElement.id;
+                if (element.classList.contains("join")) {
+                    alert("Joined " + bannerId);
+                }
+                else {
+                    alert("Left " + bannerId);
+                }
+            }
+        </script>
+    }
+    else {
+        <div class="no-event">
+            <img src="https://img.freepik.com/free-vector/group-therapy-illustration-concept_52683-45727.jpg?t=st=1709623373~exp=1709626973~hmac=78df7e8d67f4c5f6b0d06d0113b240ce820bf4d30f74051aaf195c505371a8d0" alt="no_event">
+            <h2>No events yet</h2>
+            <p>It has been quiet recently. Let's create some new events!</p>
+            <a class="create-event" asp-area="" asp-controller="Event" asp-action="Create">Create event</a>
+        </div>
+    }
