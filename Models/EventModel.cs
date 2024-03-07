@@ -27,4 +27,8 @@ public class Event
     public List<UserNoPassword> Subscribers { get; set; } = [];
     [BsonIgnore]
     public List<UserNoPassword> Queue { get; set; } = [];
+
+    [BsonRepresentation(BsonType.DateTime)]
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

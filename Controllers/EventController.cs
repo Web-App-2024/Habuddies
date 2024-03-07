@@ -14,15 +14,33 @@ namespace HaBuddies.Controllers
         public EventController(EventService eventService) =>
             _eventService = eventService;
 
-        public async Task<IActionResult> Index(string category = null!, int page = 1, int perPage = 10)
+        public async Task<IActionResult> Index(string category = null!, int perPage = 10)
         {
-            try {
-                var paginationResponse = await _eventService.GetAllAsync(page, perPage, category);
+            try 
+            {
+                UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
+                var paginationResponse = await _eventService.GetAllAsync(1, perPage, category, user.Id);
 
                 return View(paginationResponse);
             }
             catch (Exception) {
                 return View("Error");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LoadEvent(string category = null!, int page = 1, int perPage = 10)
+        {
+            try
+            {
+                UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
+                var paginationResponse = await _eventService.GetAllAsync(page, perPage, category, user.Id);
+
+                return PartialView("_EventBannerPartial", paginationResponse);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
             }
         }
 
@@ -54,7 +72,7 @@ namespace HaBuddies.Controllers
         }
             
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateEventDTO newEventDTO)
+        public async Task<IActionResult> Create(CreateEventDTO newEventDTO)
         {
             try {
                 UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
@@ -97,7 +115,7 @@ namespace HaBuddies.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Edit(string id, [FromBody] EditEventDTO editedEventDTO)
+        public async Task<IActionResult> Edit(string id, EditEventDTO editedEventDTO)
         {
             try {
                 UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
