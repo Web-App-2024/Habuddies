@@ -16,7 +16,8 @@ namespace HaBuddies.Controllers
 
         public async Task<IActionResult> Index(string category = null!, int perPage = 10)
         {
-            try {
+            try 
+            {
                 UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
                 var paginationResponse = await _eventService.GetAllAsync(1, perPage, category, user.Id);
 
@@ -24,6 +25,22 @@ namespace HaBuddies.Controllers
             }
             catch (Exception) {
                 return View("Error");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LoadEvent(string category = null!, int page = 1, int perPage = 10)
+        {
+            try
+            {
+                UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
+                var paginationResponse = await _eventService.GetAllAsync(page, perPage, category, user.Id);
+
+                return PartialView("_EventBannerPartial", paginationResponse);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
             }
         }
 
