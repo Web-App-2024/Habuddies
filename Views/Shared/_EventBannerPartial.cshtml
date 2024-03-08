@@ -47,7 +47,7 @@
             </div>
         </a>
         @if (!selfOwned) {
-            <button type="button" class="evt-join @(canJoin?"active":"") @(currentlyJoin?"leave":"join")" onclick=@(canJoin?"myFunction(this)":"")>
+            <button type="button" class="evt-join @(canJoin?"active":"") @(currentlyJoin?"leave":"join")" onclick=@(canJoin?"ClickJoinOrLeave(this)":"")>
                 @if (currentlyJoin) {
                     <text>ออก</text>
                 }
