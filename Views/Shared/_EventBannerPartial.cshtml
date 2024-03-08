@@ -47,7 +47,7 @@
             </div>
         </a>
         @if (!selfOwned) {
-            <button type="button" class="evt-join @(canJoin?"active":"") @(currentlyJoin?"leave":"join")" onclick=@(canJoin?"myFunction(this)":"")>
+            <button type="button" class="evt-join @(canJoin?"active":"") @(currentlyJoin?"leave":"join")" onclick=@(canJoin?"ClickJoinOrLeave(this)":"")>
                 @if (currentlyJoin) {
                     <text>ออก</text>
                 }
@@ -58,17 +58,6 @@
         }
     </div>
     }
-    <script>
-        function myFunction(element) {
-            var bannerId = element.parentElement.id;
-            if (element.classList.contains("join")) {
-                alert("Joined " + bannerId);
-            }
-            else {
-                alert("Left " + bannerId);
-            }
-        }
-    </script>
 }
 else {
     <div class="no-event">
