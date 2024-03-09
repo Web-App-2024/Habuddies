@@ -19,7 +19,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<MongoService>();
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<EventService>();
-builder.Services.AddSingleton<UploadImageService>();
+builder.Services.AddSingleton<ImageService>();
 
 var app = builder.Build();
 

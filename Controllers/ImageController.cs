@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HaBuddies.Controllers
 {
-    public class UploadFileController(UploadImageService uploadImageService) : Controller
+    public class ImageController(ImageService imageService) : Controller
     {
-        private readonly UploadImageService _uploadImageService = uploadImageService;
+        private readonly ImageService _imageService = imageService;
 
         public IActionResult Index()
         {
@@ -23,7 +23,7 @@ namespace HaBuddies.Controllers
                     return Unauthorized();
                 }
 
-                var uploadedFileName = await _uploadImageService.UploadImage(file, user.Id);
+                var uploadedFileName = await _imageService.UploadImage(file, user.Id);
 
                 if (uploadedFileName == null)
                 {

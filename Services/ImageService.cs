@@ -1,6 +1,6 @@
 namespace HaBuddies.Services
 {
-    public class UploadImageService
+    public class ImageService
     {
         private readonly string[] _allowedExtensions = { ".jpg", ".jpeg", ".png", ".gif" };
         public async Task<string?> UploadImage(IFormFile file, string userId)
@@ -19,7 +19,7 @@ namespace HaBuddies.Services
             {
                 Directory.CreateDirectory(uploadsFolder);
             }
-            
+
             var uniqueFileName = $"{userId}{fileExtension}";
             var filePath = Path.Combine(folder, uniqueFileName);
 
@@ -34,6 +34,21 @@ namespace HaBuddies.Services
             }
 
             return uniqueFileName;
+        }
+
+        public string GetUserImageFileExtension(string userId)
+        {
+            var folder = Path.Combine("wwwroot", "uploadFiles");
+
+            var matchingFile = Directory.GetFiles(folder, $"{userId}.*");
+
+            if (matchingFile.Length > 0)
+            {
+                var relativePath = Path.GetRelativePath("wwwroot", matchingFile[0]);
+                return relativePath.Replace("\\", "/");
+            }
+
+            return "img/default.jpg";
         }
     }
 }
