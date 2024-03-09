@@ -18,10 +18,12 @@ namespace HaBuddies.Services
             _usersCollection = _mongoService._userCollection;
         }
 
-        public async Task<List<Notification>> GetAllAsync(string userId)
+        public async Task<PaginationResponse<Notification>> GetAllAsync(int page, int perPage, string userId)
         {
             try 
             {
+                var paginationParams = Pagination.BuildPaginationLimit(page, perPage, 32);
+
                 FilterDefinition<Notification> filter = FilterDefinition<Notification>.Empty;
 
                 if (!string.IsNullOrEmpty(userId))
@@ -29,11 +31,13 @@ namespace HaBuddies.Services
 
                 var sortDefinition = Builders<Notification>.Sort.Descending(noti => noti.CreatedAt);
 
-                var notifications = await _notificationsCollection.Find(filter)
+                var data = await _notificationsCollection.Find(filter)
                                                 .Sort(sortDefinition)
+                                                .Skip(paginationParams.Skip)
+                                                .Limit(paginationParams.PerPage)
                                                 .ToListAsync();
 
-                foreach(var noti in notifications)
+                foreach(var noti in data)
                 {
                     var user = await _usersCollection.Find(u => u.Id == noti.UserId).FirstOrDefaultAsync();
                     UserNoPassword userNoPassword = (UserNoPassword)user;
@@ -42,7 +46,11 @@ namespace HaBuddies.Services
                     noti.Event = evt;
                 }
 
-                return notifications;
+                var totalCount = await _notificationsCollection.CountDocumentsAsync(filter);
+
+                var paginationResponse = Pagination.BuildResponsePagination(data, page, perPage, (int)totalCount);
+
+                return paginationResponse;
             }
             catch (Exception) 
             {
