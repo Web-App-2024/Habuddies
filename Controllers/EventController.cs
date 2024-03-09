@@ -112,7 +112,7 @@ namespace HaBuddies.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> Edit(string id, EditEventDTO editedEventDTO)
         {
             try {
@@ -126,7 +126,7 @@ namespace HaBuddies.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
             try {
@@ -141,7 +141,7 @@ namespace HaBuddies.Controllers
             }
         }
 
-        [HttpPatch]
+        [HttpPost]
         public async Task<IActionResult> Subscribe(string id)
         {
             try {
