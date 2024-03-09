@@ -113,25 +113,6 @@ label {
     border-color: #007bff;
 }
 
-/* .editGender {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    font-size: 16px;
-    color: #333;
-}
-
-.editGender:focus {
-    border-color: #007bff;
-    outline: none;
-}
-
-.editGender:hover {
-    border-color: #007bff;
-} */
 
 .editGender {
     width: 100%;
@@ -219,6 +200,32 @@ label {
 .editBio:hover {
     border-color: #007bff;
 }
+
+.editPassword {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; 
+    font-size: 16px;
+}
+
+.editPassword:focus {
+    border-color: #007bff;
+    outline: none; 
+}
+
+
+.editPassword {
+    color: #333;
+}
+
+.editPassword:hover {
+    border-color: #007bff;
+}
+
+
 
 button.saveProfileButton {
     background-color: #007bff; 

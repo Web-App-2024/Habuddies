@@ -22,7 +22,7 @@
     <div class="createPost">
         <div class="header"><h2>Create Post</h2></div>
         <hr><br>
-        <form class="postForm">
+        <form class="postForm" method="post" action='@Url.Action("Create", "User")'>
             <div class="header"><h2>Property Category</h2></div>
             <div class="PropertyCategory">
                 <div class="category-boxes">
@@ -31,18 +31,18 @@
                     <div class="category-box" data-category="eating">Eating</div>
                     <div class="category-box" data-category="working">Working</div>
                 </div>
-                <input type="hidden" class="category" name="category" required>
+                <input type="hidden" class="category" name="Category" required>
             </div>
             <div class="header"><h2>Detail</h2></div>
             <div class="inputbox">
-                <input type="text" class="title" placeholder="Title" name="title" required>
+                <input type="text" class="title" placeholder="Title" name="Title" required>
             </div>
             
             <div class="inputbox">
-                <input type="number" class="enrollSize" placeholder="People" name="enrollSize" required>
+                <input type="number" class="enrollSize" placeholder="People" name="EnrollSize" required>
             </div>
             <div class="inputbox">
-                <input type="datetime-local" class="endDate" placeholder="Closedate" name="endDate" required>
+                <input type="datetime-local" class="endDate" placeholder="Closedate" name="EndDate" required>
             </div>
 
             <div class="inputField">
@@ -50,20 +50,20 @@
             </div>
             <div class="header"><h2>Requirement</h2></div>
             <div class="inputField">
-                <input type="number" class="minAge" placeholder="Minage" name="minAge" value= "" >
+                <input type="number" class="minAge" placeholder="Minage" name="MinAgeRequirement" value= "" >
             </div>
             <div class="inputField">
-                <input type="number" class="maxAge" placeholder="Maxage" name="maxAge" value="" >
+                <input type="number" class="maxAge" placeholder="Maxage" name="MaxAgeRequirement" value="" >
             </div>
             <div class="inputField gender">
-                <select class="gender" name="gender" >
+                <select class="gender" name="GenderRequirement" >
                     <option value="Null">Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     <option value="Others">Others</option>
                 </select>
             </div>
-            <button type="submit">Create Post</button>
+            <input type="submit" value="Create" >
 
         </form>
         <script>
