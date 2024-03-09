@@ -2,7 +2,136 @@
     ViewData["Title"] = "Profile";
 }
 
+@section Stylesheets {
+    <link rel="stylesheet" href="~/css/myprofile.css" asp-append-version="true" />
+}
+
 <div class="text-center">
-    <h1 class="display-4">My Profile</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="profile">
+        <div class="profile-header">
+            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile Picture">
+            <div class="profile-name">
+                <h2><span class="name">@Model.Name @Model.Surname </span></h2><br>
+                <span class="nickname">@Model.Bio</span><br>
+            </div>
+            <div class="editbutton">
+            <button class="editProfileButton"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+            </div>
+        </div>
+        <hr>
+        <div class="profile-info" id="profileInfo">
+            <label>Name</label><br>
+            <span class="name">@Model.Name @Model.Surname</span><br>
+
+            <label>Gender</label><br>
+            <span class="gender">@Model.Gender</span><br>
+
+            <label>Age</label><br>
+            <span class="age">@Model.Age</span><br>
+
+            <label>Contact</label><br>
+            <span class="contact">@Model.Email</span><br>
+
+            <label>About Me</label><br>
+            <span class="about">@Model.Bio</span>
+        </div>
+        
+
+    <div class="editProfile" style="display: none;" >
+        <form class="editProfile" id="editProfileForm" method="put" action="@Url.Action("Update", "User")">
+            <label for="editName">Name</label><br>
+            <input type="text" class="editName" name="editName" value="@Model.Name"><br>
+
+            <label for="editSurname">Surname</label><br>
+            <input type="text" class="editSurname" name="editSurname" value="@Model.Surname"><br>
+
+            <label for="editGender">Gender:</label><br>
+            <select class="editGender" name="editGender">
+                <option value="Null" disabled>Gender</option>
+                <option value="Male" selected='@(Model.Gender == "Male")'>Male</option>
+                <option value="Female" selected='@(Model.Gender == "Female")'>Female</option>
+                <option value="Others" selected='@(Model.Gender == "Others")'>Others</option>
+            </select><br>
+
+            <label for="editAge">Age</label><br>
+            <input type="number" class="editAge" name="editAge" value="@Model.Age"><br>
+
+            <label for="editEmail">Email</label><br>
+            <input type="email" class="editEmail" name="editEmail" value="@Model.Email"><br>
+
+            <label for="editBio">About me</label><br>
+            <textarea class="editBio" name="editBio">@Model.Bio</textarea><br>
+
+            <input type="submit" value='Update'class="saveProfileButton">
+            
+
+
+        </form>
+    </div>
+    </div>
+    
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const editProfileButton = document.querySelector(".editProfileButton");
+            const editbuttonDiv = document.querySelector(".editbutton");
+
+            editProfileButton.addEventListener("click", function () {
+                editbuttonDiv.style.display = "none";
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const editProfileButton = document.querySelector(".editProfileButton");
+            const editProfileForm = document.querySelector(".editProfile");
+            const profileInfo = document.querySelector("#profileInfo");
+
+            editProfileButton.addEventListener("click", function () {
+                editProfileForm.style.display = "block";
+                profileInfo.style.display = "none";
+            });
+
+            editProfileForm.addEventListener("submit", async function (event) {
+                event.preventDefault();
+
+                const formData = new FormData(editProfileForm);
+                const editProfileData = {
+                    Name: formData.get("editName"),
+                    Surname: formData.get("editSurname"),
+                    Gender: formData.get("editGender"),
+                    Age: formData.get("editAge"),
+                    Email: formData.get("editEmail"),
+                    Bio: formData.get("editBio")
+                };
+
+                try {
+                    const response = await fetch("/api/user/edit", {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(editProfileData)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("Failed to update profile");
+                    }
+
+                    const updatedUserData = await response.json();
+                    document.querySelector(".name").textContent = `${updatedUserData.Name} ${updatedUserData.Surname}`;
+                    document.querySelector(".gender").textContent = updatedUserData.Gender;
+                    document.querySelector(".age").textContent = updatedUserData.Age;
+                    document.querySelector(".contact").textContent = updatedUserData.Email;
+                    document.querySelector(".about").textContent = updatedUserData.Bio;
+
+                    editProfileForm.style.display = "none";
+                    profileInfo.style.display = "block";
+                } catch (error) {
+                    console.error("Error updating profile:", error);
+                }
+            });
+        });
+
+    </script>
 </div>
+

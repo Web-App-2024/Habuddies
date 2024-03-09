@@ -3,9 +3,80 @@
 }
 
 @section Stylesheets {
-    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/create.css" asp-append-version="true" />
 }
+
 
 <div class="filter-section">
     <button type="button" class="filter"><i class="fa-solid fa-sliders"></i></button>
 </div>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post</title>
+</head>
+<body>
+    <div class="createPost">
+        <div class="header"><h2>Create Post</h2></div>
+        <hr><br>
+        <form class="postForm">
+            <div class="header"><h2>Property Category</h2></div>
+            <div class="PropertyCategory">
+                <div class="category-boxes">
+                    <div class="category-box" data-category="meeting">Meeting</div>
+                    <div class="category-box" data-category="exercising">Exercising</div>
+                    <div class="category-box" data-category="eating">Eating</div>
+                    <div class="category-box" data-category="working">Working</div>
+                </div>
+                <input type="hidden" class="category" name="category" required>
+            </div>
+            <div class="header"><h2>Detail</h2></div>
+            <div class="inputbox">
+                <input type="text" class="title" placeholder="Title" name="title" required>
+            </div>
+            
+            <div class="inputbox">
+                <input type="number" class="enrollSize" placeholder="People" name="enrollSize" required>
+            </div>
+            <div class="inputbox">
+                <input type="datetime-local" class="endDate" placeholder="Closedate" name="endDate" required>
+            </div>
+
+            <div class="inputField">
+                <input type="text"class="description" name="description" placeholder="Description" name="description" required>
+            </div>
+            <div class="header"><h2>Requirement</h2></div>
+            <div class="inputField">
+                <input type="number" class="minAge" placeholder="Minage" name="minAge" value= "" >
+            </div>
+            <div class="inputField">
+                <input type="number" class="maxAge" placeholder="Maxage" name="maxAge" value="" >
+            </div>
+            <div class="inputField gender">
+                <select class="gender" name="gender" >
+                    <option value="Null">Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Others">Others</option>
+                </select>
+            </div>
+            <button type="submit">Create Post</button>
+
+        </form>
+        <script>
+            document.querySelectorAll('.category-box').forEach(function(box) {
+                box.addEventListener('click', function() {
+                    document.querySelectorAll('.category-box').forEach(function(box) {
+                        box.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    document.querySelector('.category').value = this.getAttribute('data-category');
+                });
+            });  
+        </script>
+    </div>
+</body>
+</html>

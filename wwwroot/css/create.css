@@ -1,0 +1,142 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.createPost {
+    width: 95%;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.header {
+    margin-bottom: 10px;
+}
+
+.PropertyCategory {
+    margin-bottom: 20px;
+}
+
+.category-boxes {
+    display: flex;
+    gap: 10px; 
+}
+
+.category-box {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #ccc; 
+    transition: box-shadow 0.3s; 
+}
+
+.category-box:hover {
+    opacity: 0.8;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); 
+}
+
+.category-box[data-category="meeting"] {
+    background-color: #3BB9FF;
+    border: 2px solid #6495ED; 
+    border-radius: 10px; 
+}
+
+.category-box[data-category="exercising"] {
+    background-color: #FDD017;
+    border: 2px solid #FFA500;
+    border-radius: 10px; 
+}
+
+.category-box[data-category="eating"] {
+    background-color: #F75D59; 
+    border: 2px solid #fe3700;
+    border-radius: 10px;
+}
+
+.category-box[data-category="working"] {
+    background-color: #CCFB5D; 
+    border: 2px solid #12E193;
+    border-radius: 10px;
+}
+
+.category-box.selected {
+    background-color: #000; 
+    border: 2px solid #000;
+    color: #fff; /
+}
+
+.inputbox{
+    display: inline-block; 
+    width: calc(33.33% - 10px); 
+    margin-right: 7.0px; 
+    margin-bottom: 20px; 
+} 
+
+.inputdetail:last-child {
+    margin-right: 0; 
+}
+
+.inputbox input[type="text"],
+.inputbox input[type="number"],
+.inputbox input[type="datetime-local"],
+.inputbox select,
+.inputbox textarea {
+    width: calc(100% - 22px); 
+    padding: 10px; 
+    font-size: 16px; 
+    border: 1px solid #ccc;
+    border-radius: 5px;
+} 
+
+
+
+.inputField {
+    margin-bottom: 20px;
+}
+
+.inputField label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.inputField input[type="text"],
+.inputField input[type="number"],
+.inputField select,
+.inputField textarea {
+    width: calc(100% - 30px); 
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.inputField textarea {
+    height: 100px; 
+}
+
+.inputField.gender select {
+    width: calc(100% - 5px); 
+}
+
+button[type="submit"] {
+    display: block;
+    width: 15%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px; 
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+
