@@ -157,7 +157,8 @@ namespace HaBuddies.Controllers
             catch(UnauthorizedAccessException){
                 return RedirectToAction("LoginAndRegister", "User");
             }
-            catch(Exception){
+            catch(Exception Ex){
+                Console.WriteLine(Ex);
                 return View("Error");
             }
         }
