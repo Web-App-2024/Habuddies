@@ -3,6 +3,7 @@ using HaBuddies.DTOs;
 using HaBuddies.Models;
 using HaBuddies.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 
 namespace HaBuddies.Controllers
@@ -14,18 +15,9 @@ namespace HaBuddies.Controllers
         public EventController(EventService eventService) =>
             _eventService = eventService;
 
-        public async Task<IActionResult> Index(string category = null!, int perPage = 10)
+        public IActionResult Index()
         {
-            try 
-            {
-                UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
-                var paginationResponse = await _eventService.GetAllAsync(1, perPage, category, user.Id);
-
-                return View(paginationResponse);
-            }
-            catch (Exception) {
-                return View("Error");
-            }
+            return View();
         }
 
         [HttpGet]
@@ -34,8 +26,14 @@ namespace HaBuddies.Controllers
             try
             {
                 UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
-                var paginationResponse = await _eventService.GetAllAsync(page, perPage, category, user.Id);
+                string userId = "";
+                if (user != null) userId = user.Id;
+                var paginationResponse = await _eventService.GetAllAsync(page, perPage, category, userId);
 
+                if (paginationResponse.Data.Count <= 0 && paginationResponse.PrevPage != null) {
+                    return StatusCode(204);
+                }
+                
                 return PartialView("_EventBannerPartial", paginationResponse);
             }
             catch (Exception)

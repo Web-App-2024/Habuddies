@@ -1,3 +1,5 @@
+@using HaBuddies.Models
+
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -11,4 +13,12 @@
     <button type="button" class="filter"><i class="fa-solid fa-sliders"></i></button>
 </div>
 
-<partial name="../Shared/_EventBannerPartial.cshtml" />
+<div id="event-banner"></div>
+
+@section Scripts {
+    <script src="~/js/InfiniteScroll.js" asp-append-version="true"></script>
+    <script>
+        var infiniteScroll = new EventInfiniteScroll("event-banner", '@Url.Action("LoadEvent", "Event")');
+        infiniteScroll.loadEvent(false);
+    </script>
+}
