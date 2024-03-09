@@ -1,4 +1,5 @@
 ﻿@using Newtonsoft.Json;
+@inject HaBuddies.Services.ImageService ImageService;
 
 <!DOCTYPE html>
 <html lang="en">
@@ -28,18 +29,21 @@
             </li>
             <li>
                 <a class="notification-button" asp-area="" asp-controller="Event" asp-action=""><i class="fa-solid fa-bell"></i></a>
+                 
             </li>
             <li>
                 @{
                     if (userExist != null) {
                         dynamic userObject = JsonConvert.DeserializeObject(userExist)!;
+                        string userId = userObject.Id;
                         string uName = userObject.Name;
                         string uSurname = userObject.Surname;
+                        string imageProfilePath = ImageService.GetUserImageFileExtension(userId);
 
                         <a class="profile-button" asp-area="" asp-controller="User" asp-action="MyProfile">
                             <span class="profile-name">@uName @uSurname</span>
                             <div class="profile-picture">
-                                <img alt="Profile picture" src="~/img/default.jpg" draggable="false">
+                                <img alt="Profile picture" src="~/@imageProfilePath" draggable="false">
                             </div>
                         </a>
                     }
@@ -73,7 +77,7 @@
                 <a class="my-post-nav" asp-area="" asp-controller="" asp-action=""><i class="fa-solid fa-calendar"></i> My Post</a>
             </li>
             <li class=" @(currentRoute==Url.Action("History", "User")?"active":"")">
-                <a class="history-nav" asp-area="" asp-controller="" asp-action=""><i class="fa-solid fa-clock-rotate-left"></i> History</a>
+                <a class="history-nav" asp-area="" asp-controller="User" asp-action="History"><i class="fa-solid fa-clock-rotate-left"></i> History</a>
             </li>
         </ul>
         @if (userExist != null) {
