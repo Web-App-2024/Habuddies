@@ -40,9 +40,9 @@ function EventInfiniteScroll(divId, route) {
                         '&perPage=' + encodeURIComponent(self.perPage);
 
             self.loading = true;
-            xmlhttp.open("POST", self.route, true);
+            xmlhttp.open("GET", self.route+"?"+self.data, true);
             xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xmlhttp.send(self.data);
+            xmlhttp.send();
         }
     };
 

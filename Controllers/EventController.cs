@@ -20,7 +20,7 @@ namespace HaBuddies.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> LoadEvent(string category = null!, int page = 1, int perPage = 10)
         {
             try
