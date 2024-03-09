@@ -11,6 +11,7 @@ namespace HaBuddies.Services
         private readonly MongoService _mongoService;
         private readonly IMongoCollection<Event> _eventsCollection;
         private readonly IMongoCollection<User> _usersCollection;
+        private readonly IMongoCollection<Notification> _notificationsCollection;
         private readonly Timer _timer;
         private readonly IMapper _mapper;
 
@@ -19,6 +20,7 @@ namespace HaBuddies.Services
             _mongoService = mongoService;
             _eventsCollection = _mongoService._eventsCollection;
             _usersCollection = _mongoService._userCollection;
+            _notificationsCollection = _mongoService._notificationsCollection;
 
             TimeSpan timeUntilMidnight = CalculateTimeUntilMidnight();
             _timer = new Timer(
@@ -31,6 +33,7 @@ namespace HaBuddies.Services
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<CreateEventDTO, Event>();
+                cfg.CreateMap<NotificationDTO, Notification>();
             });
 
             _mapper = config.CreateMapper();
@@ -43,21 +46,11 @@ namespace HaBuddies.Services
                 var paginationParams = Pagination.BuildPaginationLimit(page, perPage, 32);
 
                 FilterDefinition<Event> filter;
+                filter = Builders<Event>.Filter.Eq(evt => evt.IsOpen, true);
+                if (!string.IsNullOrEmpty(userId))
+                    filter &= Builders<Event>.Filter.Ne(evt => evt.OwnerId, userId);
                 if (!string.IsNullOrEmpty(category))
-                {
-                    filter = Builders<Event>.Filter.And(
-                        Builders<Event>.Filter.Eq(evt => evt.Category, category),
-                        Builders<Event>.Filter.Ne(evt => evt.OwnerId, userId),
-                        Builders<Event>.Filter.Eq(evt => evt.IsOpen, true)
-                    );
-                }
-                else
-                {
-                    filter = Builders<Event>.Filter.And(
-                        Builders<Event>.Filter.Ne(evt => evt.OwnerId, userId),
-                        Builders<Event>.Filter.Eq(evt => evt.IsOpen, true)
-                    );
-                }
+                    filter &= Builders<Event>.Filter.Eq(evt => evt.Category, category);
 
                 var sortDefinition = Builders<Event>.Sort.Descending(evt => evt.CreatedAt);
 
@@ -159,6 +152,17 @@ namespace HaBuddies.Services
                     throw new Exception("Forbidden");
                 }
 
+                if(editedEventDTO.IsOpen == false){
+                    foreach (var subscriberId in evt.SubscribersId){
+                        await createNotification(subscriberId, id,
+                        $"Registration for the event \"{evt.Title}\" has been closed. Lets check another participant.");
+                    }
+                    foreach (var userFromQueueId in evt.QueueId){
+                        await createNotification(userFromQueueId, id,
+                        $"We regret to inform you that registration for the event \"{evt.Title}\" has been closed.");
+                    }
+                }
+
                 foreach (var property in typeof(EditEventDTO).GetProperties())
                 {
                     var value = property.GetValue(editedEventDTO);
@@ -188,6 +192,15 @@ namespace HaBuddies.Services
                 } 
                 else if (userId != evt.OwnerId) {
                     throw new Exception("Forbidden");
+                }
+
+                foreach (var subscriberId in evt.SubscribersId){
+                    await createNotification(subscriberId, evt.Id,
+                    $"event \"{evt.Title}\" has been deleted.");
+                }
+                foreach (var userFromQueueId in evt.QueueId){
+                    await createNotification(userFromQueueId, evt.Id,
+                    $"event \"{evt.Title}\" has been deleted.");
                 }
 
                 await _eventsCollection.DeleteOneAsync(evt => evt.Id == id);
@@ -232,8 +245,10 @@ namespace HaBuddies.Services
                             Builders<Event>.Update.Push(evt => evt.SubscribersId, userId));
                         await _usersCollection.UpdateOneAsync(filterUser, 
                             Builders<User>.Update.Push(u => u.JoinedEvent, evt.Id));
+                        await createNotification(evt.OwnerId, evt.Id,
+                            $"User {user.Name} has joined your event \"{evt.Title}\".");
                     }
-                    else if (evt.SubscribersId.Count >= evt.EnrollSize){
+                    else if (evt.SubscribersId.Count == evt.EnrollSize){
                         await _eventsCollection.UpdateOneAsync(filter, 
                             Builders<Event>.Update.Push(evt => evt.QueueId, userId));
                     }
@@ -244,6 +259,8 @@ namespace HaBuddies.Services
                             Builders<Event>.Update.Pull(evt => evt.SubscribersId, userId));
                         await _usersCollection.UpdateOneAsync(filterUser, 
                             Builders<User>.Update.Pull(u => u.JoinedEvent, evt.Id));
+                        await createNotification(evt.OwnerId, evt.Id,
+                            $"User {user.Name} has canceled to joined your event \"{evt.Title}\".");
 
                         if (evt.QueueId.Count > 0)
                         {
@@ -253,6 +270,9 @@ namespace HaBuddies.Services
                                     .Pull(evt => evt.QueueId, userFromQueueId));
                             await _usersCollection.UpdateOneAsync(u => u.Id == userFromQueueId, 
                                 Builders<User>.Update.Push(u => u.JoinedEvent, evt.Id));
+                            var userFromQueue = await _usersCollection.Find(u => u.Id == userFromQueueId).FirstOrDefaultAsync();
+                            await createNotification(evt.OwnerId, evt.Id,
+                                $"User {userFromQueue.Name} has joined your event \"{evt.Title}\".");
                         }
                     }
                     else {
@@ -261,7 +281,8 @@ namespace HaBuddies.Services
                     }
                 }
             }
-            catch (Exception) {
+            catch (Exception ex) {
+                Console.WriteLine(ex);
                 throw;
             }
         }
@@ -284,6 +305,14 @@ namespace HaBuddies.Services
                     var update = Builders<User>.Update.Push(u => u.JoinedEvent, evt.Id);
                     await _usersCollection.UpdateManyAsync(filterUser, update);
                 }
+                foreach (var subscriberId in evt.SubscribersId){
+                    await createNotification(subscriberId, evt.Id,
+                    $"Registration for the event \"{evt.Title}\" has been closed. Lets check another participant ");
+                }
+                foreach (var userFromQueueId in evt.QueueId){
+                    await createNotification(userFromQueueId, evt.Id,
+                    $"We regret to inform you that registration for the event \"{evt.Title}\" has been closed.");
+                }
             }
         }
 
@@ -293,6 +322,21 @@ namespace HaBuddies.Services
             DateTime midnightToday = now.Date.AddDays(1);
             TimeSpan timeUntilMidnight = midnightToday - now;
             return timeUntilMidnight;
+        }
+
+        private async Task createNotification (string userId, string eventId, string content) {
+             try {
+                var newNoti = new NotificationDTO
+                {
+                    Content = content,
+                    UserId = userId,
+                    EventId = eventId,
+                };
+                Notification newNotification = _mapper.Map<Notification>(newNoti);
+                await _notificationsCollection.InsertOneAsync(newNotification);
+            } catch (Exception) {
+                throw;
+            }
         }
     }
 }
