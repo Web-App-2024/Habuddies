@@ -13,7 +13,7 @@ namespace HaBuddies.Controllers
             _notificationService = notificationService;
 
         [HttpGet]
-        public async Task<IActionResult> LoadNotification()
+        public async Task<IActionResult> LoadNotification(int page = 1, int perPage = 10)
         {
             try
             {
@@ -22,9 +22,13 @@ namespace HaBuddies.Controllers
                 if (user == null) {
                     return Unauthorized();
                 }
-                var notifications = await _notificationService.GetAllAsync(userId);
+                var paginationResponse = await _notificationService.GetAllAsync(page, perPage, userId);
+
+                if (paginationResponse.Data.Count <= 0 && paginationResponse.PrevPage != null) {
+                    return StatusCode(204);
+                }
                 
-                return PartialView("", notifications);
+                return PartialView("", paginationResponse);
             }
             catch (Exception)
             {
