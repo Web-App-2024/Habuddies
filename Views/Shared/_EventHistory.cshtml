@@ -15,7 +15,7 @@
     {
         var category = evt.Category;
         int currentEnroll = evt.SubscribersId.Count;
-        string enrollMsg = $"{currentEnroll}";
+        string enrollMsg =$"{currentEnroll}";
 
         bool selfOwned = IsOwnedEvent(userObject, evt);
         bool canJoin = IsJoinable(userObject, evt);

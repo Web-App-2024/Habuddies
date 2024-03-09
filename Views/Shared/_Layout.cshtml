@@ -74,7 +74,7 @@
                 <a class="my-post-nav" asp-area="" asp-controller="" asp-action=""><i class="fa-solid fa-calendar"></i> My Post</a>
             </li>
             <li class=" @(currentRoute==Url.Action("History", "User")?"active":"")">
-                <a class="history-nav" asp-area="" asp-controller="" asp-action=""><i class="fa-solid fa-clock-rotate-left"></i> History</a>
+                <a class="history-nav" asp-area="" asp-controller="User" asp-action="History"><i class="fa-solid fa-clock-rotate-left"></i> History</a>
             </li>
         </ul>
         @if (userExist != null) {
