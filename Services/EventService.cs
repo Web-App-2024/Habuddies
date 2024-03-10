@@ -154,11 +154,11 @@ namespace HaBuddies.Services
 
                 if(editedEventDTO.IsOpen == false){
                     foreach (var subscriberId in evt.SubscribersId){
-                        await createNotification(subscriberId, id,
+                        await createNotification(subscriberId, id, false,
                         $"Registration for the event \"{evt.Title}\" has been closed. Lets check another participant.");
                     }
                     foreach (var userFromQueueId in evt.QueueId){
-                        await createNotification(userFromQueueId, id,
+                        await createNotification(userFromQueueId, id, false,
                         $"We regret to inform you that registration for the event \"{evt.Title}\" has been closed.");
                     }
                 }
@@ -195,11 +195,11 @@ namespace HaBuddies.Services
                 }
 
                 foreach (var subscriberId in evt.SubscribersId){
-                    await createNotification(subscriberId, evt.Id,
+                    await createNotification(subscriberId, evt.Id, false,
                     $"event \"{evt.Title}\" has been deleted.");
                 }
                 foreach (var userFromQueueId in evt.QueueId){
-                    await createNotification(userFromQueueId, evt.Id,
+                    await createNotification(userFromQueueId, evt.Id, false,
                     $"event \"{evt.Title}\" has been deleted.");
                 }
 
@@ -245,7 +245,7 @@ namespace HaBuddies.Services
                             Builders<Event>.Update.Push(evt => evt.SubscribersId, userId));
                         await _usersCollection.UpdateOneAsync(filterUser, 
                             Builders<User>.Update.Push(u => u.JoinedEvent, evt.Id));
-                        await createNotification(evt.OwnerId, evt.Id,
+                        await createNotification(evt.OwnerId, evt.Id, true,
                             $"User {user.Name} has joined your event \"{evt.Title}\".");
                     }
                     else if (evt.SubscribersId.Count == evt.EnrollSize){
@@ -259,7 +259,7 @@ namespace HaBuddies.Services
                             Builders<Event>.Update.Pull(evt => evt.SubscribersId, userId));
                         await _usersCollection.UpdateOneAsync(filterUser, 
                             Builders<User>.Update.Pull(u => u.JoinedEvent, evt.Id));
-                        await createNotification(evt.OwnerId, evt.Id,
+                        await createNotification(evt.OwnerId, evt.Id, true,
                             $"User {user.Name} has canceled to joined your event \"{evt.Title}\".");
 
                         if (evt.QueueId.Count > 0)
@@ -271,7 +271,7 @@ namespace HaBuddies.Services
                             await _usersCollection.UpdateOneAsync(u => u.Id == userFromQueueId, 
                                 Builders<User>.Update.Push(u => u.JoinedEvent, evt.Id));
                             var userFromQueue = await _usersCollection.Find(u => u.Id == userFromQueueId).FirstOrDefaultAsync();
-                            await createNotification(evt.OwnerId, evt.Id,
+                            await createNotification(evt.OwnerId, evt.Id, true,
                                 $"User {userFromQueue.Name} has joined your event \"{evt.Title}\".");
                         }
                     }
@@ -306,11 +306,11 @@ namespace HaBuddies.Services
                     await _usersCollection.UpdateManyAsync(filterUser, update);
                 }
                 foreach (var subscriberId in evt.SubscribersId){
-                    await createNotification(subscriberId, evt.Id,
+                    await createNotification(subscriberId, evt.Id, false,
                     $"Registration for the event \"{evt.Title}\" has been closed. Lets check another participant ");
                 }
                 foreach (var userFromQueueId in evt.QueueId){
-                    await createNotification(userFromQueueId, evt.Id,
+                    await createNotification(userFromQueueId, evt.Id, false,
                     $"We regret to inform you that registration for the event \"{evt.Title}\" has been closed.");
                 }
             }
@@ -324,13 +324,14 @@ namespace HaBuddies.Services
             return timeUntilMidnight;
         }
 
-        private async Task createNotification (string userId, string eventId, string content) {
+        private async Task createNotification (string userId, string eventId, bool isHost, string content) {
              try {
                 var newNoti = new NotificationDTO
                 {
                     Content = content,
                     UserId = userId,
                     EventId = eventId,
+                    IsHost = isHost
                 };
                 Notification newNotification = _mapper.Map<Notification>(newNoti);
                 await _notificationsCollection.InsertOneAsync(newNotification);
