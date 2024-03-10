@@ -146,6 +146,7 @@
 .evt-body .evt-join {
     grid-area: 3 / 2 / 5 / 3;
     height: max-content;
+    width: 100%;
     align-self: last baseline;
     border: none;
 }
@@ -174,6 +175,7 @@
     grid-area: 3 / 2 / 4 / 3;
     height: max-content;
     align-self: last baseline;
+    width: 100%;
     border: none;
     background-color: var(--orange-color);
     cursor: pointer;
@@ -188,6 +190,7 @@
     grid-area: 4 / 2 / 5 / 3;
     height: max-content;
     align-self: last baseline;
+    width: 100%;
     border: none;
     background-color: var(--red-color);
     cursor: pointer;

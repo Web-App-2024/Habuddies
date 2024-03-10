@@ -49,14 +49,16 @@
             </div>
         </a>
         @if (!selfOwned) {
-            <button type="button" class="evt-join @(canJoin?"active":"") @(currentlyJoin?"leave":"join")" onclick=@(canJoin?"ClickJoinOrLeave(this,this.parentElement.id)":"")>
-                @if (currentlyJoin) {
-                    <text>ออก</text>
-                }
-                else {
-                    <text>เข้าร่วม</text>
-                }
-            </button>
+            <form method="post">
+                <button class="evt-join @(canJoin?"active":"") @(currentlyJoin?"leave":"join")" asp-controller="Event" asp-action="Subscribe" asp-route-id="@evt.Id">
+                    @if (currentlyJoin) {
+                        <text>ออก</text>
+                    }
+                    else {
+                        <text>เข้าร่วม</text>
+                    }
+                </button>
+            </form>
         }
     </div>
     }
