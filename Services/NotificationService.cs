@@ -18,7 +18,7 @@ namespace HaBuddies.Services
             _usersCollection = _mongoService._userCollection;
         }
 
-        public async Task<PaginationResponse<Notification>> GetAllAsync(int page, int perPage, string userId)
+        public async Task<PaginationResponse<Notification>> GetAllAsync(int page, int perPage, string userId, bool isHost)
         {
             try 
             {
@@ -28,6 +28,7 @@ namespace HaBuddies.Services
 
                 if (!string.IsNullOrEmpty(userId))
                     filter = Builders<Notification>.Filter.Eq(noti => noti.UserId, userId);
+                filter &= Builders<Notification>.Filter.Eq(noti => noti.IsHost, isHost);
 
                 var sortDefinition = Builders<Notification>.Sort.Descending(noti => noti.CreatedAt);
 
