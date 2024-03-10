@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/notification.css" asp-append-version="true" />
     @RenderSection("Stylesheets", required: false)
 </head>
 <body>
@@ -28,8 +29,10 @@
                 <a class="new-post-button" asp-area="" asp-controller="Event" asp-action=""><i class="fa-regular fa-plus"></i><span>New</span></a>
             </li>
             <li>
-                <a class="notification-button" asp-area="" asp-controller="Event" asp-action=""><i class="fa-solid fa-bell"></i></a>
-                <div class ="notification-block">
+                <a class="notification-button" onclick="toggleNotification()"><i class="fa-solid fa-bell"></i></a>
+                <div class ="notification-block" id="block">
+                    <h2>Notification</h2>
+                    <div id="notification-owner"></div>
                 </div>
             </li>
             <li>
@@ -101,6 +104,7 @@
                         xmlhttp.send();
                     }
                 </script>
+                <script src ="~/js/notification.js"></script>
             </div>
         }
     </div>
@@ -111,6 +115,11 @@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/InfiniteScroll.js" asp-append-version="true"></script>
+    <script>
+        var infiniteScroll = new EventInfiniteScroll("notification-owner", '@Url.Action("LoadOwnerNotification", "Notification")');
+        infiniteScroll.loadEvent(false);
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

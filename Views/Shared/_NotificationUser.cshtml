@@ -1,0 +1,32 @@
+@model PaginationResponse<HaBuddies.Models.Notification>
+@using HaBuddies.Models
+@using HaBuddies.Constants
+@using static HaBuddies.Services.Utils.EventUtil
+@using Newtonsoft.Json;
+@inject HaBuddies.Services.ImageService ImageService;
+
+@{
+    string userExist = ViewContext.HttpContext.Session.GetString("user")!;
+    UserNoPassword userObject = null!;
+    if (userExist != null) {
+        userObject = JsonConvert.DeserializeObject<UserNoPassword>(userExist)!;
+    }
+}
+
+@foreach (Notification noti in Model.Data)
+
+{       string userId = noti.Id;
+        string imageProfilePath = ImageService.GetUserImageFileExtension(userId);
+
+        <div class="notification-items" id="@noti.Event.Id">
+            <a draggable="false" asp-controller="Event" asp-action="Details" asp-route-id="@noti.Event.Id">
+                <div class="noti-profile">
+                    <img src="~/@imageProfilePath" alt="Profile picture" draggable="false">
+                </div>
+                <div class="noti-info">
+                    <h1>@noti.Content</h1>
+                    <p>Event:@noti.Event.Title</p>
+                </div>
+            </a>
+        </div>
+}
