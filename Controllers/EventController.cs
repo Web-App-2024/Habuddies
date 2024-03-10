@@ -112,7 +112,7 @@ namespace HaBuddies.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> Edit(string id, EditEventDTO editedEventDTO)
         {
             try {
@@ -126,7 +126,7 @@ namespace HaBuddies.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
             try {
@@ -141,7 +141,7 @@ namespace HaBuddies.Controllers
             }
         }
 
-        [HttpPatch]
+        [HttpPost]
         public async Task<IActionResult> Subscribe(string id)
         {
             try {
@@ -155,7 +155,8 @@ namespace HaBuddies.Controllers
             catch(UnauthorizedAccessException){
                 return RedirectToAction("LoginAndRegister", "User");
             }
-            catch(Exception){
+            catch(Exception Ex){
+                Console.WriteLine(Ex);
                 return View("Error");
             }
         }

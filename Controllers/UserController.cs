@@ -81,7 +81,7 @@ namespace HaBuddies.Controllers
             return RedirectToAction(nameof(LoginAndRegister));
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<ActionResult> Update(EditUserDTO editUserDTO)
         {
            UserNoPassword userExist = HttpContext.Session.Get<UserNoPassword>("user")!;

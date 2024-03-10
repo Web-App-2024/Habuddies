@@ -91,7 +91,7 @@ namespace HaBuddies.Services
             var joinedEventIds = existingUser.JoinedEvent;
 
             var historyEvents = await _eventsCollection.Find(
-                _event => joinedEventIds!.Contains(_event.Id) && (!_event.IsOpen)
+                _event => joinedEventIds!.Contains(_event.Id)
             ).ToListAsync();
 
             foreach(var evt in historyEvents)
