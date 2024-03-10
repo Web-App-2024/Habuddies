@@ -27,7 +27,7 @@ namespace HaBuddies.Controllers
                     return StatusCode(204);
                 }
                 
-                return PartialView("", paginationResponse);
+                return PartialView("_NotificationOwner", paginationResponse);
             }
             catch (Exception ex)
             {
@@ -52,7 +52,7 @@ namespace HaBuddies.Controllers
                     return StatusCode(204);
                 }
                 
-                return PartialView("", paginationResponse);
+                return PartialView("_NotificationUser", paginationResponse);
             }
             catch (Exception ex)
             {
