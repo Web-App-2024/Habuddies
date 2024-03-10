@@ -33,10 +33,10 @@
         </div>
         <h1 class="evt-title">@Model.Title</h1>
         <div class="owner">
-            <div class="owner-picture">
+            <div class="owner-picture" onclick="ClickProfile('@Model.OwnerId')">
                 <img alt="Owner picture" src="~/@imageOwnerPath" draggable="false">
             </div>
-            <span class="owner-name">@Model.Owner.Name @Model.Owner.Surname</span>
+            <span class="owner-name" onclick="ClickProfile('@Model.OwnerId')">@Model.Owner.Name @Model.Owner.Surname</span>
         </div>
     </div>
     <div class="evt-body">

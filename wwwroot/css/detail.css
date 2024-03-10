@@ -68,6 +68,7 @@
 .evt-heading .owner-name {
     margin-left: 0.2rem;
     color: black;
+    cursor: pointer;
 }
   
 .evt-heading .owner-picture {
@@ -79,6 +80,7 @@
     border-radius: 50%;
     background-color: var(--border-color);
     overflow: hidden;
+    cursor: pointer;
 }
 
 .evt-heading .owner-picture img{
@@ -218,6 +220,7 @@
     border-radius: 25px;
     background-color: var(--main-color);
     border: none;
+    cursor: pointer;
 }
 
 .evt-member .member-name, .evt-q-user .q-user-name {
