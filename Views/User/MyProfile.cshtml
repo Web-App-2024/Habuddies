@@ -1,3 +1,5 @@
+@using Newtonsoft.Json;
+@inject HaBuddies.Services.ImageService ImageService;
 @{
     ViewData["Title"] = "Profile";
 }
@@ -9,7 +11,13 @@
 <div class="text-center">
     <div class="profile">
         <div class="profile-header">
-            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="Profile Picture">
+            @{
+                string userExist = ViewContext.HttpContext.Session.GetString("user")!;
+                dynamic userObject =  JsonConvert.DeserializeObject(userExist)!;
+                string userId = userObject.Id;
+                string imageProfilePath = ImageService.GetUserImageFileExtension(userId);
+            }
+            <img alt="Profile picture" src="~/@imageProfilePath" draggable="false">
             <div class="profile-name">
                 <h2><span class="name">@Model.Name @Model.Surname </span></h2><br>
                 <span class="about">@Model.Bio</span><br>
@@ -38,15 +46,12 @@
         
 
     <div class="editProfile" style="display: none;" >
-        <form class="editProfile" id="editProfileForm" method="put" action='@Url.Action("Update", "User")'>
+        <form class="editProfile" id="editProfileForm" method="post" action='@Url.Action("Update", "User")'>
             <label for="editName">Name</label><br>
             <input type="text" class="editName" name="Name" value="@Model.Name"><br>
 
             <label for="editSurname">Surname</label><br>
             <input type="text" class="editSurname" name="Surname" value="@Model.Surname"><br>
-
-            @* <label for="editPassword">Password</label><br>
-            <input type="text" class="editPassword" name="Password" value="@Model.Password"><br> *@
 
             <label for="editGender">Gender:</label><br>
             <select class="editGender" name="Gender">
@@ -62,7 +67,7 @@
             <label for="editBio">About me</label><br>
             <textarea class="editBio" name="Bio">@Model.Bio</textarea><br>
 
-            <input type="submit" value='Update' class="saveProfileButton">
+            <input type="submit" value='Update'>
         </form>
     </div>
     </div>
@@ -87,46 +92,6 @@
                 editProfileForm.style.display = "block";
                 profileInfo.style.display = "none";
             });
-
-            @* editProfileForm.addEventListener("submit", async function (event) {
-                event.preventDefault();
-
-                const formData = new FormData(editProfileForm);
-                const editProfileData = {
-                    Name: formData.get("editName"),
-                    Surname: formData.get("editSurname"),
-                    Gender: formData.get("editGender"),
-                    Age: formData.get("editAge"),
-                    Email: formData.get("editEmail"),
-                    Bio: formData.get("editBio")
-                };
-
-                try {
-                    const response = await fetch("/api/user/edit", {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(editProfileData)
-                    });
-
-                    if (!response.ok) {
-                        throw new Error("Failed to update profile");
-                    }
-
-                    const updatedUserData = await response.json();
-                    document.querySelector(".name").textContent = `${updatedUserData.Name} ${updatedUserData.Surname}`;
-                    document.querySelector(".gender").textContent = updatedUserData.Gender;
-                    document.querySelector(".age").textContent = updatedUserData.Age;
-                    document.querySelector(".contact").textContent = updatedUserData.Email;
-                    document.querySelector(".about").textContent = updatedUserData.Bio;
-
-                    editProfileForm.style.display = "none";
-                    profileInfo.style.display = "block";
-                } catch (error) {
-                    console.error("Error updating profile:", error);
-                }
-            });  *@
         }); 
 
     </script>

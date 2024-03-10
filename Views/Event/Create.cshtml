@@ -11,57 +11,60 @@
     <button type="button" class="filter"><i class="fa-solid fa-sliders"></i></button>
 </div>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Post</title>
-</head>
-<body>
     <div class="createPost">
         <div class="header"><h2>Create Post</h2></div>
         <hr><br>
-        <form class="postForm" method="post" action='@Url.Action("Create", "User")'>
+        <form class="postForm" method="post" action='@Url.Action("Create", "Event")'>
             <div class="header"><h2>Property Category</h2></div>
             <div class="PropertyCategory">
                 <div class="category-boxes">
-                    <div class="category-box" data-category="meeting">Meeting</div>
-                    <div class="category-box" data-category="exercising">Exercising</div>
-                    <div class="category-box" data-category="eating">Eating</div>
-                    <div class="category-box" data-category="working">Working</div>
+                    <div class="category-box" data-category="meeting" ><i class="fa fa-heart-o" aria-hidden="true"></i><br>Meeting</div>
+                    <div class="category-box" data-category="exercising"><i class="fa fa-futbol-o" aria-hidden="true"></i><br>Exercising</div>
+                    <div class="category-box" data-category="eating"><i class="fa fa-cutlery" aria-hidden="true"></i><br>Eating</div>
+                    <div class="category-box" data-category="working"><i class="fa fa-briefcase" aria-hidden="true"></i><br>Working</div>
                 </div>
                 <input type="hidden" class="category" name="Category" required>
             </div>
             <div class="header"><h2>Detail</h2></div>
-            <div class="inputbox">
-                <input type="text" class="title" placeholder="Title" name="Title" required>
-            </div>
-            
-            <div class="inputbox">
-                <input type="number" class="enrollSize" placeholder="People" name="EnrollSize" required>
-            </div>
-            <div class="inputbox">
-                <input type="datetime-local" class="endDate" placeholder="Closedate" name="EndDate" required>
+            <div class="detailbox">
+                <div class="inputtitle">
+                    <label for="Title">Title</label>
+                    <input type="text" class="title" id="Title" name="Title" required>
+                </div>
+                <div class="inputPeople">
+                    <label for="EnrollSize">People</label>
+                    <input type="number" class="enrollSize" id="EnrollSize" name="EnrollSize" required>
+                </div>
+                <div class="inputdate">
+                    <label for="EndDate">Closedate</label>
+                    <input type="datetime-local" class="endDate" id="EndDate" name="EndDate" required>
+                </div>
             </div>
 
-            <div class="inputField">
-                <input type="text"class="description" name="description" placeholder="Description" name="description" required>
-            </div>
+                <div class="inputDescription">
+                    <label for="description">Description</label>
+                    <input type="text"class="description" id="Description" name="Description" required>
+                </div>
+            
             <div class="header"><h2>Requirement</h2></div>
-            <div class="inputField">
-                <input type="number" class="minAge" placeholder="Minage" name="MinAgeRequirement" value= "" >
-            </div>
-            <div class="inputField">
-                <input type="number" class="maxAge" placeholder="Maxage" name="MaxAgeRequirement" value="" >
-            </div>
-            <div class="inputField gender">
-                <select class="gender" name="GenderRequirement" >
-                    <option value="Null">Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Others">Others</option>
-                </select>
+            <div class="requirement">
+                <div class="inputRequirement">
+                    <label for="MinAgeRequirement">Minage</label>
+                    <input type="number" class="minAge" id="MinAgeRequirement" name="MinAgeRequirement" value= "" >
+                </div>
+                <div class="inputRequirement">
+                    <label for="MaxAgeRequirement">Maxage</label>
+                    <input type="number" class="maxAge" id="MaxAgeRequirement" name="MaxAgeRequirement" value="" >
+                </div>
+                <div class="inputRequirement">
+                    <label for="GenderRequirement">gender  </label>
+                    <select class="gender" id="GenderRequirement" name="GenderRequirement" >
+                        <option value="Null"></option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
             </div>
             <input type="submit" value="Create" >
 
@@ -78,5 +81,4 @@
             });  
         </script>
     </div>
-</body>
-</html>
+

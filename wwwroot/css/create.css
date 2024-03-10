@@ -18,17 +18,18 @@ body {
 
 .PropertyCategory {
     margin-bottom: 20px;
+    margin-left: 100px;
+    margin-right: 80px;
 }
 
 .category-boxes {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
     gap: 10px; 
 }
 
 .category-box {
-    flex: 1;
     padding: 10px;
-    text-align: center;
     cursor: pointer;
     border: 1px solid #ccc; 
     transition: box-shadow 0.3s; 
@@ -40,89 +41,181 @@ body {
 }
 
 .category-box[data-category="meeting"] {
-    background-color: #3BB9FF;
-    border: 2px solid #6495ED; 
-    border-radius: 10px; 
+    border: 2px solid black; 
+    border-radius: 20px; 
+    font-size: 18px;
+    padding: 20px;
+    width: auto;
+    height: auto;
 }
-
-.category-box[data-category="exercising"] {
-    background-color: #FDD017;
-    border: 2px solid #FFA500;
-    border-radius: 10px; 
-}
-
-.category-box[data-category="eating"] {
-    background-color: #F75D59; 
-    border: 2px solid #fe3700;
-    border-radius: 10px;
-}
-
-.category-box[data-category="working"] {
-    background-color: #CCFB5D; 
-    border: 2px solid #12E193;
-    border-radius: 10px;
-}
-
-.category-box.selected {
-    background-color: #000; 
-    border: 2px solid #000;
-    color: #fff; /
-}
-
-.inputbox{
-    display: inline-block; 
-    width: calc(33.33% - 10px); 
-    margin-right: 7.0px; 
-    margin-bottom: 20px; 
-} 
-
-.inputdetail:last-child {
-    margin-right: 0; 
-}
-
-.inputbox input[type="text"],
-.inputbox input[type="number"],
-.inputbox input[type="datetime-local"],
-.inputbox select,
-.inputbox textarea {
-    width: calc(100% - 22px); 
-    padding: 10px; 
-    font-size: 16px; 
-    border: 1px solid #ccc;
-    border-radius: 5px;
-} 
-
-
-
-.inputField {
-    margin-bottom: 20px;
-}
-
-.inputField label {
-    display: block;
+.category-box[data-category="meeting"] i.fa {
+    font-size: 24px; 
     margin-bottom: 5px;
 }
 
-.inputField input[type="text"],
-.inputField input[type="number"],
-.inputField select,
-.inputField textarea {
-    width: calc(100% - 30px); 
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.category-box[data-category="exercising"] {
+    border: 2px solid black; 
+    border-radius: 20px; 
+    font-size: 18px;
+    padding: 20px;
+    width: auto;
+    height: auto;
 }
 
-.inputField textarea {
-    height: 100px; 
+.category-box[data-category="exercising"] i.fa {
+    font-size: 24px; 
+    margin-bottom: 5px;
 }
 
-.inputField.gender select {
-    width: calc(100% - 5px); 
+.category-box[data-category="eating"] {
+    border: 2px solid black; 
+    border-radius: 20px; 
+    font-size: 18px;
+    padding: 20px;
+    width: auto;
+    height: auto;
 }
 
-button[type="submit"] {
+.category-box[data-category="eating"] i.fa {
+    font-size: 24px; 
+    margin-bottom: 5px;
+}
+
+.category-box[data-category="working"] {
+    border: 2px solid black; 
+    border-radius: 20px; 
+    font-size: 18px;
+    padding: 20px;
+    width: auto;
+    height: auto;
+}
+
+.category-box[data-category="working"] i.fa {
+    font-size: 24px; 
+    margin-bottom: 5px;
+}
+
+.category-box.selected {
+    background-color: #afe3fc; 
+    border: 2px solid #0080ff;
+    color: black; 
+}
+
+.detailbox {
+    margin-bottom: 20px;
+    margin-left: 100px;
+    margin-right: 80px;
+    display: grid;
+    grid-template-columns: 40% 20% 25%; 
+    gap: 10px; 
+
+}
+
+.inputtitle{
+    border: 2px solid black; 
+    border-radius: 20px; 
+    font-size: 18px;
+    padding: 20px;
+    width: auto;
+    height: auto;
+}
+
+.title {
+    border: none; 
+    background: none; 
+    padding: 5px 0; 
+    width: 100%;
+}
+
+.inputPeople{
+    border: 2px solid black; 
+    border-radius: 20px; 
+    font-size: 18px;
+    padding: 20px;
+    width: auto;
+    height: auto;
+}
+
+.enrollSize {
+    border: none; 
+    background: none; 
+    padding: 5px 0; 
+    width: 100%;
+}
+
+.inputdate {
+    border: 2px solid black; 
+    border-radius: 20px; 
+    font-size: 18px;
+    padding: 20px;
+    width: auto;
+    height: auto;
+}
+
+.inputDescription {
+    margin-bottom: 20px;
+    margin-left: 100px;
+    margin-right: 80px;
+    display: grid;
+    width: 60%;
+    gap: 10px; 
+
+}
+
+.inputDescription {
+    border: 2px solid black; 
+    border-radius: 20px; 
+    font-size: 18px;
+    padding: 20px;
+    width: 60%;
+    height: auto;
+}
+
+.description {
+    border: none; 
+    background: none; 
+    padding: 5px 0; 
+    width: 100%;
+}
+
+.requirement{
+    margin-bottom: 20px;
+    margin-left: 100px;
+    margin-right: 80px;
+    display: grid;
+    grid-template-columns: 20% 20% 20%; 
+    gap: 10px; 
+}
+
+.inputRequirement{
+    border: 2px solid black; 
+    border-radius: 20px; 
+    font-size: 18px;
+    padding: 20px;
+    width: auto;
+    height: auto;
+}
+
+.minAge {
+    border: none; 
+    background: none; 
+    padding: 5px 0; 
+    width: 100%;
+}
+
+.maxAge {
+    border: none; 
+    background: none; 
+    padding: 5px 0; 
+    width: 100%;
+}
+
+.postForm {
+    display: flex;
+    flex-direction: column;
+}
+
+input[type="submit"] {
     display: block;
     width: 15%;
     padding: 10px;
@@ -133,9 +226,10 @@ button[type="submit"] {
     border-radius: 5px;
     cursor: pointer;
     margin-top: 20px; 
+    align-self: flex-end; 
 }
 
-button[type="submit"]:hover {
+input[type="submit"]:hover {
     background-color: #0056b3;
 }
 
