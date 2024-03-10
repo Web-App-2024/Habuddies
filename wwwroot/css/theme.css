@@ -9,7 +9,9 @@
     --green-color: #7ede00;
     --light-red: #ff8080;
     --red-color: #ff3939;
-    --dark-red:#d22222;
+    --dark-red: #d22222;
+    --orange-color: #ff9900;
+    --dark-orange: #db8400;
     --main-color: var(--normal-blue);
     --border-color: var(--light-grey);
     --hover-border-color: var(--light-blue);

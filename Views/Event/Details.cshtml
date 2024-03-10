@@ -3,6 +3,11 @@
 @using HaBuddies.Constants
 @using static HaBuddies.Services.Utils.EventUtil
 @using Newtonsoft.Json;
+@inject HaBuddies.Services.ImageService ImageService;
+
+@section Stylesheets {
+    <link rel="stylesheet" href="~/css/detail.css" asp-append-version="true" />
+}
 
 @{
     ViewData["Title"] = "Details";
@@ -17,6 +22,7 @@
     bool selfOwned = IsOwnedEvent(userObject, Model);
     bool canJoin = IsJoinable(userObject, Model);
     bool currentlyJoin = IsCurrentlyJoined(userObject, Model);
+    string imageOwnerPath = ImageService.GetUserImageFileExtension(Model.OwnerId);
 }
 
 <div class="evt-detail" id="@Model.Id">
@@ -27,52 +33,76 @@
         </div>
         <h1 class="evt-title">@Model.Title</h1>
         <div class="owner">
-            <div class="owner-picture">
-                <img alt="Owner picture" src="~/img/default.jpg" draggable="false">
+            <div class="owner-picture" onclick="ClickProfile('@Model.OwnerId')">
+                <img alt="Owner picture" src="~/@imageOwnerPath" draggable="false">
             </div>
-            <span class="owner-name">@Model.Owner.Name @Model.Owner.Surname</span>
+            <span class="owner-name" onclick="ClickProfile('@Model.OwnerId')">@Model.Owner.Name @Model.Owner.Surname</span>
         </div>
     </div>
     <div class="evt-body">
         <p class="evt-description">@Model.Description</p>
-        <span class="evt-enddate">Close Date<br>@Model.EndDate.ToShortDateString()</span>
+        <span class="evt-enddate">Close Date<br>@Model.EndDate.ToString("dd/MM/yyyy")</span>
         <span class="evt-enrollsize @(currentEnroll<Model.EnrollSize?"vacant":"full")">
             @currentEnroll/@Model.EnrollSize <i class="fa-solid fa-user-group"></i>
         </span>
         @if (!selfOwned) {
-            <button type="button" class="evt-join @(canJoin?"active":"") @(currentlyJoin?"leave":"join")" onclick=@(canJoin?"myFunction(this)":"")>
-                @if (currentlyJoin) {
-                    <text>ออก</text>
-                }
-                else {
-                    <text>เข้าร่วม</text>
-                }
-            </button>
+            <form method="post">
+                <button class="evt-join @(canJoin?"active":"") @(currentlyJoin?"leave":"join")" asp-controller="Event" asp-action="Subscribe" asp-route-id="@Model.Id">
+                    @if (currentlyJoin) {
+                        <text>ออก</text>
+                    }
+                    else {
+                        <text>เข้าร่วม</text>
+                    }
+                </button>
+            </form>
+        }
+        else {
+            <form method="post">
+                <button class="evt-edit" asp-controller="Event" asp-action="Edit" asp-route-id="@Model.Id")>
+                    แก้ไข
+                </button>
+            </form>
+            <form method="post">
+                <button class="evt-delete" asp-controller="Event" asp-action="Delete" asp-route-id="@Model.Id")>
+                    ลบทิ้ง
+                </button>
+            </form>
         }
 
-        <div class="evt-member">
-            <h2>Member</h2>
-            @foreach (UserNoPassword member in Model.Subscribers) {
-                <div class="member">
-                    <div class="member-picture">
-                        <img alt="member picture" src="~/img/default.jpg" draggable="false">
-                    </div>
-                    <span class="member-name">@member.Name @member.Surname</span>
-                </div>
-            }
-        </div>
-
-        <div class="evt-q-user">
-            <h2>Queue</h2>
-            @foreach (UserNoPassword qUser in Model.Queue) {
-                <div class="q-user">
-                    <div class="q-user-picture">
-                        <img alt="q-user picture" src="~/img/default.jpg" draggable="false">
-                    </div>
-                    <span class="q-user-name">@qUser.Name @qUser.Surname</span>
-                </div>
-            }
-        </div>
     </div>
-    
+
+    <div class="evt-member">
+        <h2>Member</h2>
+        @foreach (UserNoPassword member in Model.Subscribers) {
+            string imageMemberPath = ImageService.GetUserImageFileExtension(member.Id);
+            <div type="button" class="member" onclick="ClickProfile('@member.Id')">
+                <div class="member-picture">
+                    <img alt="Member picture" src="~/@imageMemberPath" draggable="false">
+                </div>
+                <span class="member-name">@member.Name @member.Surname</span>
+            </div>
+        }
+    </div>
+
+    <div class="evt-q-user">
+        <h2>Queue</h2>
+        @foreach (UserNoPassword qUser in Model.Queue) {
+            string imageQueueUserPath = ImageService.GetUserImageFileExtension(qUser.Id);
+            <div type="button" class="q-user" onclick="ClickProfile('@qUser.Id')">
+                <div class="q-user-picture">
+                    <img alt="q-user picture" src="~/@imageQueueUserPath" draggable="false">
+                </div>
+                <span class="q-user-name">@qUser.Name @qUser.Surname</span>
+            </div>
+        }
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        function ClickProfile(id) {
+            alert("Profile of " + id);
+        }
+    </script>
+}
