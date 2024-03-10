@@ -41,7 +41,7 @@
     </div>
     <div class="evt-body">
         <p class="evt-description">@Model.Description</p>
-        <span class="evt-enddate">Close Date<br>@Model.EndDate.ToShortDateString()</span>
+        <span class="evt-enddate">Close Date<br>@Model.EndDate.ToString("dd/MM/yyyy")</span>
         <span class="evt-enrollsize @(currentEnroll<Model.EnrollSize?"vacant":"full")">
             @currentEnroll/@Model.EnrollSize <i class="fa-solid fa-user-group"></i>
         </span>
