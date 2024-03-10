@@ -249,3 +249,22 @@
     background-color: var(--hover-dark-color);
     transition: 500ms;
 }
+
+@media (max-width: 992px) {
+    .evt-detail {margin-left: 2rem; margin-right: 2rem;}
+    .evt-detail .evt-description { grid-area: 1 / 1 / 2 / 3; }
+    .evt-body .evt-enddate { grid-area: 2 / 1 / 3 / 2; }
+    .evt-body .evt-enrollsize { grid-area: 3 / 1 / 4 / 2; }
+    .evt-body .evt-join { grid-area: 2 / 2 / 3 / 3; }
+    .evt-body .evt-edit { grid-area: 2 / 2 / 3 / 3; }
+    .evt-body .evt-delete { grid-area: 3 / 2 / 4 / 3; }
+
+    .evt-body .evt-enddate { 
+        justify-self: left;
+        padding: 0.8rem 1rem;
+        width: auto;
+    }
+    .evt-body .evt-enddate br { content: "";}
+    .evt-body .evt-enddate br:after { content: ": ";}
+    .evt-body .evt-enrollsize { justify-self: left; max-width: 12rem;}
+}
