@@ -17,8 +17,7 @@ public class Notification
     public required UserNoPassword User { get; set; }
     [BsonIgnore]
     public required Event Event { get; set; }
-    [BsonIgnore]
-
+    
     [BsonRepresentation(BsonType.DateTime)]
     [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
