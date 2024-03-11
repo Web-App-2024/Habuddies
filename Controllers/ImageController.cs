@@ -32,8 +32,9 @@ namespace HaBuddies.Controllers
 
                 return RedirectToAction("MyProfile", "User");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return StatusCode(500);
             }
         }

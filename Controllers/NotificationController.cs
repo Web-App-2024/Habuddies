@@ -29,8 +29,9 @@ namespace HaBuddies.Controllers
                 
                 return PartialView("", paginationResponse);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return StatusCode(500);
             }
         }
@@ -53,8 +54,9 @@ namespace HaBuddies.Controllers
                 
                 return PartialView("", paginationResponse);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return StatusCode(500);
             }
         }
@@ -73,8 +75,9 @@ namespace HaBuddies.Controllers
                 
                 return Ok();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return StatusCode(500);
             }
         }
