@@ -54,4 +54,6 @@
   grid-area: 2/2/3/3;
   color: black;
   font-size: 14px;
+  margin: 5px 0 10px 0;
+  line-height: 1.2;
 }
