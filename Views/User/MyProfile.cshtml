@@ -23,7 +23,9 @@
                 <span class="about">@Model.Bio</span><br>
             </div>
             <div class="editbutton">
-            <button class="editProfileButton"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                <button class="editProfileButton"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                <button class="editImageButton"><i class="fa fa-file-image-o" aria-hidden="true"></i></i></button>
+                @* <a class="editimage" asp-area="" asp-controller="image" asp-action="uploadImage"><i class="fa fa-file-image-o"></i></a> *@
             </div>
         </div>
         <hr>
@@ -43,33 +45,48 @@
             <label>About Me</label><br>
             <span class="about">@Model.Bio</span>
         </div>
-        
 
-    <div class="editProfile" style="display: none;" >
-        <form class="editProfile" id="editProfileForm" method="post" action='@Url.Action("Update", "User")'>
-            <label for="editName">Name</label><br>
-            <input type="text" class="editName" name="Name" value="@Model.Name"><br>
+        <div class="editProfile" style="display: none;" >
+            <form class="editProfile" id="editProfileForm" method="post" action='@Url.Action("Update", "User")'>
+                <label for="editName">Name</label><br>
+                <input type="text" class="editName" name="Name" value="@Model.Name"><br>
 
-            <label for="editSurname">Surname</label><br>
-            <input type="text" class="editSurname" name="Surname" value="@Model.Surname"><br>
+                <label for="editSurname">Surname</label><br>
+                <input type="text" class="editSurname" name="Surname" value="@Model.Surname"><br>
 
-            <label for="editGender">Gender:</label><br>
-            <select class="editGender" name="Gender">
-                <option value="Gender" disabled>Gender</option>
-                <option value="Male" selected='@(Model.Gender == "Male")'>Male</option>
-                <option value="Female" selected='@(Model.Gender == "Female")'>Female</option>
-                <option value="Others" selected='@(Model.Gender == "Others")'>Others</option>
-            </select><br>
+                <label for="editGender">Gender:</label><br>
+                <select class="editGender" name="Gender">
+                    <option value="Gender" disabled>Gender</option>
+                    <option value="Male" selected='@(Model.Gender == "Male")'>Male</option>
+                    <option value="Female" selected='@(Model.Gender == "Female")'>Female</option>
+                    <option value="Others" selected='@(Model.Gender == "Others")'>Others</option>
+                </select><br>
 
-            <label for="editAge">Age</label><br>
-            <input type="number" class="editAge" name="Age" value="@Model.Age"><br>
+                <label for="editAge">Age</label><br>
+                <input type="number" class="editAge" name="Age" value="@Model.Age"><br>
 
-            <label for="editBio">About me</label><br>
-            <textarea class="editBio" name="Bio">@Model.Bio</textarea><br>
+                <label for="editBio">About me</label><br>
+                <textarea class="editBio" name="Bio">@Model.Bio</textarea><br>
 
-            <input type="submit" value='Update'>
-        </form>
-    </div>
+                <input type="submit" value='Update'>
+            </form>
+        </div>
+
+        <div class="editImage" style="display: none;" >
+            <form method="post" enctype="multipart/form-data" asp-controller="Image" asp-action="UploadImage">
+                    
+                    <div class="ChangeProfile">ChangeProfile</div><br>
+                    <input type="file" name="file" class="formImage" accept="image/*" required/>
+                
+                <div>
+                    <input type="submit" value="Upload"/>
+                </div>
+                <span class="text-success">
+                    @ViewBag.Message
+                </span>
+            </form>
+        </div>
+
     </div>
     
 
@@ -93,6 +110,26 @@
                 profileInfo.style.display = "none";
             });
         }); 
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const editProfileButton = document.querySelector(".editImageButton");
+            const editbuttonDiv = document.querySelector(".editbutton");
+
+            editProfileButton.addEventListener("click", function () {
+                editbuttonDiv.style.display = "none";
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const editImageButton = document.querySelector(".editImageButton");
+            const editImageForm = document.querySelector(".editImage");
+            const profileInfo = document.querySelector("#profileInfo");
+
+            editImageButton.addEventListener("click", function () {
+                profileInfo.style.display = "none";
+                editImageForm.style.display = "block";
+            });
+        });
 
     </script>
 </div>
