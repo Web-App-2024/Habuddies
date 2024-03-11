@@ -20,6 +20,7 @@ builder.Services.AddSingleton<MongoService>();
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<EventService>();
 builder.Services.AddSingleton<ImageService>();
+builder.Services.AddSingleton<NotificationService>();
 
 var app = builder.Build();
 

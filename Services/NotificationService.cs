@@ -40,7 +40,7 @@ namespace HaBuddies.Services
 
                 foreach(var noti in data)
                 {
-                    var user = await _usersCollection.Find(u => u.Id == noti.UserId).FirstOrDefaultAsync();
+                    var user = await _usersCollection.Find(u => u.Id == noti.FromUserId).FirstOrDefaultAsync();
                     UserNoPassword userNoPassword = (UserNoPassword)user;
                     noti.User = userNoPassword;
                     var evt = await _eventsCollection.Find(evt => evt.Id == noti.EventId).FirstOrDefaultAsync();
@@ -53,7 +53,28 @@ namespace HaBuddies.Services
 
                 return paginationResponse;
             }
-            catch (Exception) 
+            catch (Exception ex) 
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+        }
+    
+        public async Task UpdateIsViewed(List<string> notificationIds, string userId)
+        {
+            try
+            {
+                foreach (var notiId in notificationIds)
+                {
+                    var filter = Builders<Notification>.Filter.And(
+                        Builders<Notification>.Filter.Eq(n => n.Id, notiId),
+                        Builders<Notification>.Filter.Eq(n => n.UserId, userId)
+                    );
+                    var update = Builders<Notification>.Update.Set(n => n.IsViewed, true);
+                    await _notificationsCollection.UpdateOneAsync(filter, update);
+                }
+            }
+            catch (Exception)
             {
                 throw;
             }
