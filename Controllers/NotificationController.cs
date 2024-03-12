@@ -1,4 +1,3 @@
-using HaBuddies.DTOs;
 using HaBuddies.Models;
 using HaBuddies.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -30,8 +29,9 @@ namespace HaBuddies.Controllers
                 
                 return PartialView("_NotificationOwner", paginationResponse);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return StatusCode(500);
             }
         }
@@ -54,8 +54,30 @@ namespace HaBuddies.Controllers
                 
                 return PartialView("_NotificationUser", paginationResponse);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
+                return StatusCode(500);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateViewedNotification(List<string> notificationIds)
+        {
+            try
+            {
+                UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
+                string userId = user.Id;
+                if (user == null) {
+                    return Unauthorized();
+                }
+                await _notificationService.UpdateIsViewed(notificationIds, userId);
+                
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
                 return StatusCode(500);
             }
         }

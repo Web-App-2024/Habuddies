@@ -36,8 +36,9 @@ namespace HaBuddies.Controllers
                 
                 return PartialView("_EventBannerPartial", paginationResponse);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return StatusCode(500);
             }
         }
@@ -54,7 +55,9 @@ namespace HaBuddies.Controllers
 
                 return View(evt);
             }
-            catch (Exception) {
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
                 return View("Error");
             }
         }
@@ -64,7 +67,9 @@ namespace HaBuddies.Controllers
             try {
                 return View();
             }
-            catch (Exception) {
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
                 return View("Error");
             }
         }
@@ -86,7 +91,9 @@ namespace HaBuddies.Controllers
             catch (UnauthorizedAccessException) {
                 return RedirectToAction("LoginAndRegister", "User");
             }
-            catch (Exception) {
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
                 return View("Error");
             }
         }
@@ -107,7 +114,9 @@ namespace HaBuddies.Controllers
 
                 return View(evt);
             }
-            catch (Exception) {
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
                 return View("Error");
             }
         }
@@ -121,7 +130,9 @@ namespace HaBuddies.Controllers
 
                 return RedirectToAction("Details", new { Id = editedEvent.Id });
             }
-            catch (Exception) {
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
                 return View("Error");
             }
         }
@@ -136,7 +147,9 @@ namespace HaBuddies.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch (Exception) {
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
                 return View("Error");
             }
         }

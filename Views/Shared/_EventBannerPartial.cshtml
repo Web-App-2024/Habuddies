@@ -3,6 +3,7 @@
 @using HaBuddies.Constants
 @using static HaBuddies.Services.Utils.EventUtil
 @using Newtonsoft.Json;
+@inject HaBuddies.Services.ImageService ImageService;
 
 @{
     string userExist = ViewContext.HttpContext.Session.GetString("user")!;
@@ -22,6 +23,7 @@
     bool selfOwned = IsOwnedEvent(userObject, evt);
     bool canJoin = IsJoinable(userObject, evt);
     bool currentlyJoin = IsCurrentlyJoined(userObject, evt);
+    string imageOwnerPath = ImageService.GetUserImageFileExtension(evt.OwnerId);
     
     <div class="banner" id="@evt.Id">
         <a draggable="false" asp-controller="Event" asp-action="Details" asp-route-id="@evt.Id">
@@ -36,25 +38,27 @@
                 </span>
                 <div class="owner">
                     <div class="owner-picture">
-                        <img alt="Owner picture" src="~/img/default.jpg" draggable="false">
+                        <img alt="Owner picture" src="~/@imageOwnerPath" draggable="false">
                     </div>
                     <span class="owner-name">@evt.Owner.Name @evt.Owner.Surname</span>
                 </div>
             </div>
             <div class="evt-body">
                 <span class="evt-description">@evt.Description</span>
-                <span class="evt-enddate">Close Date<br>@evt.EndDate.ToShortDateString()</span>
+                <span class="evt-enddate">Close Date<br>@evt.EndDate.ToString("dd/MM/yyyy")</span>
             </div>
         </a>
         @if (!selfOwned) {
-            <button type="button" class="evt-join @(canJoin?"active":"") @(currentlyJoin?"leave":"join")" onclick=@(canJoin?"ClickJoinOrLeave(this)":"")>
-                @if (currentlyJoin) {
-                    <text>ออก</text>
-                }
-                else {
-                    <text>เข้าร่วม</text>
-                }
-            </button>
+            <form method="post">
+                <button class="evt-join @(canJoin?"active":"") @(currentlyJoin?"leave":"join")" asp-controller="Event" asp-action="Subscribe" asp-route-id="@evt.Id">
+                    @if (currentlyJoin) {
+                        <text>ออก</text>
+                    }
+                    else {
+                        <text>เข้าร่วม</text>
+                    }
+                </button>
+            </form>
         }
     </div>
     }
