@@ -31,8 +31,14 @@
             <li>
                 <a class="notification-button" onclick="toggleNotification()"><i class="fa-solid fa-bell"></i></a>
                 <div class ="notification-block" id="block">
-                    <h2>Notification</h2>
-                    <div id="notification-owner"></div>
+                    <div class="button-box">
+			        <div id="btn"></div>
+			        <button type="button" class="toggle-btn" onclick="leftClick()">Notification</button>
+			        <button type="button" class="toggle-btn" onclick="rightClick()">Post</button>
+		            </div>
+                    <hr>
+                    <div id="notification-owner" style="display:None;"></div>
+                    <div id="notification-user"  style="display:block;"></div> 
                 </div>
             </li>
             <li>
@@ -118,6 +124,10 @@
     <script src="~/js/InfiniteScroll.js" asp-append-version="true"></script>
     <script>
         var infiniteScroll = new EventInfiniteScroll("notification-owner", '@Url.Action("LoadOwnerNotification", "Notification")');
+        infiniteScroll.loadEvent(false);
+    </script>
+    <script>
+        var infiniteScroll = new EventInfiniteScroll("notification-user", '@Url.Action("LoadJoinNotification", "Notification")');
         infiniteScroll.loadEvent(false);
     </script>
     @await RenderSectionAsync("Scripts", required: false)
