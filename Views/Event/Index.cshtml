@@ -1,24 +1,42 @@
 @using HaBuddies.Models
+@using HaBuddies.Constants
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
 @section Stylesheets {
-    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/filter.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/banner.css" asp-append-version="true" />
 }
 
 <div class="filter-section">
-    <button type="button" class="filter"><i class="fa-solid fa-sliders"></i></button>
+    <input type="checkbox" id="toggle-filter">
+    <label for="toggle-filter" class="filter"><i class="fa-solid fa-sliders"></i></label>
+    <div id="active-filter"></div>
+    <div class="filter-list" id="filter-list">
+        @foreach (KeyValuePair<string, Category.ICategoryData> category in Category.DataDict) 
+        {
+        <label class="" style="--active: @Category.GetColorHex(category.Key);"><input type="checkbox" name="check"/>@category.Key</label>
+        }
+    </div>
 </div>
 
 <div id="event-banner"></div>
 
 @section Scripts {
     <script src="~/js/InfiniteScroll.js" asp-append-version="true"></script>
+    <script src="~/js/filter.js" asp-append-version="true"></script>
     <script>
         var infiniteScroll = new EventInfiniteScroll("event-banner", '@Url.Action("LoadEvent", "Event")');
         infiniteScroll.loadEvent(false);
+
+        var allCheckboxes = document.getElementsByName('check')
+        allCheckboxes.forEach((item) => {
+            item.addEventListener('click', function(){
+                FilterManager(item, "check", infiniteScroll);
+                ActiveFilterDisplay("active-filter", item.checked, item.parentElement.textContent, item.parentElement.style.getPropertyValue("--active"));
+            });
+        })
     </script>
 }
