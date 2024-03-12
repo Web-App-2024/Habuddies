@@ -1,0 +1,256 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.editPost {
+    width: 95%;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.header {
+    margin-bottom: 10px;
+}
+
+.PropertyCategory {
+    margin-bottom: 20px;
+    margin-left: 100px;
+}
+
+.category-boxes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 10px; 
+}
+
+.category-box {
+    padding: 10px;
+    cursor: pointer;
+    border: 1px solid #ccc; 
+    transition: box-shadow 0.3s; 
+}
+
+.category-box:hover {
+    opacity: 0.8;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); 
+}
+
+.category-box[data-category="meeting"] {
+    border: 2px solid black; 
+    border-radius: 20px; 
+    font-size: 18px;
+    padding: 20px;
+    width: auto;
+    height: auto;
+}
+.category-box[data-category="meeting"] i.fa {
+    font-size: 24px; 
+    margin-bottom: 5px;
+}
+
+.category-box[data-category="exercising"] {
+    border: 2px solid black; 
+    border-radius: 20px; 
+    font-size: 18px;
+    padding: 20px;
+    width: auto;
+    height: auto;
+}
+
+.category-box[data-category="exercising"] i.fa {
+    font-size: 24px; 
+    margin-bottom: 5px;
+}
+
+.category-box[data-category="eating"] {
+    border: 2px solid black; 
+    border-radius: 20px; 
+    font-size: 18px;
+    padding: 20px;
+    width: auto;
+    height: auto;
+}
+
+.category-box[data-category="eating"] i.fa {
+    font-size: 24px; 
+    margin-bottom: 5px;
+}
+
+.category-box[data-category="working"] {
+    border: 2px solid black; 
+    border-radius: 20px; 
+    font-size: 18px;
+    padding: 20px;
+    width: auto;
+    height: auto;
+}
+
+.category-box[data-category="working"] i.fa {
+    font-size: 24px; 
+    margin-bottom: 5px;
+}
+
+.category-box.selected {
+    background-color: #afe3fc; 
+    border: 2px solid #0080ff;
+    color: black; 
+}
+
+.detailbox {
+    margin-bottom: 20px;
+    margin-left: 100px;
+    margin-right: 20px;
+    display: grid;
+    grid-template-columns: 45% 25% 30%; 
+    gap: 10px; 
+
+}
+
+.inputtitle{
+    border: 2px solid black; 
+    border-radius: 20px; 
+    font-size: 18px;
+    padding: 20px;
+    width: auto;
+    height: auto;
+}
+
+.title {
+    border: none; 
+    background: none; 
+    padding: 5px 0; 
+    width: 100%;
+}
+
+.inputPeople{
+    border: 2px solid black; 
+    border-radius: 20px; 
+    font-size: 18px;
+    padding: 20px;
+    width: auto;
+    height: auto;
+}
+
+.enrollSize {
+    border: none; 
+    background: none; 
+    padding: 5px 0; 
+    width: 100%;
+}
+
+.inputdate {
+    border: 2px solid black; 
+    border-radius: 20px; 
+    font-size: 18px;
+    padding: 20px;
+    width: auto;
+    height: auto;
+}
+
+.inputtitle label,
+.inputPeople label,
+.inputdate label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.inputdate input[type="datetime-local"] {
+    width: 100%;
+}
+
+
+.inputDescription {
+    margin-bottom: 10px;
+    margin-left: 100px;
+    display: grid;
+    width: 100%;
+    gap: 10px; 
+
+}
+
+.inputDescription {
+    border: 2px solid black; 
+    border-radius: 20px; 
+    font-size: 18px;
+    padding: 20px;
+    width: auto;
+    height: auto;
+}
+
+.description {
+    border: none; 
+    background: none; 
+    padding: 5px 0; 
+    width: 100%;
+}
+
+.requirement{
+    margin-bottom: 20px;
+    margin-left: 100px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 10px; 
+}
+
+.inputRequirement{
+    border: 2px solid black; 
+    border-radius: 20px; 
+    font-size: 18px;
+    padding: 20px;
+    width: auto;
+    height: auto;
+}
+
+.minAge {
+    border: none; 
+    background: none; 
+    padding: 5px 0; 
+    width: 100%;
+}
+
+.maxAge {
+    border: none; 
+    background: none; 
+    padding: 5px 0; 
+    width: 100%;
+}
+
+.inputRequirement label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.inputRequirement select {
+    width: 100%;
+    font-size: 16px;
+}
+
+
+.postForm {
+    display: flex;
+    flex-direction: column;
+}
+
+input[type="submit"] {
+    display: block;
+    width: 15%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px; 
+    align-self: flex-end; 
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+
