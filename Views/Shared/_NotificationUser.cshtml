@@ -17,16 +17,26 @@
 
 {       string userId = noti.Id;
         string imageProfilePath = ImageService.GetUserImageFileExtension(userId);
+        var category = noti.Event.Category;
 
-        <div class="notification-items" id="@noti.Event.Id">
-            <a draggable="false" asp-controller="Event" asp-action="Details" asp-route-id="@noti.Event.Id">
-                <div class="noti-profile">
-                    <img src="~/@imageProfilePath" alt="Profile picture" draggable="false">
+        <div class="noti-owner" id="@noti.Event.Id">
+            <a draggable="false" asp-controller="Event" asp-action="Details" asp-route-id="@noti.Id">
+            <div class="evt-heading">
+                <div class="category" style="background-color: @Category.GetColorHex(category)">
+                    @Html.Raw(Category.GetIconHtml(category))
+                    <span class="evt-category">@category</span>
                 </div>
-                <div class="noti-info">
-                    <h1>@noti.Content</h1>
-                    <p>Event:@noti.Event.Title</p>
+                <h2 class="evt-title">@noti.Event.Title</h2>
+                <div class="owner">
+                    <div class="owner-picture">
+                        <img alt="Owner picture" src="~/@imageProfilePath" draggable="false">
+                    </div>
+                    <span class="owner-name">@noti.User.Name</span>
                 </div>
-            </a>
+            </div>
+            <div class="evt-body">
+                <span class="evt-description">@noti.Event.Description</span>
+            </div>
+        </a>
         </div>
 }

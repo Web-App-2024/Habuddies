@@ -1,4 +1,5 @@
-.notification-block {
+/* .notification-block {
+  background: green;
   width: 400px;
   height: 0px;
   opacity: 0;
@@ -9,8 +10,6 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   background-color: #ededed;
   overflow-y: scroll;
-  border-radius: 10px;
-  border: grey;
 }
 .notification-block h2 {
   display: flex;
@@ -19,7 +18,7 @@
   color: #999;
   margin-left: 20px;
 }
-.notification-block > hr {
+.notification-block hr {
   border-top: 3px solid black;
   margin: 5px;
 }
@@ -33,7 +32,6 @@
   display: grid;
   grid-template-rows: auto auto;
   grid-template-columns: auto 1fr;
-  background-color: #d9d9d9;
 }
 .notification-items:hover {
   background-color: #2e9bff;
@@ -55,8 +53,8 @@
 .noti-info h1 {
   grid-area: 1/2/2/3;
   color: black;
-  font-size: 16px;
-  line-height: 2.5;
+  font-size: 14px;
+  padding: 0px;
 }
 .noti-info p {
   grid-area: 2/2/3/3;
@@ -65,17 +63,13 @@
   margin: 5px 0 10px 0;
   line-height: 1.2;
 }
-.noti-info > hr {
-  border-top: 0.5px solid black;
-  margin-bottom: 3px;
-}
 
 .button-box {
   width: 250px;
   margin: 10px auto;
   position: relative;
   border-radius: 30px;
-  background: #9e9c9c;
+  background: #fff;
 }
 
 .toggle-btn {
@@ -86,8 +80,6 @@
   outline: none;
   position: relative;
   text-align: center;
-  font-size: 14px;
-  color: white;
 }
 
 #btn {
@@ -99,4 +91,4 @@
   background: #2e9bff;
   border-radius: 30px;
   transition: 0.5s;
-}
+} */
