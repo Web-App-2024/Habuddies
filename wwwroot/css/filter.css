@@ -1,0 +1,98 @@
+@import "./theme.css";
+
+.filter-section {
+  position: relative;
+  margin: 1rem 2rem;
+  user-select: none;
+}
+
+.filter {
+  display: inline-block;
+  background-color: white;
+  color: var(--dark-grey);
+  font-size: 18px;
+  padding: 0.6rem 0.8rem;
+  border: 2px solid var(--light-grey);
+  border-radius: 30px;
+}
+
+.filter {
+  cursor: pointer;
+}
+
+.filter:hover {
+  color: var(--main-color);
+  border-color: var(--hover-border-color);
+  transition: 500ms;
+}
+
+#toggle-filter {
+  display: none;
+}
+
+#toggle-filter:checked ~ label.filter {
+  color: var(--main-color);
+  border-color: var(--hover-border-color);
+  transition: 500ms;
+}
+
+#toggle-filter:checked ~ .filter-list{
+  display: block;
+  transition: 1s;
+}
+
+#toggle-filter:checked:hover ~ label.filter {
+  color: white;
+  background-color: var(--main-color);
+  border-color: var(--main-color);
+}
+
+.filter-list {
+  display: none;
+  margin-top: 1rem;
+}
+
+.filter-list label, #active-filter {
+  font-weight: 500;
+  padding: 0.5rem 0.8rem;
+  border-radius: 25px;
+  border: 2px solid var(--light-grey);
+  background-color: white;
+}
+
+#active-filter {
+  position: absolute;
+  top: 0.2rem;
+  left: 3.8rem;
+  color: white;
+  display: none;
+}
+
+.filter-list label {
+  display: inline-block;
+  color: var(--dark-grey);
+  margin: 0.3rem 0.3rem;
+}
+
+.filter-list label input {
+  margin-right: 0.3rem;
+  display: none;
+}
+
+.filter-list label.active {
+  color: white;
+  background-color: var(--active);
+  border-color: var(--active);
+}
+
+.filter-list label:hover {
+  color: var(--active);
+  border-color: var(--active);
+  transition: 500ms;
+}
+
+.filter-list label.active:hover {
+  box-shadow: inset 0 0 2rem 2rem rgba(0, 0, 0, 10%);
+  color: white;
+  transition: 500ms;
+}
