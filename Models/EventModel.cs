@@ -17,13 +17,18 @@ public class Event
     public bool IsOpen { get; set; } = true;
     public List<string> SubscribersId { get; set; } = [];
     public List<string> QueueId { get; set; } = [];
-    public int? AgeRequirement { get; set; }
-    public string? GenderRequirement { get; set; }
+    public int? MinAgeRequirement { get; set; }
+    public int? MaxAgeRequirement { get; set; }
+    public List<string> GenderRequirement { get; set; } = [];
 
     [BsonIgnore]
-    public required User Owner { get; set; }
+    public required UserNoPassword Owner { get; set; }
     [BsonIgnore]
-    public List<User> Subscribers { get; set; } = [];
+    public List<UserNoPassword> Subscribers { get; set; } = [];
     [BsonIgnore]
-    public List<User> Queue { get; set; } = [];
+    public List<UserNoPassword> Queue { get; set; } = [];
+
+    [BsonRepresentation(BsonType.DateTime)]
+    [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

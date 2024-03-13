@@ -1,0 +1,255 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.profile {
+    width: 95%;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.editbutton{
+    display: flex;
+    margin-left: auto;
+}
+
+.profile-header img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.profile-header {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+
+.profile-info {
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+label {
+    font-weight: bold;
+}
+
+.profile-info label {
+    display: inline-block;
+    width: 100px; 
+    margin-bottom: 10px;
+    margin-top: 10px; 
+}
+
+
+.editProfile label {
+    display: inline-block;
+    width: 100px; 
+    margin-bottom: 10px;
+    margin-top: 20px; 
+}
+
+.editName {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; 
+    font-size: 16px;
+}
+
+
+.editName:focus {
+    border-color: #007bff;
+    outline: none; 
+}
+
+
+.editName {
+    color: #333;
+}
+
+.editName:hover {
+    border-color: #007bff;
+}
+
+.editSurname {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; 
+    font-size: 16px;
+}
+
+
+.editSurname:focus {
+    border-color: #007bff;
+    outline: none; 
+}
+
+
+.editSurname {
+    color: #333;
+}
+
+.editSurname:hover {
+    border-color: #007bff;
+}
+
+
+.editGender {
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+.editGender option {
+    padding: 8px 12px;
+    font-size: 16px;
+}
+
+.editAge {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; 
+    font-size: 16px;
+}
+
+.editAge:focus {
+    border-color: #007bff;
+    outline: none; 
+}
+
+
+.editAge {
+    color: #333;
+}
+
+.editAge:hover {
+    border-color: #007bff;
+}
+
+.editEmail {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; 
+    font-size: 16px;
+}
+
+.editEmail:focus {
+    border-color: #007bff;
+    outline: none; 
+}
+
+
+.editEmail {
+    color: #333;
+}
+
+.editEmail:hover {
+    border-color: #007bff;
+}
+
+.editBio {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; 
+    font-size: 16px;
+}
+
+.editBio:focus {
+    border-color: #007bff;
+    outline: none; 
+}
+
+
+.editBio {
+    color: #333;
+}
+
+.editBio:hover {
+    border-color: #007bff;
+}
+
+.editPassword {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; 
+    font-size: 16px;
+}
+
+.editPassword:focus {
+    border-color: #007bff;
+    outline: none; 
+}
+
+
+.editPassword {
+    color: #333;
+}
+
+.editPassword:hover {
+    border-color: #007bff;
+}
+
+
+.ChangeProfile{
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+input.formImage {
+    margin-left: 10px;
+    margin-bottom: 10px; 
+}
+
+input[type="submit"] {
+    display: block;
+    width: 10%;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px; 
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}

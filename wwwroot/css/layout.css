@@ -4,7 +4,8 @@ body {
   --head-height: 4rem;
 }
 
-main, footer {
+main,
+footer {
   margin-left: 18rem;
   margin-top: calc(1rem + var(--head-height));
 }
@@ -17,14 +18,14 @@ header {
   background-color: white;
   z-index: 4;
 }
-  
+
 header * {
   text-decoration: none;
   list-style: none;
   user-select: none;
   z-index: 5;
 }
-  
+
 header .logo {
   color: var(--main-color);
   font-size: 32px;
@@ -32,22 +33,22 @@ header .logo {
   line-height: var(--head-height);
   margin-left: 3rem;
 }
-  
+
 header ul {
   float: right;
   margin-right: 3rem;
   padding: 0;
   height: var(--head-height);
 }
-  
+
 header li {
   display: inline-block;
   line-height: var(--head-height);
   margin: 0 0.3rem;
 }
 
-header li a{
-  color: var(--normal-grey);
+header li a {
+  color: var(--dark-grey);
   font-size: 15px;
   font-weight: 500;
   padding: 0.5rem 0.7rem;
@@ -86,7 +87,7 @@ header .profile-picture {
   overflow: hidden;
 }
 
-header .profile-picture img{
+header .profile-picture img {
   position: absolute;
   width: 100%;
   height: auto;
@@ -105,7 +106,9 @@ header li a:hover {
   transition: 500ms;
 }
 
-#toggle-nav, label #open-nav, label #close-nav {
+#toggle-nav,
+label #open-nav,
+label #close-nav {
   display: none;
   z-index: 4;
 }
@@ -144,7 +147,7 @@ header li a:hover {
   line-height: 4rem;
   width: 100%;
   height: 100%;
-  color: var(--normal-grey);
+  color: var(--dark-grey);
   border-right: 0 solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
   transition: 500ms;
@@ -155,26 +158,76 @@ header li a:hover {
   width: 2rem;
 }
 
-.sidebar ul a:hover, .sidebar ul .active a{
+.sidebar .logout {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  bottom: 6rem;
+  box-sizing: border-box;
+}
+
+.sidebar .logout-button {
+  border-radius: 25px;
+  padding: 0.8rem 2rem;
+  transition: 500ms;
+  border: none;
+  color: var(--red-color);
+  background-color: white;
+  border: 2px solid var(--light-red);
+  cursor: pointer;
+}
+
+.sidebar ul a:hover,
+.sidebar ul .active a {
   padding-left: 4rem;
   color: var(--main-color);
   border-right: 1rem solid var(--main-color);
   transition: 300ms;
 }
 
+.sidebar .logout-button:hover {
+  color: white;
+  background-color: var(--red-color);
+  border-color: var(--red-color);
+  transition: 500ms;
+}
+
 @media (max-width: 992px) {
-  main, footer {margin-left: 0;}
+  main,
+  footer {
+    margin-left: 0;
+  }
 
-  header .logo {margin-left: 4.5rem;}
-  header ul {margin-right: 1rem;}
-  header li {margin: 0 0.2rem;}
-  header .new-post-button span {display: none;}
-  header .profile-button {padding: 0; border: none;}
-  header .profile-name {display: none;}
-  header .profile-picture {border: 2px solid var(--border-color); top:0.9rem}
-  header .profile-picture:hover {border-color: var(--hover-border-color); transition: 500ms;}
+  header .logo {
+    margin-left: 4.5rem;
+  }
+  header ul {
+    margin-right: 1rem;
+  }
+  header li {
+    margin: 0 0.2rem;
+  }
+  header .new-post-button span {
+    display: none;
+  }
+  header .profile-button {
+    padding: 0;
+    border: none;
+  }
+  header .profile-name {
+    display: none;
+  }
+  header .profile-picture {
+    border: 2px solid var(--border-color);
+    top: 0.9rem;
+  }
+  header .profile-picture:hover {
+    border-color: var(--hover-border-color);
+    transition: 500ms;
+  }
 
-  label #open-nav, label #close-nav {
+  label #open-nav,
+  label #close-nav {
     position: fixed;
     top: 1rem;
     left: 1rem;
@@ -187,15 +240,22 @@ header li a:hover {
     cursor: pointer;
   }
 
-  label #open-nav:hover, label #close-nav:hover {
-    border-color: var(--hover-border-color); 
-    color: var(--main-color); transition: 
-    500ms;
+  label #open-nav:hover,
+  label #close-nav:hover {
+    border-color: var(--hover-border-color);
+    color: var(--main-color);
+    transition: 500ms;
   }
 
-  label #open-nav {display: inline-block;}
-  #toggle-nav:checked ~ label #open-nav{display: none;}
-  #toggle-nav:checked ~ label #close-nav{display: inline-block;}
+  label #open-nav {
+    display: inline-block;
+  }
+  #toggle-nav:checked ~ label #open-nav {
+    display: none;
+  }
+  #toggle-nav:checked ~ label #close-nav {
+    display: inline-block;
+  }
 
   .sidebar {
     left: -20rem;

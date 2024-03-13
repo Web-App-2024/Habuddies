@@ -3,6 +3,8 @@ using HaBuddies.DTOs;
 using HaBuddies.Models;
 using HaBuddies.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 
 namespace HaBuddies.Controllers
 {
@@ -13,15 +15,31 @@ namespace HaBuddies.Controllers
         public EventController(EventService eventService) =>
             _eventService = eventService;
 
-        public async Task<IActionResult> Index(string category = null!, int page = 1, int perPage = 10)
+        public IActionResult Index()
         {
-            try {
-                var paginationResponse = await _eventService.GetAllAsync(page, perPage, category);
+            return View();
+        }
 
-                return View(paginationResponse);
+        [HttpGet]
+        public async Task<IActionResult> LoadEvent(string category = null!, int page = 1, int perPage = 10)
+        {
+            try
+            {
+                UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
+                string userId = "";
+                if (user != null) userId = user.Id;
+                var paginationResponse = await _eventService.GetAllAsync(page, perPage, category, userId);
+
+                if (paginationResponse.Data.Count <= 0 && paginationResponse.PrevPage != null) {
+                    return StatusCode(204);
+                }
+                
+                return PartialView("_EventBannerPartial", paginationResponse);
             }
-            catch (Exception) {
-                return View("Error");
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(500);
             }
         }
 
@@ -37,7 +55,9 @@ namespace HaBuddies.Controllers
 
                 return View(evt);
             }
-            catch (Exception) {
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
                 return View("Error");
             }
         }
@@ -47,29 +67,33 @@ namespace HaBuddies.Controllers
             try {
                 return View();
             }
-            catch (Exception) {
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
                 return View("Error");
             }
         }
             
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateEventDTO newEventDTO)
+        public async Task<IActionResult> Create(CreateEventDTO newEventDTO)
         {
             try {
-                string userId = HttpContext.Session.GetString("userId")!;
+                UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
 
-                if (userId == null) {
+                if (user == null) {
                     throw new UnauthorizedAccessException();
                 }
 
-                Event newEvent = await _eventService.CreateAsync(newEventDTO, userId);
+                Event newEvent = await _eventService.CreateAsync(newEventDTO, user.Id!);
 
                 return RedirectToAction("Details", new { Id = newEvent.Id });
             } 
             catch (UnauthorizedAccessException) {
                 return RedirectToAction("LoginAndRegister", "User");
             }
-            catch (Exception) {
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
                 return View("Error");
             }
         }
@@ -78,67 +102,94 @@ namespace HaBuddies.Controllers
         {
             try {
                 var evt = await _eventService.GetOneAsync(id);
+                UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
 
                 if (evt == null)
                 {
                     return View("NotFound");
+                }
+                else if (user.Id != evt.OwnerId) {
+                    throw new Exception("Forbidden");
                 }
 
                 return View(evt);
             }
-            catch (Exception) {
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
                 return View("Error");
             }
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Edit(string id, [FromBody] EditEventDTO editedEventDTO)
+        [HttpPost]
+        public async Task<IActionResult> Edit(string id, EditEventDTO editedEventDTO)
         {
             try {
-                var editedEvent = await _eventService.EditAsync(id, editedEventDTO);
+                UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
+                var editedEvent = await _eventService.EditAsync(id, editedEventDTO, user.Id);
 
                 return RedirectToAction("Details", new { Id = editedEvent.Id });
             }
-            catch (Exception) {
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
                 return View("Error");
             }
         }
 
-        [HttpDelete]
+        [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
             try {
-                var evt = await _eventService.GetOneAsync(id);
+                UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
 
-                if (evt == null)
-                {
-                    return View("NotFound");
-                }
-
-                await _eventService.RemoveAsync(id);
+                await _eventService.RemoveAsync(id, user.Id);
 
                 return RedirectToAction("Index");
             }
-            catch (Exception) {
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
                 return View("Error");
             }
         }
 
-        [HttpPatch]
+        [HttpPost]
         public async Task<IActionResult> Subscribe(string id)
         {
             try {
-                string userId = HttpContext.Session.GetString("userId")!;
-                if (userId == null) {
+                UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
+                if (user == null) {
                     throw new UnauthorizedAccessException();
                 }
-                await _eventService.SubscribeEvent(id, userId);
+                await _eventService.SubscribeEvent(id, user.Id!);
                 return RedirectToAction("Details", new { Id = id });
             } 
             catch(UnauthorizedAccessException){
                 return RedirectToAction("LoginAndRegister", "User");
             }
-            catch(Exception){
+            catch(Exception Ex){
+                Console.WriteLine(Ex);
+                return View("Error");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ToggleOpenStatus(string id)
+        {
+            try {
+                UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
+                if (user == null) {
+                    throw new UnauthorizedAccessException();
+                }
+                await _eventService.ToggleOpenStatus(id);
+                return RedirectToAction("MyPost", "User");
+            }
+            catch(UnauthorizedAccessException){
+                return RedirectToAction("LoginAndRegister", "User");
+            }
+            catch(Exception Ex){
+                Console.WriteLine(Ex);
                 return View("Error");
             }
         }

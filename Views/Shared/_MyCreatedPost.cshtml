@@ -1,0 +1,63 @@
+@model IEnumerable<HaBuddies.Models.Event>;
+@using HaBuddies.Models;
+@using HaBuddies.Constants
+@using static HaBuddies.Services.Utils.EventUtil
+@inject HaBuddies.Services.ImageService ImageService;
+@using Newtonsoft.Json;
+
+@{
+    string userExist = ViewContext.HttpContext.Session.GetString("user")!;
+    UserNoPassword user = null!;
+    if (userExist != null)
+    {
+        user = JsonConvert.DeserializeObject<UserNoPassword>(userExist)!;
+    }
+    var ownedEvents = Model.Where(evt => evt.OwnerId == user.Id);
+}
+    @foreach (Event evt in ownedEvents)
+    {
+        var category = evt.Category;
+        int currentEnroll = evt.SubscribersId.Count;
+        string enrollMsg = $"{currentEnroll}";
+
+        bool selfOwned = IsOwnedEvent(user, evt);
+        bool open = IsOpen(user, evt);
+        bool canJoin = IsJoinable(user, evt);
+        bool currentlyJoin = IsCurrentlyJoined(user, evt);
+        string imageOwnerPath = ImageService.GetUserImageFileExtension(evt.OwnerId);
+
+        <div class="banner" id="@evt.Id">
+            <a draggable="false" asp-controller="Event" asp-action="Details" asp-route-id="@evt.Id">
+                <div class="evt-heading">
+                    <div class="category" style="background-color: @Category.GetColorHex(category)">
+                        @Html.Raw(Category.GetIconHtml(category))
+                        <span class="evt-category">@category</span>
+                    </div>
+                    <h2 class="evt-title">@evt.Title</h2>
+                    <span class="evt-enrollsize @(evt.IsOpen?(currentEnroll<evt.EnrollSize?"vacant":"full"):"close")">
+                        @enrollMsg <i class="fa-solid fa-user-group"></i>
+                    </span>
+                    <div class="owner">
+                        <div class="owner-picture">
+                            <img alt="Owner picture" src="~/@imageOwnerPath" draggable="false">
+                        </div>
+                        <span class="owner-name">@evt.Owner.Name @evt.Owner.Surname</span>
+                    </div>
+                </div>
+                <div class="evt-body">
+                    <span class="evt-description">@evt.Description</span>
+                    <span class="evt-enddate">Close Date<br>@evt.EndDate.ToString("dd/MM/yyyy")</span>
+                </div>
+            </a>
+                <form method="post">
+                    <button class="evt-join active @(currentlyJoin?"leave":"join")" asp-controller="Event" asp-action="ToggleOpenStatus" asp-route-id="@evt.Id">
+                        @if (open) {
+                            <text>ปิดรับ</text>
+                        }
+                        else {
+                            <text>เปิดรับ</text>
+                        }
+                    </button>
+                </form>
+        </div>
+    }

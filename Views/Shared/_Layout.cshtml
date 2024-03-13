@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Newtonsoft.Json;
+@inject HaBuddies.Services.ImageService ImageService;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -9,43 +12,59 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/notification_owner.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/notification_user.css" asp-append-version="true" />
     @RenderSection("Stylesheets", required: false)
 </head>
 <body>
 
     @{
-        string controllerName = "";
-        var controller = ViewContext.RouteData.Values["Controller"];
-        if (controller != null) controllerName = controller.ToString()!;
+        string currentRoute = Url.RouteUrl(ViewContext.RouteData.Values)!;
+        string userExist = ViewContext.HttpContext.Session.GetString("user")!;
     }
 
     <header>
         <a class="logo" asp-area="" asp-controller="Event" asp-action="Index">HaBuddies</a>
         <ul>
             <li>
-                <a class="new-post-button" asp-area="" asp-controller="Event" asp-action=""><i class="fa-regular fa-plus"></i><span>New</span></a>
+                <a class="new-post-button" asp-area="" asp-controller="Event" asp-action="Create"><i class="fa-regular fa-plus"></i><span>New</span></a>
             </li>
             <li>
-                <a class="notification-button" asp-area="" asp-controller="Event" asp-action=""><i class="fa-solid fa-bell"></i></a>
+                <a class="notification-button" id="notification-button"><i class="fa-solid fa-bell"></i></a>
+                <div class ="notification-block" id="block">
+                    <div class="button-box">
+                        <div id="btn"></div>
+                        <button type="button" class="toggle-btn" id="my-noti-button">Notification</button>
+                        <button type="button" class="toggle-btn" id="my-post-button" style="margin-left: 10px;">My Post</button>
+		            </div>
+                    <hr>
+                    <div id="notification-msg"></div>
+                </div>
             </li>
             <li>
-                <a class="profile-button" asp-area="" asp-controller="User" asp-action="MyProfile">
-                    @{
-                    @* var user = ViewContext.HttpContext.Session.Get("UserId"); *@
-                    var user = "Something Tester";
-                    if (user != null) {
-                        <span class="profile-name">@user</span>
-                        <div class="profile-picture">
-                            <img alt="Profile picture" src="~/img/default.jpg" draggable="false">
-                        </div>
+                @{
+                    if (userExist != null) {
+                        dynamic userObject = JsonConvert.DeserializeObject(userExist)!;
+                        string userId = userObject.Id;
+                        string uName = userObject.Name;
+                        string uSurname = userObject.Surname;
+                        string imageProfilePath = ImageService.GetUserImageFileExtension(userId);
+
+                        <a class="profile-button" asp-area="" asp-controller="User" asp-action="MyProfile">
+                            <span class="profile-name">@uName @uSurname</span>
+                            <div class="profile-picture">
+                                <img alt="Profile picture" src="~/@imageProfilePath" draggable="false">
+                            </div>
+                        </a>
                     }
                     else {
-                        <span class="profile-name">Login</span>
-                        <div class="profile-picture">
-                        </div>
+                        <a class="profile-button" asp-area="" asp-controller="User" asp-action="LoginAndRegister">
+                            <span class="profile-name">Login</span>
+                            <div class="profile-picture">
+                            </div>
+                        </a>
                     }
-                    }
-                </a>
+                }
             </li>
         </ul>
     </header>
@@ -58,31 +77,55 @@
     <div class="sidebar">
         <div class="header-nav">Main Menu</div>
         <ul>
-            <!-- This current view checking could break at any time, looking for a better solution -->
-            <li class=" @(controllerName=="Event"?"active":"")"> 
+            <li class=" @(currentRoute==Url.Action("Index", "Event")?"active":"")"> 
                 <a class="home-nav" asp-area="" asp-controller="Event" asp-action="Index"><i class="fa-solid fa-house"></i> Home</a>
             </li>
-            <li>
+            <li class=" @(currentRoute==Url.Action("MyProfile", "User")?"active":"")">
                 <a class="my-profile-nav" asp-area="" asp-controller="User" asp-action="MyProfile"><i class="fa-solid fa-address-card"></i> My Profile</a>
             </li>
-            <li>
-                <a class="my-post-nav" asp-area="" asp-controller="" asp-action=""><i class="fa-solid fa-calendar"></i> My Post</a>
+            <li class=" @(currentRoute==Url.Action("MyPost", "User")?"active":"")">
+                <a class="my-post-nav" asp-area="" asp-controller="User" asp-action="MyPost"><i class="fa-solid fa-calendar"></i> My Post</a>
             </li>
-            <li>
-                <a class="history-nav" asp-area="" asp-controller="" asp-action=""><i class="fa-solid fa-clock-rotate-left"></i> History</a>
+            <li class=" @(currentRoute==Url.Action("History", "User")?"active":"")">
+                <a class="history-nav" asp-area="" asp-controller="User" asp-action="History"><i class="fa-solid fa-clock-rotate-left"></i> History</a>
             </li>
         </ul>
+        @if (userExist != null) {
+            <div class="logout">
+                <a class="logout-button" onclick="logout();">
+                    Logout
+                </a>
+            </div>
+        }
     </div>
 
     <main role="main">
         @RenderBody()
     </main>
 
-    <footer>
-        &copy; 2024 - Web_App - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/InfiniteScroll.js" asp-append-version="true"></script>
+    <script src ="~/js/notification.js"></script>
+    <script>
+        var NotiDiv = new NotificationDiv("notification-button", "block", "my-noti-button", "my-post-button", "btn", "notification-msg")
+        var NotiScroll = new NotiMessageLoader('@Url.Action("LoadOwnerNotification", "Notification")', '@Url.Action("LoadJoinNotification", "Notification")');
+        var Notification = new NotiManager(NotiDiv, NotiScroll);
+
+        function logout() {
+            var xmlhttp = new XMLHttpRequest();
+
+            xmlhttp.onreadystatechange = function() {
+                if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200) {
+                    alert("You have logged out!")
+                    window.location.href = '@Url.Action("LoginAndRegister", "User")';
+                }
+            };
+
+            xmlhttp.open("POST", '@Url.Action("Logout", "User")', true);
+            xmlhttp.send();
+        }
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

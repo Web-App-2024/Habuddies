@@ -1,13 +1,16 @@
+using System.Text;
+using HaBuddies.DTOs;
 using HaBuddies.Models;
 using HaBuddies.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.WebEncoders.Testing;
+using Newtonsoft.Json;
 
 namespace HaBuddies.Controllers
 {
     public class UserController : Controller
     {
         private readonly UserService _userService;
-
         public UserController(UserService userService) =>
             _userService = userService;
 
@@ -16,36 +19,58 @@ namespace HaBuddies.Controllers
             return View();
         }
 
-        public IActionResult MyProfile(UserNoPassword user)
+        public async Task<IActionResult> MyPost()
         {
-            return View(user);
-        }
+            UserNoPassword userExist = HttpContext.Session.Get<UserNoPassword>("user")!;
 
-        [HttpPost]
-        public async Task<ActionResult> Register(User user)
-        {
-            var id = await _userService.Register(user);
-
-            if (id == null)
+            if (userExist == null)
             {
                 return RedirectToAction(nameof(LoginAndRegister));
             }
 
-            HttpContext.Session.SetString("userId", id);
+            var events = await _userService.GetMyPost(userExist.Id!);
+            return View(events);
+        }
+
+        public async Task<IActionResult> History()
+        {
+            UserNoPassword userExist = HttpContext.Session.Get<UserNoPassword>("user")!;
+
+            if (userExist == null)
+            {
+                return RedirectToAction(nameof(LoginAndRegister));
+            }
+
+            var events = await _userService.GetHistory(userExist.Id!);
+            return View(events);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Register(CreateUserDTO createUserDTO)
+        {
+            var userExist = await _userService.Register(createUserDTO);
+
+            if (userExist == null)
+            {
+                return RedirectToAction(nameof(LoginAndRegister));
+            }
+
+            HttpContext.Session.Set("user", userExist);
             return RedirectToAction("Index", "Event");
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login(UserDto userDto)
+        public async Task<ActionResult> Login(LoginUserDTO loginUserDto)
         {
-            var id = await _userService.Login(userDto);
+            var userExist = await _userService.Login(loginUserDto);
 
-            if (id == null)
-            {
-                return RedirectToAction(nameof(LoginAndRegister));
+            if (userExist == null)
+            {   
+                ModelState.AddModelError(string.Empty, "Invalid email or password.");
+                    return View("LoginAndRegister");
             }
 
-            HttpContext.Session.SetString("userId", id);
+            HttpContext.Session.Set("user", userExist); 
             return RedirectToAction("Index", "Event");
         }
 
@@ -57,35 +82,37 @@ namespace HaBuddies.Controllers
             return RedirectToAction(nameof(LoginAndRegister));
         }
 
-        [HttpPut]
-        public async Task<ActionResult> Update(UpdateUser updateUser)
+        [HttpPost]
+        public async Task<ActionResult> Update(EditUserDTO editUserDTO)
         {
-            string id = HttpContext.Session.GetString("userId")!;
-            if (string.IsNullOrEmpty(id))
+           UserNoPassword userExist = HttpContext.Session.Get<UserNoPassword>("user")!;
+
+            if (userExist == null)
             {
                 return RedirectToAction(nameof(LoginAndRegister));
             }
 
-            var user = await _userService.UpdateUser(id, updateUser);
+            var user = await _userService.UpdateUser(userExist.Id!, editUserDTO);
 
             if (user == null)
             {
                 return RedirectToAction("LoginAndRegister");
             }
+
             return RedirectToAction(nameof(MyProfile), new { user });
         }
 
-        public async Task<ActionResult> GetMyProfile()
+        public async Task<IActionResult> MyProfile()
         {
-            string id = HttpContext.Session.GetString("userId")!;
+            UserNoPassword userExist = HttpContext.Session.Get<UserNoPassword>("user")!;
 
-            if (string.IsNullOrEmpty(id))
+            if (userExist == null)
             {
                 return RedirectToAction(nameof(LoginAndRegister));
             }
 
-            var user = await _userService.GetUserById(id);
-            return RedirectToAction(nameof(MyProfile), new { user });
+            var user = await _userService.GetUserById(userExist.Id!);
+            return View(user);
         }
 
         public async Task<ActionResult> GetUserById(string id)

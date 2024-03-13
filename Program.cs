@@ -10,7 +10,7 @@ builder.Services.Configure<HaBuddiesDatabaseSettings>(
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.IdleTimeout = TimeSpan.FromHours(1);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
@@ -19,6 +19,8 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<MongoService>();
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<EventService>();
+builder.Services.AddSingleton<ImageService>();
+builder.Services.AddSingleton<NotificationService>();
 
 var app = builder.Build();
 
