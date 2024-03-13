@@ -17,10 +17,25 @@
 
 {       string userId = noti.FromUserId;
         string imageProfilePath = ImageService.GetUserImageFileExtension(userId);
-        var category = noti.Event.Category;
+        
         var type = noti.Type;
+    @if (type == TypeStatus.Deleted)
+                    {
+                        <div class="noti-user" > 
+                            <a draggable="false"> 
+                                <div class="noti-heading"> 
+                                    <h2 class="noti-title">Event : @noti.EventId</h2> </div>
+                                     <hr> <div class="noti-body"> 
+                                        <p>This event your entered has been deleted from the owner :(</p>
+                                         </div> 
+                                         </a> 
+                                         </div>
 
-        <div class="noti-user" id="@noti.Event.Id">
+                    }
+                    
+        else{
+            var category = noti.Event.Category;
+            <div class="noti-user" id="@noti.Event.Id">
             <a draggable="false" asp-controller="Event" asp-action="Details" asp-route-id="@noti.Event.Id">
             <div class="noti-heading">
                 <div class="category" style="background-color: @Category.GetColorHex(category)">
@@ -31,11 +46,7 @@
             </div>
             <hr>
             <div class="noti-body">
-                @if (type == TypeStatus.Deleted)
-                    {
-                        <p>This event your entered has been deleted from the owner :(</p>
-                    }
-                    else if (type == TypeStatus.ClosedJoin)
+                @if (type == TypeStatus.ClosedJoin)
                     {
                         <p>You have been accept from owner event clicked for detail.</p>
                     }
@@ -46,4 +57,5 @@
             </div>
         </a>
         </div>
+        }
 }
