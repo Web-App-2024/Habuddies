@@ -20,7 +20,7 @@
         var type = noti.Type;
 
         <div class="notification-items" id="@noti.Event.Id">
-            <a draggable="false" asp-controller="Event" asp-action="Details" asp-route-id="@noti.Event.Id">
+            <a draggable="false" asp-controller="User" asp-action="Bio" asp-route-id="@noti.FromUserId">
                 <div class="noti-profile">
                     <img src="~/@imageProfilePath" alt="Profile picture" draggable="false">
                 </div>
@@ -39,3 +39,7 @@
             </a>
         </div>
 }
+
+<script>
+    
+</script>

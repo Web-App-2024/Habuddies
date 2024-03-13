@@ -115,7 +115,7 @@ namespace HaBuddies.Controllers
             return View(user);
         }
 
-        public async Task<ActionResult> GetUserById(string id)
+        public async Task<ActionResult> Bio(string id)
         {
             var user = await _userService.GetUserById(id);
 
@@ -126,7 +126,7 @@ namespace HaBuddies.Controllers
 
             ViewBag.UserDetails = user;
             // popup
-            return PartialView("UserProfilePartial");
+            return View();
         }
     }
 }
