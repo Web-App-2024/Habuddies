@@ -21,7 +21,7 @@
         string enrollMsg = $"{currentEnroll}";
 
         bool selfOwned = IsOwnedEvent(user, evt);
-        bool open = IsOpen(user, evt);
+        bool open = evt.IsOpen;
         bool canJoin = IsJoinable(user, evt);
         bool currentlyJoin = IsCurrentlyJoined(user, evt);
         string imageOwnerPath = ImageService.GetUserImageFileExtension(evt.OwnerId);

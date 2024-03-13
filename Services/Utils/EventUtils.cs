@@ -29,8 +29,5 @@ namespace HaBuddies.Services.Utils
             return false;
         }
 
-        public static bool IsOpen(UserNoPassword userObj, Event evt) {
-            return userObj != null && evt.IsOpen;
-        }
     }
 }
