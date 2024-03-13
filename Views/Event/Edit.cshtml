@@ -7,13 +7,13 @@
 }
 
 <div class="EditPost">
-    <div class="header"><h2>EditPost Post</h2></div>
+    <div class="header"><h2>EditPost</h2></div>
     <hr><br>
     <form class="editForm" method="post" action='@Url.Action("Edit", "Event", new { id = Model.Id })'>
         <div class="header"><h2>Property Category</h2></div>
         <div class="PropertyCategory">
             <div class="category-boxes">
-                 @foreach (var category in HaBuddies.Constants.Category.DataDict)
+                @foreach (var category in HaBuddies.Constants.Category.DataDict)
                     {
                         <div class="category-box" data-category="@category.Key">
                             @Html.Raw(category.Value.IconHtml)
@@ -34,7 +34,7 @@
                 <input type="number" class="enrollSize" id="EnrollSize" name="EnrollSize" value="@Model.EnrollSize" required>
             </div>
             <div class="inputdate">
-                <label for="EndDate">Closedate</label>
+                <label for="EndDate">Close Date</label>
                 <input type="date" class="endDate" id="EndDate" name="EndDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" required>
             </div>
         </div>
@@ -45,11 +45,11 @@
         <div class="header"><h2>Requirement</h2></div>
         <div class="requirement">
             <div class="inputRequirement">
-                <label for="MinAgeRequirement">Minage</label>
+                <label for="MinAgeRequirement">Min Age</label>
                 <input type="number" class="minAge" id="MinAgeRequirement" name="MinAgeRequirement" value= "@Model.MinAgeRequirement" >
             </div>
             <div class="inputRequirement">
-                <label for="MaxAgeRequirement">Maxage</label>
+                <label for="MaxAgeRequirement">Max Age</label>
                 <input type="number" class="maxAge" id="MaxAgeRequirement" name="MaxAgeRequirement" value="@Model.MaxAgeRequirement" >
             </div>
             <div class="inputRequirement">
