@@ -82,6 +82,14 @@
             });
         });
 
+        document.querySelector('.category').value = "@Model.Category";
+            document.querySelectorAll('.category-box').forEach(function(box) {
+                if (box.getAttribute('data-category') === "@Model.Category") {
+                    box.style.backgroundColor = box.getAttribute('color');
+                }
+            });
+
+
         var checkList = document.getElementById('GenderRequirement');
         checkList.getElementsByClassName('anchor')[0].onclick = function(evt) {
             if (checkList.classList.contains('visible'))
