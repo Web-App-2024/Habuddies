@@ -106,7 +106,6 @@ namespace HaBuddies.Services
 
         public async Task<Event[]> GetMyPost(string Id)
         {
-            var result = new Dictionary<string, List<Event>>();
             var existingUser = await _userCollection.Find(_user => _user.Id == Id).SingleOrDefaultAsync();
             var myEvents = await _eventsCollection.Find(
                 _event => _event.OwnerId == existingUser.Id
