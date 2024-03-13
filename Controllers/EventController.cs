@@ -173,5 +173,25 @@ namespace HaBuddies.Controllers
                 return View("Error");
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ToggleOpenStatus(string id)
+        {
+            try {
+                UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
+                if (user == null) {
+                    throw new UnauthorizedAccessException();
+                }
+                await _eventService.ToggleOpenStatus(id);
+                return RedirectToAction("MyPost", "User");
+            }
+            catch(UnauthorizedAccessException){
+                return RedirectToAction("LoginAndRegister", "User");
+            }
+            catch(Exception Ex){
+                Console.WriteLine(Ex);
+                return View("Error");
+            }
+        }
     }
 }
