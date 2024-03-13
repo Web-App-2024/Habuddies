@@ -98,7 +98,9 @@ namespace HaBuddies.Services
             var joinedEventIds = existingUser.JoinedEvent;
 
             var historyEvents = await _eventsCollection.Find(
-                _event => joinedEventIds!.Contains(_event.Id)
+                _event => 
+                (joinedEventIds!.Contains(_event.Id) || _event.OwnerId == existingUser.Id) &&
+                !_event.IsOpen
             ).ToListAsync();
 
             foreach(var evt in historyEvents)
@@ -115,7 +117,8 @@ namespace HaBuddies.Services
         {
             var existingUser = await _userCollection.Find(_user => _user.Id == Id).SingleOrDefaultAsync();
             var myEvents = await _eventsCollection.Find(
-                _event => _event.OwnerId == existingUser.Id
+                _event => _event.OwnerId == existingUser.Id &&
+                _event.IsOpen
             ).ToListAsync();
 
             foreach(var evt in myEvents)
@@ -126,7 +129,9 @@ namespace HaBuddies.Services
             }
 
             var joinedEvents = await _eventsCollection.Find(
-                _event => _event.SubscribersId.Contains(Id)
+                _event => 
+                _event.SubscribersId.Contains(Id) &&
+                _event.IsOpen
             ).ToListAsync();
 
             foreach (var evt in joinedEvents)
