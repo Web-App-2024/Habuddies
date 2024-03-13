@@ -90,6 +90,12 @@
         </div>
       </div>
     </div>
+    @if (ViewData.ModelState.ContainsKey(string.Empty))
+{
+    <script>
+        alert("Invalid email or password.");
+    </script>
+}
     <script>
 const login_btns = document.querySelectorAll(".login_btn");
 const register_btns = document.querySelectorAll(".register_btn");

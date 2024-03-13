@@ -203,7 +203,8 @@
     height: auto;
 }
 
-.no-event h2, p {
+.no-event > h2, 
+.no-event > p {
     margin: 0.5rem 0;
 }
 
