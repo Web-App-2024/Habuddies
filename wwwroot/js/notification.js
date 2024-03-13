@@ -1,17 +1,17 @@
 function NotiManager(NotiDiv, MessageScroll) {
   this.display = false;
-  this.showMyNoti = true;
+  this.showJoinNoti = true;
   this.div = NotiDiv
   this.MessageScroll = MessageScroll;
   var self = this;
 
   this.loadNotification = function (refresh = false) {
     if (self.display) {
-      if (self.showMyNoti) {
-        self.MessageScroll.setRouteOwner();
+      if (self.showJoinNoti) {
+        self.MessageScroll.setRouteJoin();
       }
       else {
-        self.MessageScroll.setRouteJoin();
+        self.MessageScroll.setRouteOwner();
       }
       self.MessageScroll.loadNoti(self.div.notiMessage, refresh);
     }
@@ -36,13 +36,13 @@ function NotiManager(NotiDiv, MessageScroll) {
 
   self.div.myNoti.addEventListener('click', function() {
     self.div.showButton.style.left = "0";
-    self.showMyNoti = true;
+    self.showJoinNoti = true;
     self.loadNotification(true);
   });
 
   self.div.myPost.addEventListener('click', function() {
     self.div.showButton.style.left = "125px";
-    self.showMyNoti = false;
+    self.showJoinNoti = false;
     self.loadNotification(true);
   });
 
