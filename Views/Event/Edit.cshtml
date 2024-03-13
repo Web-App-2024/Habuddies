@@ -34,11 +34,11 @@
             </div>
             <div class="inputPeople">
                 <label for="EnrollSize">People</label>
-                <input type="number" class="enrollSize" id="EnrollSize" name="EnrollSize" value="@Model.EnrollSize" required>
+                <input type="number" class="enrollSize" id="EnrollSize" name="EnrollSize" value="@Model.EnrollSize" min="0" required>
             </div>
             <div class="inputdate">
                 <label for="EndDate">Close Date</label>
-                <input type="date" class="endDate" id="EndDate" name="EndDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" required>
+                <input type="date" class="endDate" id="EndDate" name="EndDate" value="@Model.EndDate.ToLocalTime().ToString("yyyy-MM-dd")" required>
             </div>
         </div>
             <div class="inputDescription">
@@ -49,11 +49,11 @@
         <div class="requirement">
             <div class="inputRequirement">
                 <label for="MinAgeRequirement">Min Age</label>
-                <input type="number" class="minAge" id="MinAgeRequirement" name="MinAgeRequirement" value= "@Model.MinAgeRequirement" >
+                <input type="number" class="minAge" id="MinAgeRequirement" name="MinAgeRequirement" value= "@Model.MinAgeRequirement" min="0">
             </div>
             <div class="inputRequirement">
                 <label for="MaxAgeRequirement">Max Age</label>
-                <input type="number" class="maxAge" id="MaxAgeRequirement" name="MaxAgeRequirement" value="@Model.MaxAgeRequirement" >
+                <input type="number" class="maxAge" id="MaxAgeRequirement" name="MaxAgeRequirement" value="@Model.MaxAgeRequirement" min="0">
             </div>
             <div class="inputRequirement">
                 <label for="GenderRequirement">Gender</label>
