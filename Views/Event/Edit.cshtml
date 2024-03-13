@@ -13,14 +13,13 @@
         <div class="header"><h2>Property Category</h2></div>
         <div class="PropertyCategory">
             <div class="category-boxes">
-                <div class="category-box" data-category="Meeting" ><i class="fa fa-heart-o" aria-hidden="true"></i><br>Meeting</div>
-                <div class="category-box" data-category="exercise"><i class="fa-solid fa-dumbbell" aria-hidden="true"></i><br>Exercise</div>
-                <div class="category-box" data-category="Exercise"><i class="fa-solid fa-utensils" aria-hidden="true"></i><br>Eating</div>
-                <div class="category-box" data-category="Working"><i class="fa-solid fa-briefcase" aria-hidden="true"></i><br>Working</div>
-                <div class="category-box" data-category="Concert"><i class="fa-solid fa-guitar" aria-hidden="true"></i><br>Concert</div>
-                <div class="category-box" data-category="Karaoke"><i class="fa-solid fa-music" aria-hidden="true"></i><br>Karaoke</div>
-                <div class="category-box" data-category="Party"><i class="fa-solid fa-champagne-glasses" aria-hidden="true"></i><br>Party</div>
-                <div class="category-box" data-category="Tabletop"><i class="fa-solid fa-chess" aria-hidden="true"></i><br>Tabletop</div>
+                 @foreach (var category in HaBuddies.Constants.Category.DataDict)
+                    {
+                        <div class="category-box" data-category="@category.Key">
+                            @Html.Raw(category.Value.IconHtml)
+                            <br>@category.Key
+                        </div>
+                    }
             </div>
             <input type="hidden" class="category" name="Category" value="@Model.Category" required>
         </div>
@@ -36,7 +35,7 @@
             </div>
             <div class="inputdate">
                 <label for="EndDate">Closedate</label>
-                <input type="date" class="endDate" id="EndDate" name="EndDate" value="@Model.EndDate" required>
+                <input type="date" class="endDate" id="EndDate" name="EndDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" required>
             </div>
         </div>
             <div class="inputDescription">
@@ -64,13 +63,7 @@
                     </ul>
                 </div>
             </div>
-            @* <div class="inputRequirement">
-                <label for="Isopen">Post service</label>
-                <select class="Closeopen" id="Isopen" name="Isopen">
-                    <option value="true" @(Model.IsOpen == true ? "selected" : "")>Open</option>
-                    <option value="false" @(Model.IsOpen == false ? "selected" : "")>Close</option>
-                </select>
-            </div> *@
+            
         </div>
         <input type="submit" value="Update" >
     </form>
@@ -92,5 +85,19 @@
             else
                 checkList.classList.add('visible');
         }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var genderRequirement = "@Model.GenderRequirement";
+
+            if (genderRequirement) {
+                var checkboxes = document.querySelectorAll('.dropdown-check-list input[type="checkbox"]');
+                checkboxes.forEach(function(checkbox) {
+                    if (genderRequirement.includes(checkbox.value)) {
+                        checkbox.checked = true;
+                    }
+                });
+            }
+        });
+
     </script>
 </div>
