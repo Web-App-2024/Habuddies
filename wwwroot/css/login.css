@@ -84,8 +84,9 @@ form.register {
   color: #7f7b7b;
   font-size: 18px;
 }
-.input-field input {
+.input-field > input {
   flex: 5;
+  margin-right: 10px;
   background: none;
   border: none;
   outline: none;
@@ -96,6 +97,7 @@ form.register {
 }
 .input-field select {
   flex: 5;
+  margin-right: 10px;
   background: none;
   border: none;
   outline: none;

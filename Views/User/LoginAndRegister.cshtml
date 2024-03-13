@@ -38,12 +38,12 @@
           </div>
           <div class="input-field">
             <i class="fa fa-calendar"></i>
-            <input type="text" class="age" placeholder="Age"  name="age"/>
+            <input type="date" class="age" placeholder="Age"  name="age"/>
           </div>
           <div class="input-field">
             <i class="fa fa-venus-mars"></i>
-            <select name="gender">
-              <option value="Gender">Gender</option>
+            <select name="gender" >
+              <option value="" disabled selected>Gender</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
               <option value="Others">Others</option>
@@ -90,23 +90,62 @@
         </div>
       </div>
     </div>
+    @if (ViewData.ModelState.ContainsKey(string.Empty))
+    {
+      <script>
+          alert("Invalid email or password.");
+      </script>
+    }
     <script>
-const login_btns = document.querySelectorAll(".login_btn");
-const register_btns = document.querySelectorAll(".register_btn");
-const container = document.querySelector(".container");
+        const login_btns = document.querySelectorAll(".login_btn");
+        const register_btns = document.querySelectorAll(".register_btn");
+        const container = document.querySelector(".container");
 
-register_btns.forEach((register_btn) => {
-  register_btn.addEventListener("click", () => {
-    container.classList.add("register-btn-mode");
-  });
-});
+        register_btns.forEach((register_btn) => {
+          register_btn.addEventListener("click", () => {
+            container.classList.add("register-btn-mode");
+          });
+        });
 
-login_btns.forEach((login_btn) => {
-  login_btn.addEventListener("click", () => {
-    container.classList.remove("register-btn-mode");
-  });
-});
+        login_btns.forEach((login_btn) => {
+          login_btn.addEventListener("click", () => {
+            container.classList.remove("register-btn-mode");
+          });
+        });
 
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const loginForm = document.querySelector(".login");
+            const registerForm = document.querySelector(".register");
+
+            loginForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+                checkEmptyFields(loginForm);
+            });
+
+            registerForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+                checkEmptyFields(registerForm);
+            });
+
+            function checkEmptyFields(form) {
+                const emptyFields = [];
+                const inputs = form.querySelectorAll("input, select");
+                inputs.forEach(function (input) {
+                    if (!input.value.trim()) {
+                        const label = input.previousElementSibling.textContent.trim() || input.name;
+                        emptyFields.push(label);
+                    }
+                });
+
+                if (emptyFields.length > 0) {
+                    const emptyFieldsMsg = `${emptyFields.join(" and ")} cannot be empty`;
+                    alert(emptyFieldsMsg);
+                } else {
+                    form.submit();
+                }
+            }
+        });
 
 
     </script>
