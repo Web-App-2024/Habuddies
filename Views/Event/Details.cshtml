@@ -74,10 +74,21 @@
         }
         else {
             <form method="post">
+                <button class="evt-toggle" asp-controller="Event" asp-action="ToggleOpenStatus" asp-route-id="@Model.Id">
+                    @if (Model.IsOpen) {
+                        <text>ปิดรับ</text>
+                    }
+                    else {
+                        <text>เปิดรับ</text>
+                    }
+                </button>
+            </form>
+            <form method="post">
                 <button class="evt-edit" asp-controller="Event" asp-action="Edit" asp-route-id="@Model.Id")>
                     แก้ไข
                 </button>
             </form>
+            <div class="empty"></div>
             <form method="post">
                 <button class="evt-delete" asp-controller="Event" asp-action="Delete" asp-route-id="@Model.Id")>
                     ลบทิ้ง
