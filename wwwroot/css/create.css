@@ -54,11 +54,11 @@ body {
 }
 
 
-.category-box.selected[data-color] {
-  background-color: attr(data-color);
-  border: 2px solid;
+/* .category-box.selected {
+  background-color: #afe3fc;
+  border: 2px solid #0080ff;
   color: black;
-}
+} */
 
 .detailbox {
   margin-bottom: 20px;
