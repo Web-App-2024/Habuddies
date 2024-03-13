@@ -108,7 +108,7 @@ namespace HaBuddies.Controllers
                 return RedirectToAction(nameof(LoginAndRegister));
             }
 
-            var user = await _userService.GetUserById(userExist.Id!);
+            var user = await _userService.GetUserPasswordById(userExist.Id!);
             return View(user);
         }
 
