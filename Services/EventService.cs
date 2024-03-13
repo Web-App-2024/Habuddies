@@ -207,27 +207,31 @@ namespace HaBuddies.Services
                 foreach (var subscriberId in evt.SubscribersId){
                     await createNotification(
                         subscriberId, 
-                        evt.Id, 
+                        evt.Title, 
                         false,
                         TypeStatus.Deleted,
                         evt.OwnerId
+                    );
+                    await _usersCollection.UpdateOneAsync(
+                        Builders<User>.Filter.Eq(u => u.Id, subscriberId), 
+                        Builders<User>.Update.Pull(u => u.JoinedEvent, id)
                     );
                 }
                 foreach (var userFromQueueId in evt.QueueId){
                     await createNotification(
                         userFromQueueId, 
-                        evt.Id, 
+                        evt.Title, 
                         false,
                         TypeStatus.Deleted,
                         evt.OwnerId
                     );
+                    await _usersCollection.UpdateOneAsync(
+                        Builders<User>.Filter.Eq(u => u.Id, userFromQueueId), 
+                        Builders<User>.Update.Pull(u => u.JoinedEvent, id)
+                    );
                 }
 
                 await _eventsCollection.DeleteOneAsync(evt => evt.Id == id);
-
-                var updateFilter = Builders<User>.Filter.ElemMatch(u => u.JoinedEvent, id);
-                var update = Builders<User>.Update.Pull(u => u.JoinedEvent, id);
-                await _usersCollection.UpdateManyAsync(updateFilter, update);
             }
             catch (Exception) {
                 throw;
