@@ -18,12 +18,16 @@
             <div class="header"><h2>Property Category</h2></div>
             <div class="PropertyCategory">
                 <div class="category-boxes">
-                    <div class="category-box" data-category="meeting" ><i class="fa fa-heart-o" aria-hidden="true"></i><br>Meeting</div>
-                    <div class="category-box" data-category="exercising"><i class="fa fa-futbol-o" aria-hidden="true"></i><br>Exercising</div>
-                    <div class="category-box" data-category="eating"><i class="fa fa-cutlery" aria-hidden="true"></i><br>Eating</div>
-                    <div class="category-box" data-category="working"><i class="fa fa-briefcase" aria-hidden="true"></i><br>Working</div>
-                </div>
-                <input type="hidden" class="category" name="Category" required>
+                @foreach (var categoryKey in HaBuddies.Constants.Category.DataDict.Keys)
+                {
+                    <div class="category-box" data-category="@categoryKey.ToLower()">
+                        @Html.Raw(HaBuddies.Constants.Category.GetIconHtml(categoryKey))
+                        <br />
+                        @categoryKey
+                    </div>
+                }
+            </div>
+            <input type="hidden" class="category" name="Category" required>
             </div>
             <div class="header"><h2>Detail</h2></div>
             <div class="detailbox">
@@ -37,7 +41,7 @@
                 </div>
                 <div class="inputdate">
                     <label for="EndDate">Closedate</label>
-                    <input type="datetime-local" class="endDate" id="EndDate" name="EndDate" required>
+                    <input type="date" class="endDate" id="EndDate" name="EndDate" required>
                 </div>
             </div>
 
@@ -89,7 +93,7 @@
 
         </form>
         <script>
-            document.querySelectorAll('.category-box').forEach(function(box) {
+            @* document.querySelectorAll('.category-box').forEach(function(box) {
                 box.addEventListener('click', function() {
                     document.querySelectorAll('.category-box').forEach(function(box) {
                         box.classList.remove('selected');
@@ -97,7 +101,29 @@
                     this.classList.add('selected');
                     document.querySelector('.category').value = this.getAttribute('data-category');
                 });
-            });  
+            });   *@
+
+            @* document.querySelectorAll('.category-box').forEach(function(box) {
+                box.addEventListener('click', function() {
+                    document.querySelectorAll('.category-box').forEach(function(box) {
+                        box.classList.remove('selected');
+                        box.style.backgroundColor = ""; 
+                        box.style.borderColor = ""; 
+                    });
+                    this.classList.add('selected');
+                    document.querySelector('.category').value = this.getAttribute('data-category');
+
+                    var category = this.getAttribute('data-category').toLowerCase();
+                    var colorHex = (HaBuddies.Constants.Category.GetColorHex(category);
+                    if (colorHex) {
+                        this.style.backgroundColor = colorHex;
+                        this.style.borderColor = colorHex; 
+                    }
+                });
+            }); *@
+
+
+
         </script>
     </div>
 

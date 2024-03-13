@@ -39,20 +39,7 @@ body {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); 
 }
 
-.category-box[data-category="meeting"] {
-    border: 2px solid black; 
-    border-radius: 20px; 
-    font-size: 18px;
-    padding: 20px;
-    width: auto;
-    height: auto;
-}
-.category-box[data-category="meeting"] i.fa {
-    font-size: 24px; 
-    margin-bottom: 5px;
-}
-
-.category-box[data-category="exercising"] {
+.category-box {
     border: 2px solid black; 
     border-radius: 20px; 
     font-size: 18px;
@@ -61,42 +48,13 @@ body {
     height: auto;
 }
 
-.category-box[data-category="exercising"] i.fa {
+.category-box i.fa {
     font-size: 24px; 
     margin-bottom: 5px;
 }
 
-.category-box[data-category="eating"] {
-    border: 2px solid black; 
-    border-radius: 20px; 
-    font-size: 18px;
-    padding: 20px;
-    width: auto;
-    height: auto;
-}
-
-.category-box[data-category="eating"] i.fa {
-    font-size: 24px; 
-    margin-bottom: 5px;
-}
-
-.category-box[data-category="working"] {
-    border: 2px solid black; 
-    border-radius: 20px; 
-    font-size: 18px;
-    padding: 20px;
-    width: auto;
-    height: auto;
-}
-
-.category-box[data-category="working"] i.fa {
-    font-size: 24px; 
-    margin-bottom: 5px;
-}
 
 .category-box.selected {
-    background-color: #afe3fc; 
-    border: 2px solid #0080ff;
     color: black; 
 }
 
@@ -173,7 +131,6 @@ body {
     display: grid;
     width: 100%;
     gap: 10px; 
-
 }
 
 .inputDescription {
@@ -258,3 +215,34 @@ input[type="submit"]:hover {
 }
 
 
+@media screen and (max-width: 768px) {
+    .category-boxes {
+        grid-template-columns: repeat(2, 1fr); 
+    }
+    .requirement{
+        margin-bottom: 20px;
+        margin-left: 50px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); 
+        gap: 10px; 
+    }
+    .PropertyCategory {
+        margin-bottom: 20px;
+        margin-left: 50px;
+    }
+    .detailbox {
+        margin-bottom: 20px;
+        margin-left: 50px;
+        margin-right: 20px;
+        display: grid;
+        grid-template-columns: 45% 25% 30%; 
+        gap: 10px; 
+    }
+    .inputDescription {
+        margin-bottom: 10px;
+        margin-left: 50px;
+        display: grid;
+        width: 100%;
+        gap: 10px; 
+    }
+}
