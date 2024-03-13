@@ -66,7 +66,7 @@
                 </select><br>
 
                 <label for="editBirthdate">Birthdate</label><br>
-                <input type="date" class="editBirthdate" name="Birthdate" value="@Model.BirthDate"><br>
+                <input type="date" class="editBirthdate" name="Birthdate" value="@Model.BirthDate.ToLocalTime().ToString("yyyy-MM-dd")"><br>
 
                 <label for="editPassword">Password</label><br>
                 <input type="text" class="editPassword" name="Password" value="@Model.Password"><br>
