@@ -203,6 +203,27 @@
     transition: 500ms;
 }
 
+.requirement {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 18px;
+    font-weight: 500;
+    background-color: white;
+    color: var(--dark-grey);
+    border-radius: 30px;
+    border: 2px solid var(--border-color);
+}
+
+.requirement .req-age, .requirement .req-gender {
+    color: white;
+    display: inline-block;
+    margin-left: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--main-color);
+    border-radius: 25px;
+    border: 2px solid var(--dark-blue);
+}
+
 .evt-member h2, .evt-q-user h2 {
     padding: 0.5rem 0;
     margin: 1.5rem 0;
@@ -270,4 +291,6 @@
     .evt-body .evt-enddate br { content: "";}
     .evt-body .evt-enddate br:after { content: ": ";}
     .evt-body .evt-enrollsize { justify-self: left; max-width: 12rem;}
+    .requirement { padding-top: 1rem;}
+    .requirement .req-age, .requirement .req-gender { display: block; margin: 0.6rem 0;}
 }

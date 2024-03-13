@@ -87,6 +87,12 @@
 
     </div>
 
+    <div class="requirement">
+        <span class="req-head">Requirement:</span>
+        <span class="req-age">Age: @Model.MinAgeRequirement - @Model.MaxAgeRequirement</span>
+        <span class="req-gender">Gender: @String.Join(", ", Model.GenderRequirement)</span>
+    </div>
+
     <div class="evt-member">
         <h2>Member</h2>
         @foreach (UserNoPassword member in Model.Subscribers) {
