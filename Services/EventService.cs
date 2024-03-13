@@ -170,6 +170,8 @@ namespace HaBuddies.Services
                             TypeStatus.ClosedQueue,
                             evt.OwnerId
                         );
+                        await _eventsCollection.UpdateOneAsync(filter, 
+                            Builders<Event>.Update.Pull(evt => evt.QueueId, userFromQueueId));
                     }
                 }
 
@@ -363,6 +365,8 @@ namespace HaBuddies.Services
                         TypeStatus.ClosedQueue,
                         evt.OwnerId
                     );
+                    await _eventsCollection.UpdateOneAsync(filter, 
+                        Builders<Event>.Update.Pull(evt => evt.QueueId, userFromQueueId));
                 }
             }
 
@@ -415,6 +419,28 @@ namespace HaBuddies.Services
 
                 eventToUpdate.IsOpen = !eventToUpdate.IsOpen;
                 await _eventsCollection.ReplaceOneAsync(filter, eventToUpdate);
+
+                foreach (var subscriberId in eventToUpdate.SubscribersId){
+                    await createNotification(
+                        subscriberId, 
+                        eventToUpdate.Id, 
+                        false,
+                        TypeStatus.ClosedJoin,
+                        eventToUpdate.OwnerId
+                    );
+                }
+
+                foreach (var userFromQueueId in eventToUpdate.QueueId){
+                    await createNotification(
+                        userFromQueueId, 
+                        eventToUpdate.Id, 
+                        false,
+                        TypeStatus.ClosedQueue,
+                        eventToUpdate.OwnerId
+                    );
+                    await _eventsCollection.UpdateOneAsync(filter, 
+                        Builders<Event>.Update.Pull(evt => evt.QueueId, userFromQueueId));
+                }
             }
             catch (Exception ex)
             {
