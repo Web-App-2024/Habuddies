@@ -37,7 +37,7 @@
             <span class="gender">@Model.Gender</span><br>
 
             <label>Birthdate</label><br>
-            <span class="Birthdate">@Model.BirthDate.ToString("yyyy-MM-dd")</span><br>
+            <span class="Birthdate">@Model.BirthDate.ToLocalTime().ToString("yyyy-MM-dd")</span><br>
 
             <label>Age</label><br>
             <span class="age">@Model.Age</span><br>

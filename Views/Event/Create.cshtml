@@ -21,10 +21,11 @@
                     @foreach (var category in Category.DataDict)
                     {
                         string categoryName = category.Key;
-                        <div class="category-box" data-category="@categoryName" color="@Category.GetColorHex(categoryName)">
+                        <input type="radio" name="Category" id="@categoryName" class="category-radio" value="@categoryName" required />
+                        <label for="@categoryName" class="category-box" color="@Category.GetColorHex(categoryName)">
                             @Html.Raw(category.Value.IconHtml)
                             <br>@categoryName
-                        </div>
+                        </label>
                     }
                 </div>
                 <input type="hidden" class="category" name="Category" required>
@@ -37,7 +38,7 @@
                 </div>
                 <div class="inputPeople">
                     <label for="EnrollSize">People</label>
-                    <input type="number" class="enrollSize" id="EnrollSize" name="EnrollSize" required>
+                    <input type="number" class="enrollSize" id="EnrollSize" name="EnrollSize" min="0" required>
                 </div>
                 <div class="inputdate">
                     <label for="EndDate">Close Date</label>
@@ -54,11 +55,11 @@
             <div class="requirement">
                 <div class="inputRequirement">
                     <label for="MinAgeRequirement">Min Age</label>
-                    <input type="number" class="minAge" id="MinAgeRequirement" name="MinAgeRequirement" value= "" >
+                    <input type="number" class="minAge" id="MinAgeRequirement" name="MinAgeRequirement" value= "" min="0" >
                 </div>
                 <div class="inputRequirement">
                     <label for="MaxAgeRequirement">Max Age</label>
-                    <input type="number" class="maxAge" id="MaxAgeRequirement" name="MaxAgeRequirement" value="" >
+                    <input type="number" class="maxAge" id="MaxAgeRequirement" name="MaxAgeRequirement" value="" min="0" >
                 </div>
                 <div class="inputRequirement">
                     <label for="GenderRequirement">Gender</label>
@@ -77,18 +78,17 @@
 
         </form>
         <script>
-            document.querySelectorAll('.category-box').forEach(function(box) {
-                box.addEventListener('click', function() {
+            document.getElementsByName('Category').forEach((radio) => {
+                var selector = 'label[for=' + radio.id + ']';
+                var label = document.querySelector(selector);
+                label.addEventListener('click', function(){
                     document.querySelectorAll('.category-box').forEach(function(box) {
                         box.style.backgroundColor = null;
                     });
                     const color = this.getAttribute('color');
                     this.style.backgroundColor = color;
-                    document.querySelector('.category').value = this.getAttribute('data-category');
                 });
-            });  
-
-
+            })
 
             var checkList = document.getElementById('GenderRequirement');
             checkList.getElementsByClassName('anchor')[0].onclick = function(evt) {

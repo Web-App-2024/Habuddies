@@ -20,10 +20,7 @@
             <input type="password" class="password" placeholder="Password" name="password" required/>
           </div>
           <input type="submit" value="Login" class="bt" />
-          <p class="account-text">
-            Don't have an account?
-            <a href="#" class="register_btn2">Register</a>
-          </p>
+
         </form>
 
         <form class="register" method="post" action="@Url.Action("Register", "User")">
@@ -31,6 +28,14 @@
           <div class="input-field">
             <i class="fa fa-envelope"></i>
             <input type="text" class="email" placeholder="Email"  name="email" required/>
+          </div>
+          <div class="input-field">
+            <i class="fa fa-user"></i>
+            <input type="text" class="name" placeholder="Name"  name="name" required/>
+          </div>
+          <div class="input-field">
+            <i class="fa fa-address-card"></i>
+            <input type="text" class="surname" placeholder="Surname"  name="surname" required/>
           </div>
           <div class="input-field">
             <i class="fa fa-lock"></i>
@@ -50,9 +55,7 @@
               </select>
           </div>
           <input type="submit" value="Register" class="bt" />
-          <p class="account-text">
-            Already have an account? <a href="#" class="login_btn2">Login</a>
-          </p>
+
         </form>
       </div>
       <div class="panel-containers">
@@ -60,9 +63,7 @@
           <div class="content">
             <h3>HaBudies</h3>
             <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto
-              atque minima doloremque blanditiis eaque voluptas ad magnam
-              explicabo! Quod, voluptatibus?
+              You already have Email and password ? 
             </p>
             <button class="btn login_btn">Login</button>
           </div>
@@ -76,9 +77,7 @@
           <div class="content">
             <h3>HaBudies</h3>
             <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto
-              atque minima doloremque blanditiis eaque voluptas ad magnam
-              explicabo! Quod, voluptatibus?
+              This is first time to come my website right?
             </p>
             <button class="btn register_btn">Register</button>
           </div>
