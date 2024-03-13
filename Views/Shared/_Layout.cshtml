@@ -74,7 +74,7 @@
                 <a class="my-profile-nav" asp-area="" asp-controller="User" asp-action="MyProfile"><i class="fa-solid fa-address-card"></i> My Profile</a>
             </li>
             <li class=" @(currentRoute==Url.Action("MyPost", "User")?"active":"")">
-                <a class="my-post-nav" asp-area="" asp-controller="" asp-action=""><i class="fa-solid fa-calendar"></i> My Post</a>
+                <a class="my-post-nav" asp-area="" asp-controller="User" asp-action="MyPost"><i class="fa-solid fa-calendar"></i> My Post</a>
             </li>
             <li class=" @(currentRoute==Url.Action("History", "User")?"active":"")">
                 <a class="history-nav" asp-area="" asp-controller="User" asp-action="History"><i class="fa-solid fa-clock-rotate-left"></i> History</a>
