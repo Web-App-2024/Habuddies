@@ -65,8 +65,9 @@ namespace HaBuddies.Controllers
             var userExist = await _userService.Login(loginUserDto);
 
             if (userExist == null)
-            {
-                return RedirectToAction(nameof(LoginAndRegister));
+            {   
+                ModelState.AddModelError(string.Empty, "Invalid email or password.");
+                    return View("LoginAndRegister");
             }
 
             HttpContext.Session.Set("user", userExist); 
