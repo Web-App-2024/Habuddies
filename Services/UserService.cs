@@ -35,7 +35,13 @@ namespace HaBuddies.Services
             return userNoPassword;
         }
 
-        public async Task<UserNoPassword> UpdateUser(string id, EditUserDTO editUserDTO)
+        public async Task<User> GetUserPasswordById(string id)
+        {
+            User user = await _userCollection.Find(_user => _user.Id == id).SingleOrDefaultAsync();
+            return user;
+        }
+
+        public async Task<User> UpdateUser(string id, EditUserDTO editUserDTO)
         {
             var filter = Builders<User>.Filter.Eq(u => u.Id, id);
             var userExist = await _userCollection.Find(filter).FirstOrDefaultAsync();
@@ -57,8 +63,7 @@ namespace HaBuddies.Services
                 .Set("Bio", editUserDTO.Bio);
 
             User user = await _userCollection.FindOneAndUpdateAsync<User>(_user => _user.Id == id, update);
-            UserNoPassword _user = (UserNoPassword)user;
-            return _user;
+            return user;
         }
 
         public async Task<UserNoPassword?> Register(CreateUserDTO createUserDTO)

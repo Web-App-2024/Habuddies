@@ -7,8 +7,6 @@
 }
 
 
-<div class="filter-section">
-    <button type="button" class="filter"><i class="fa-solid fa-sliders"></i></button>
 </div>
 
     <div class="createPost">
@@ -18,14 +16,21 @@
             <div class="header"><h2>Property Category</h2></div>
             <div class="PropertyCategory">
                 <div class="category-boxes">
-                    <div class="category-box" data-category="Meeting" ><i class="fa fa-heart-o" aria-hidden="true"></i><br>Meeting</div>
+                    @foreach (var category in HaBuddies.Constants.Category.DataDict)
+                    {
+                        <div class="category-box" data-category="@category.Key">
+                            @Html.Raw(category.Value.IconHtml)
+                            <br>@category.Key
+                        </div>
+                    }
+                    @* <div class="category-box" data-category="Meeting" ><i class="fa fa-heart-o" aria-hidden="true"></i><br>Meeting</div>
                     <div class="category-box" data-category="exercise"><i class="fa-solid fa-dumbbell" aria-hidden="true"></i><br>Exercise</div>
                     <div class="category-box" data-category="Exercise"><i class="fa-solid fa-utensils" aria-hidden="true"></i><br>Eating</div>
                     <div class="category-box" data-category="Working"><i class="fa-solid fa-briefcase" aria-hidden="true"></i><br>Working</div>
                     <div class="category-box" data-category="Concert"><i class="fa-solid fa-guitar" aria-hidden="true"></i><br>Concert</div>
                     <div class="category-box" data-category="Karaoke"><i class="fa-solid fa-music" aria-hidden="true"></i><br>Karaoke</div>
                     <div class="category-box" data-category="Party"><i class="fa-solid fa-champagne-glasses" aria-hidden="true"></i><br>Party</div>
-                    <div class="category-box" data-category="Tabletop"><i class="fa-solid fa-chess" aria-hidden="true"></i><br>Tabletop</div>
+                    <div class="category-box" data-category="Tabletop"><i class="fa-solid fa-chess" aria-hidden="true"></i><br>Tabletop</div> *@
                 </div>
                 <input type="hidden" class="category" name="Category" required>
             </div>
@@ -53,11 +58,11 @@
             <div class="header"><h2>Requirement</h2></div>
             <div class="requirement">
                 <div class="inputRequirement">
-                    <label for="MinAgeRequirement">Minage</label>
+                    <label for="MinAgeRequirement">Min Age</label>
                     <input type="number" class="minAge" id="MinAgeRequirement" name="MinAgeRequirement" value= "" >
                 </div>
                 <div class="inputRequirement">
-                    <label for="MaxAgeRequirement">Maxage</label>
+                    <label for="MaxAgeRequirement">Max Age</label>
                     <input type="number" class="maxAge" id="MaxAgeRequirement" name="MaxAgeRequirement" value="" >
                 </div>
                 <div class="inputRequirement">

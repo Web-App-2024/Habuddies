@@ -5,60 +5,92 @@
 @section Stylesheets {
     <link rel="stylesheet" href="~/css/edit.css" asp-append-version="true" />
 }
+
 <div class="EditPost">
     <div class="header"><h2>EditPost Post</h2></div>
-        <hr><br>
+    <hr><br>
     <form class="editForm" method="post" action='@Url.Action("Edit", "Event", new { id = Model.Id })'>
-            <div class="header"><h2>Property Category</h2></div>
-            <div class="PropertyCategory">
-                <div class="category-boxes">
-                    <div class="category-box" data-category="meeting" ><i class="fa fa-heart-o" aria-hidden="true"></i><br>Meeting</div>
-                    <div class="category-box" data-category="exercising"><i class="fa fa-futbol-o" aria-hidden="true"></i><br>Exercising</div>
-                    <div class="category-box" data-category="eating"><i class="fa fa-cutlery" aria-hidden="true"></i><br>Eating</div>
-                    <div class="category-box" data-category="working"><i class="fa fa-briefcase" aria-hidden="true"></i><br>Working</div>
-                </div>
-                <input type="hidden" class="category" name="Category" value="@Model.Category" required>
+        <div class="header"><h2>Property Category</h2></div>
+        <div class="PropertyCategory">
+            <div class="category-boxes">
+                <div class="category-box" data-category="Meeting" ><i class="fa fa-heart-o" aria-hidden="true"></i><br>Meeting</div>
+                <div class="category-box" data-category="exercise"><i class="fa-solid fa-dumbbell" aria-hidden="true"></i><br>Exercise</div>
+                <div class="category-box" data-category="Exercise"><i class="fa-solid fa-utensils" aria-hidden="true"></i><br>Eating</div>
+                <div class="category-box" data-category="Working"><i class="fa-solid fa-briefcase" aria-hidden="true"></i><br>Working</div>
+                <div class="category-box" data-category="Concert"><i class="fa-solid fa-guitar" aria-hidden="true"></i><br>Concert</div>
+                <div class="category-box" data-category="Karaoke"><i class="fa-solid fa-music" aria-hidden="true"></i><br>Karaoke</div>
+                <div class="category-box" data-category="Party"><i class="fa-solid fa-champagne-glasses" aria-hidden="true"></i><br>Party</div>
+                <div class="category-box" data-category="Tabletop"><i class="fa-solid fa-chess" aria-hidden="true"></i><br>Tabletop</div>
             </div>
-            <div class="header"><h2>Detail</h2></div>
-            <div class="detailbox">
-                <div class="inputtitle">
-                    <label for="Title">Title</label>
-                    <input type="text" class="title" id="Title" name="Title" value="@Model.Title" required>
-                </div>
-                <div class="inputPeople">
-                    <label for="EnrollSize">People</label>
-                    <input type="number" class="enrollSize" id="EnrollSize" name="EnrollSize" value="@Model.EnrollSize" required>
-                </div>
-                <div class="inputdate">
-                    <label for="EndDate">Closedate</label>
-                    <input type="date" class="endDate" id="EndDate" name="EndDate" value="@Model.EndDate" required>
-                </div>
+            <input type="hidden" class="category" name="Category" value="@Model.Category" required>
+        </div>
+        <div class="header"><h2>Detail</h2></div>
+        <div class="detailbox">
+            <div class="inputtitle">
+                <label for="Title">Title</label>
+                <input type="text" class="title" id="Title" name="Title" value="@Model.Title" required>
             </div>
+            <div class="inputPeople">
+                <label for="EnrollSize">People</label>
+                <input type="number" class="enrollSize" id="EnrollSize" name="EnrollSize" value="@Model.EnrollSize" required>
+            </div>
+            <div class="inputdate">
+                <label for="EndDate">Closedate</label>
+                <input type="date" class="endDate" id="EndDate" name="EndDate" value="@Model.EndDate" required>
+            </div>
+        </div>
             <div class="inputDescription">
-                    <label for="description">Description</label>
-                    <input type="text"class="description" id="Description" name="Description" value="@Model.Description" required>
+                <label for="description">Description</label>
+                <input type="text"class="description" id="Description" name="Description" value="@Model.Description" required>
+            </div>
+        <div class="header"><h2>Requirement</h2></div>
+        <div class="requirement">
+            <div class="inputRequirement">
+                <label for="MinAgeRequirement">Minage</label>
+                <input type="number" class="minAge" id="MinAgeRequirement" name="MinAgeRequirement" value= "@Model.MinAgeRequirement" >
+            </div>
+            <div class="inputRequirement">
+                <label for="MaxAgeRequirement">Maxage</label>
+                <input type="number" class="maxAge" id="MaxAgeRequirement" name="MaxAgeRequirement" value="@Model.MaxAgeRequirement" >
+            </div>
+            <div class="inputRequirement">
+                <label for="GenderRequirement">Gender</label>
+                <div id="GenderRequirement" class="dropdown-check-list" name="GenderRequirement" tabindex="100">
+                    <span class="anchor">Select Gender</span>
+                    <ul class="items">
+                        <li><input type="checkbox" id="maleCheckbox" name="gender" value="Male"/> Male</li>
+                        <li><input type="checkbox" id="femaleCheckbox" name="gender" value="Female"/> Female</li>
+                        <li><input type="checkbox" id="otherCheckbox" name="gender" value="Other"/> Other</li>
+                    </ul>
                 </div>
-            
-            <div class="header"><h2>Requirement</h2></div>
-            <div class="requirement">
-                <div class="inputRequirement">
-                    <label for="MinAgeRequirement">Minage</label>
-                    <input type="number" class="minAge" id="MinAgeRequirement" name="MinAgeRequirement" value= "@Model.MinAgeRequirement" >
-                </div>
-                <div class="inputRequirement">
-                    <label for="MaxAgeRequirement">Maxage</label>
-                    <input type="number" class="maxAge" id="MaxAgeRequirement" name="MaxAgeRequirement" value="@Model.MaxAgeRequirement" >
-                </div>
-
-                
-                <div class="inputRequirement">
-                    <label for="Isopen">Post service</label>
-                    <select class="Closeopen" id="Isopen" name="Isopen" >
-                        <option value="true" selected='@(Model.IsOpen == "Open")'>Open</option>
-                        <option value="false" selected='@(Model.IsOpen == "Close")'>Close</option>
-                    </select>
-                </div>
-                 
-
-
+            </div>
+            @* <div class="inputRequirement">
+                <label for="Isopen">Post service</label>
+                <select class="Closeopen" id="Isopen" name="Isopen">
+                    <option value="true" @(Model.IsOpen == true ? "selected" : "")>Open</option>
+                    <option value="false" @(Model.IsOpen == false ? "selected" : "")>Close</option>
+                </select>
+            </div> *@
+        </div>
+        <input type="submit" value="Update" >
     </form>
+    <script>
+        document.querySelectorAll('.category-box').forEach(function(box) {
+            box.addEventListener('click', function() {
+                document.querySelectorAll('.category-box').forEach(function(box) {
+                    box.classList.remove('selected');
+                });
+                this.classList.add('selected');
+                document.querySelector('.category').value = this.getAttribute('data-category');
+            });
+        });
+
+        var checkList = document.getElementById('GenderRequirement');
+        checkList.getElementsByClassName('anchor')[0].onclick = function(evt) {
+            if (checkList.classList.contains('visible'))
+                checkList.classList.remove('visible');
+            else
+                checkList.classList.add('visible');
+        }
+    </script>
+</div>

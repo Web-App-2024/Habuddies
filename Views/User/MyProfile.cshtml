@@ -1,3 +1,4 @@
+@model HaBuddies.Models.User
 @using Newtonsoft.Json;
 @inject HaBuddies.Services.ImageService ImageService;
 @{
@@ -35,9 +36,13 @@
             <label>Gender</label><br>
             <span class="gender">@Model.Gender</span><br>
 
+            <label>Birthdate</label><br>
+            <span class="Birthdate">@Model.BirthDate.ToString("yyyy-MM-dd")</span><br>
+
             <label>Age</label><br>
             <span class="age">@Model.Age</span><br>
 
+            <label>contact</label><br>
             <span class="contact">@Model.Email</span><br>
 
             <label>About Me</label><br>
@@ -60,11 +65,16 @@
                     <option value="Others" selected='@(Model.Gender == "Others")'>Others</option>
                 </select><br>
 
-                <label for="editAge">Age</label><br>
-                <input type="number" class="editAge" name="Age" value="@Model.Age"><br>
+                <label for="editBirthdate">Birthdate</label><br>
+                <input type="date" class="editBirthdate" name="Birthdate" value="@Model.BirthDate"><br>
+
+                <label for="editPassword">Password</label><br>
+                <input type="text" class="editPassword" name="Password" value="@Model.Password"><br>
 
                 <label for="editBio">About me</label><br>
                 <textarea class="editBio" name="Bio">@Model.Bio</textarea><br>
+
+
 
                 <input type="submit" value='Update'>
             </form>
