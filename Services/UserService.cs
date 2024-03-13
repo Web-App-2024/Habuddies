@@ -106,6 +106,7 @@ namespace HaBuddies.Services
 
         public async Task<Event[]> GetMyPost(string Id)
         {
+            var result = new Dictionary<string, List<Event>>();
             var existingUser = await _userCollection.Find(_user => _user.Id == Id).SingleOrDefaultAsync();
             var myEvents = await _eventsCollection.Find(
                 _event => _event.OwnerId == existingUser.Id
@@ -118,7 +119,18 @@ namespace HaBuddies.Services
                 evt.Owner = userNoPassword;
             }
 
-            return myEvents.ToArray();
+            var joinedEvents = await _eventsCollection.Find(
+                _event => _event.SubscribersId.Contains(Id)
+            ).ToListAsync();
+
+            foreach (var evt in joinedEvents)
+            {
+                var user = await _userCollection.Find(user => user.Id == evt.OwnerId).FirstOrDefaultAsync();
+                UserNoPassword userNoPassword = (UserNoPassword)user;
+                evt.Owner = userNoPassword;
+            }
+
+            return myEvents.Concat(joinedEvents).ToArray();
         }
     }
 }
