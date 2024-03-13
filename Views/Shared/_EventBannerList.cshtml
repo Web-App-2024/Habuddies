@@ -72,5 +72,17 @@
             }
             
         }
+        else {
+            <form method="post">
+                <button class="evt-join active @(currentlyJoin?"leave":"join")" asp-controller="Event" asp-action="ToggleOpenStatus" asp-route-id="@evt.Id">
+                    @if (evt.IsOpen) {
+                        <text>ปิดรับ</text>
+                    }
+                    else {
+                        <text>เปิดรับ</text>
+                    }
+                </button>
+            </form>
+        }
     </div>
 }

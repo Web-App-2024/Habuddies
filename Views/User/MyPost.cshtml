@@ -1,4 +1,4 @@
-@model IEnumerable<HaBuddies.Models.Event>;
+@model HaBuddies.DTOs.MyPostResponse;
 @using HaBuddies.Models;
 @using Newtonsoft.Json;
 
@@ -12,21 +12,18 @@
     }
 }
 @section Stylesheets {
-    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/my-post.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/banner.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/header-section.css" asp-append-version="true" />
 }
-<div class="text-center">
-    <h1 class="display-4">My Post</h1>
+
+<div class="header-section">
+    <h1 class="header-text">Joined</h1>
     <hr class="split">
 </div>
+<partial name="../Shared/_EventBannerList.cshtml" model=@Model.Joined/>
 
-@{var a = Model.Where(evt => evt.OwnerId.Contains(userObject.Id));}
-<partial name="../Shared/_EventBannerList.cshtml" model=@a/>
-
-
-<div class="text-center">
-    <h1 class="display-4">Joined</h1>
+<div class="header-section">
+    <h1 class="header-text">My Post</h1>
     <hr class="split">
 </div>
-@{var b = Model.Where(evt => evt.SubscribersId.Contains(userObject.Id));}
-<partial name="../Shared/_EventBannerList.cshtml" model=@b/>
+<partial name="../Shared/_EventBannerList.cshtml" model=@Model.Owned/>
