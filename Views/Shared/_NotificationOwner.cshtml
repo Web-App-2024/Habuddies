@@ -17,6 +17,7 @@
 
 {       string userId = noti.Id;
         string imageProfilePath = ImageService.GetUserImageFileExtension(userId);
+        var type = noti.Type;
 
         <div class="notification-items" id="@noti.Event.Id">
             <a draggable="false" asp-controller="Event" asp-action="Details" asp-route-id="@noti.Event.Id">
@@ -24,7 +25,14 @@
                     <img src="~/@imageProfilePath" alt="Profile picture" draggable="false">
                 </div>
                 <div class="noti-info">
-                    <h1>@noti.User.Name has been join @noti.Event.Title</h1>
+                    @if (type == TypeStatus.Joined)
+                        {
+                            <h1>@noti.User.Name has been joined @noti.Event.Title</h1>
+                        }
+                        else if (type == TypeStatus.Cancelled)
+                        {
+                            <h1>@noti.User.Name has been Cancelled</h1>
+                        }
                     <hr/>
                     <p>Event : @noti.Event.Title</p>
                 </div>
