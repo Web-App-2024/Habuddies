@@ -1,3 +1,5 @@
+@using HaBuddies.Constants;
+
 @{
     ViewData["Title"] = "Edit";
 }
@@ -15,9 +17,10 @@
             <div class="category-boxes">
                 @foreach (var category in HaBuddies.Constants.Category.DataDict)
                     {
-                        <div class="category-box" data-category="@category.Key">
+                        string categoryName = category.Key;
+                        <div class="category-box" data-category="@categoryName" color="@Category.GetColorHex(categoryName)">
                             @Html.Raw(category.Value.IconHtml)
-                            <br>@category.Key
+                            <br>@categoryName
                         </div>
                     }
             </div>
@@ -57,9 +60,9 @@
                 <div id="GenderRequirement" class="dropdown-check-list" name="GenderRequirement" tabindex="100">
                     <span class="anchor">Select Gender</span>
                     <ul class="items">
-                        <li><input type="checkbox" id="maleCheckbox" name="gender" value="Male"/> Male</li>
-                        <li><input type="checkbox" id="femaleCheckbox" name="gender" value="Female"/> Female</li>
-                        <li><input type="checkbox" id="otherCheckbox" name="gender" value="Other"/> Other</li>
+                        <li><input type="checkbox" id="maleCheckbox" name="GenderRequirement" value="Male"  @(Model.GenderRequirement?.Contains("Male") ?? false ? "checked" : "")/> Male</li>
+                        <li><input type="checkbox" id="femaleCheckbox" name="GenderRequirement" value="Female" @(Model.GenderRequirement?.Contains("Female") ?? false ? "checked" : "")/> Female</li>
+                        <li><input type="checkbox" id="otherCheckbox" name="GenderRequirement" value="Other" @(Model.GenderRequirement?.Contains("Other") ?? false ? "checked" : "")/> Other</li>
                     </ul>
                 </div>
             </div>
@@ -71,9 +74,10 @@
         document.querySelectorAll('.category-box').forEach(function(box) {
             box.addEventListener('click', function() {
                 document.querySelectorAll('.category-box').forEach(function(box) {
-                    box.classList.remove('selected');
+                    box.style.backgroundColor = null;
                 });
-                this.classList.add('selected');
+                const color = this.getAttribute('color');
+                this.style.backgroundColor = color;
                 document.querySelector('.category').value = this.getAttribute('data-category');
             });
         });
