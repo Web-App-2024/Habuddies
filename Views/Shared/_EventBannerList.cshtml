@@ -51,36 +51,29 @@
             </div>
         </a>
         @if (!selfOwned) {
-            if (evt.IsOpen) {
-                @if (canJoin) {
-                    <form method="post">
-                        <button class="evt-join active @(currentlyJoin?"leave":"join")" asp-controller="Event" asp-action="Subscribe" asp-route-id="@evt.Id">
-                            @if (currentlyJoin) {
-                                <text>ออก</text>
-                            }
-                            else {
-                                <text>เข้าร่วม</text>
-                            }
-                        </button>
-                    </form>
-                } 
-                else {
-                    <button class="evt-join">
-                        เข้าร่วม
+            @if (canJoin) {
+                <form method="post">
+                    <button class="evt-join active @(currentlyJoin?"leave":"join")" asp-controller="Event" asp-action="Subscribe" asp-route-id="@evt.Id">
+                        @if (currentlyJoin) {
+                            <text>ออก</text>
+                        }
+                        else {
+                            <text>เข้าร่วม</text>
+                        }
                     </button>
-                }
+                </form>
+            } 
+            else {
+                <button class="evt-join">
+                    เข้าร่วม
+                </button>
             }
             
         }
-        else {
+        else if (evt.IsOpen) {
             <form method="post">
                 <button class="evt-join active @(currentlyJoin?"leave":"join")" asp-controller="Event" asp-action="ToggleOpenStatus" asp-route-id="@evt.Id">
-                    @if (evt.IsOpen) {
-                        <text>ปิดรับ</text>
-                    }
-                    else {
-                        <text>เปิดรับ</text>
-                    }
+                    ปิดรับ
                 </button>
             </form>
         }

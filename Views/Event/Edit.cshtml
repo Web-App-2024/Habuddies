@@ -7,13 +7,13 @@
 }
 
 <div class="EditPost">
-    <div class="header"><h2>EditPost Post</h2></div>
+    <div class="header"><h2>EditPost</h2></div>
     <hr><br>
-    <form class="editForm" method="post" action='@Url.Action("Edit", "Event", new { id = Model.Id })'>
+    <form class="editForm" method="post" action='@Url.Action("EditEvent", "Event", new { id = Model.Id })'>
         <div class="header"><h2>Property Category</h2></div>
         <div class="PropertyCategory">
             <div class="category-boxes">
-                 @foreach (var category in HaBuddies.Constants.Category.DataDict)
+                @foreach (var category in HaBuddies.Constants.Category.DataDict)
                     {
                         <div class="category-box" data-category="@category.Key">
                             @Html.Raw(category.Value.IconHtml)
