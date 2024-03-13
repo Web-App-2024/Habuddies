@@ -26,7 +26,7 @@
     border-bottom: 2px solid var(--light-grey);
 }
 
-.category, .evt-enrollsize, .evt-join, .evt-edit, .evt-delete{
+.category, .evt-enrollsize, .evt-join, .evt-toggle, .evt-edit, .evt-delete{
     border-radius: 25px;
     padding: 0.8rem 1rem;
     font-size: 18px;
@@ -94,7 +94,7 @@
     padding: 1rem 0;
     display: grid;
     grid-template-columns: 1fr max-content;
-    grid-template-rows: 1fr max-content max-content max-content;
+    grid-template-rows: 1fr max-content max-content max-content max-content;
     gap: 1rem 2rem;
     max-width: 100%;
 }
@@ -106,7 +106,7 @@
 }
 
 .evt-body .evt-description {
-    grid-area: 1 / 1 / 5 / 2;
+    grid-area: 1 / 1 / 6 / 2;
     padding: 1rem 1.5rem;
     min-height: 4rem;
 }
@@ -145,8 +145,12 @@
     margin-left: 0.2rem;
 }
 
+.evt-body .empty {
+    display:none;
+}
+
 .evt-body .evt-join {
-    grid-area: 3 / 2 / 5 / 3;
+    grid-area: 3 / 2 / 6 / 3;
     height: max-content;
     width: 100%;
     align-self: last baseline;
@@ -173,8 +177,23 @@
     transition: 500ms;
 }
 
-.evt-body .evt-edit {
+.evt-body .evt-toggle {
     grid-area: 3 / 2 / 4 / 3;
+    height: max-content;
+    align-self: last baseline;
+    width: 100%;
+    border: none;
+    background-color: var(--main-color);
+    cursor: pointer;
+}
+
+.evt-body .evt-toggle:hover {
+    background-color: var(--hover-dark-color);
+    transition: 500ms;
+}
+
+.evt-body .evt-edit {
+    grid-area: 4 / 2 / 5 / 3;
     height: max-content;
     align-self: last baseline;
     width: 100%;
@@ -189,7 +208,7 @@
 }
 
 .evt-body .evt-delete {
-    grid-area: 4 / 2 / 5 / 3;
+    grid-area: 5 / 2 / 6 / 3;
     height: max-content;
     align-self: last baseline;
     width: 100%;
@@ -201,6 +220,27 @@
 .evt-body .evt-delete:hover {
     background-color: var(--dark-red);
     transition: 500ms;
+}
+
+.requirement {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    font-size: 18px;
+    font-weight: 500;
+    background-color: white;
+    color: var(--dark-grey);
+    border-radius: 30px;
+    border: 2px solid var(--border-color);
+}
+
+.requirement .req-age, .requirement .req-gender {
+    color: white;
+    display: inline-block;
+    margin-left: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--main-color);
+    border-radius: 25px;
+    border: 2px solid var(--dark-blue);
 }
 
 .evt-member h2, .evt-q-user h2 {
@@ -259,8 +299,10 @@
     .evt-body .evt-enddate { grid-area: 2 / 1 / 3 / 2; }
     .evt-body .evt-enrollsize { grid-area: 3 / 1 / 4 / 2; }
     .evt-body .evt-join { grid-area: 2 / 2 / 3 / 3; }
-    .evt-body .evt-edit { grid-area: 2 / 2 / 3 / 3; }
-    .evt-body .evt-delete { grid-area: 3 / 2 / 4 / 3; }
+    .evt-body .evt-toggle { grid-area: 2 / 2 / 3 / 3; }
+    .evt-body .evt-edit { grid-area: 3 / 2 / 4 / 3; }
+    .evt-body .empty { display: block; }
+    .evt-body .evt-delete { grid-area: 4 / 2 / 5 / 3; }
 
     .evt-body .evt-enddate { 
         justify-self: left;
@@ -270,4 +312,6 @@
     .evt-body .evt-enddate br { content: "";}
     .evt-body .evt-enddate br:after { content: ": ";}
     .evt-body .evt-enrollsize { justify-self: left; max-width: 12rem;}
+    .requirement { padding-top: 1rem;}
+    .requirement .req-age, .requirement .req-gender { display: block; margin: 0.6rem 0;}
 }

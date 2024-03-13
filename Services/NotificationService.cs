@@ -43,8 +43,10 @@ namespace HaBuddies.Services
                     var user = await _usersCollection.Find(u => u.Id == noti.FromUserId).FirstOrDefaultAsync();
                     UserNoPassword userNoPassword = (UserNoPassword)user;
                     noti.User = userNoPassword;
-                    var evt = await _eventsCollection.Find(evt => evt.Id == noti.EventId).FirstOrDefaultAsync();
-                    noti.Event = evt;
+                    if (noti.Type != TypeStatus.Deleted){
+                        var evt = await _eventsCollection.Find(evt => evt.Id == noti.EventId).FirstOrDefaultAsync();
+                        noti.Event = evt;
+                    }
                 }
 
                 var totalCount = await _notificationsCollection.CountDocumentsAsync(filter);

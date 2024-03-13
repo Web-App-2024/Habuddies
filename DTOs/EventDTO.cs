@@ -1,3 +1,5 @@
+using HaBuddies.Models;
+
 namespace HaBuddies.DTOs
 {
     public class CreateEventDTO
@@ -24,5 +26,11 @@ namespace HaBuddies.DTOs
         public int? MaxAgeRequirement { get; set; }
         public List<string>? GenderRequirement { get; set; }
         public bool? IsOpen { get; set; }
+    }
+
+    public class MyPostResponse
+    {
+        public List<Event>? Owned { get; set;}
+        public List<Event>? Joined { get; set;}
     }
 }

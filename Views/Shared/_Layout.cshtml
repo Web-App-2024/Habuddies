@@ -46,12 +46,12 @@
                     if (userExist != null) {
                         dynamic userObject = JsonConvert.DeserializeObject(userExist)!;
                         string userId = userObject.Id;
-                        string uName = userObject.Name;
-                        string uSurname = userObject.Surname;
+                        string uName = userObject.Email;
+                        if (userObject.Name != null) uName = userObject.Name + " " + userObject.Surname;
                         string imageProfilePath = ImageService.GetUserImageFileExtension(userId);
 
                         <a class="profile-button" asp-area="" asp-controller="User" asp-action="MyProfile">
-                            <span class="profile-name">@uName @uSurname</span>
+                            <span class="profile-name">@uName</span>
                             <div class="profile-picture">
                                 <img alt="Profile picture" src="~/@imageProfilePath" draggable="false">
                             </div>

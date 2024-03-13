@@ -35,6 +35,12 @@ namespace HaBuddies.Services
             return userNoPassword;
         }
 
+        public async Task<User> GetUserPasswordById(string id)
+        {
+            User user = await _userCollection.Find(_user => _user.Id == id).SingleOrDefaultAsync();
+            return user;
+        }
+
         public async Task<User> UpdateUser(string id, EditUserDTO editUserDTO)
         {
             var filter = Builders<User>.Filter.Eq(u => u.Id, id);
@@ -57,7 +63,6 @@ namespace HaBuddies.Services
                 .Set("Bio", editUserDTO.Bio);
 
             User user = await _userCollection.FindOneAndUpdateAsync<User>(_user => _user.Id == id, update);
-            // UserNoPassword _user = (UserNoPassword)user;
             return user;
         }
 
@@ -98,7 +103,9 @@ namespace HaBuddies.Services
             var joinedEventIds = existingUser.JoinedEvent;
 
             var historyEvents = await _eventsCollection.Find(
-                _event => joinedEventIds!.Contains(_event.Id)
+                _event => 
+                (joinedEventIds!.Contains(_event.Id) || _event.OwnerId == existingUser.Id) &&
+                !_event.IsOpen
             ).ToListAsync();
 
             foreach(var evt in historyEvents)
@@ -111,11 +118,12 @@ namespace HaBuddies.Services
             return historyEvents.ToArray();
         }
 
-        public async Task<Event[]> GetMyPost(string Id)
+        public async Task<MyPostResponse> GetMyPost(string Id)
         {
             var existingUser = await _userCollection.Find(_user => _user.Id == Id).SingleOrDefaultAsync();
             var myEvents = await _eventsCollection.Find(
-                _event => _event.OwnerId == existingUser.Id
+                _event => _event.OwnerId == existingUser.Id &&
+                _event.IsOpen
             ).ToListAsync();
 
             foreach(var evt in myEvents)
@@ -126,7 +134,9 @@ namespace HaBuddies.Services
             }
 
             var joinedEvents = await _eventsCollection.Find(
-                _event => _event.SubscribersId.Contains(Id)
+                _event => 
+                _event.SubscribersId.Contains(Id) &&
+                _event.IsOpen
             ).ToListAsync();
 
             foreach (var evt in joinedEvents)
@@ -135,8 +145,12 @@ namespace HaBuddies.Services
                 UserNoPassword userNoPassword = (UserNoPassword)user;
                 evt.Owner = userNoPassword;
             }
-
-            return myEvents.Concat(joinedEvents).ToArray();
+            var response = new MyPostResponse
+            {
+                Owned = myEvents,
+                Joined = joinedEvents
+            };
+            return response;
         }
     }
 }
