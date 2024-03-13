@@ -13,6 +13,7 @@ namespace HaBuddies.Models
         public string Surname { get; set; } = null!;
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
+        public DateTime BirthDate { get; set; }
         public int Age { get; set; }
         public string Gender { get; set; } = null!;
         public string Bio { get; set; } = null!;
@@ -32,6 +33,7 @@ namespace HaBuddies.Models
         public string Surname { get; set; } = null!;
         public string Email { get; set; } = null!;
         public int Age { get; set; }
+        public DateTime BirthDate { get; set; }
         public string Gender { get; set; } = null!;
         public string Bio { get; set; } = null!;
     }
