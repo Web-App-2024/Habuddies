@@ -17,10 +17,10 @@ namespace HaBuddies.Controllers
             try
             {
                 UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
-                string userId = user.Id;
                 if (user == null) {
                     return Unauthorized();
                 }
+                string userId = user.Id;
                 var paginationResponse = await _notificationService.GetAllAsync(page, perPage, userId, true);
 
                 if (paginationResponse.Data.Count <= 0 && paginationResponse.PrevPage != null) {
@@ -42,10 +42,10 @@ namespace HaBuddies.Controllers
             try
             {
                 UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
-                string userId = user.Id;
                 if (user == null) {
                     return Unauthorized();
                 }
+                string userId = user.Id;
                 var paginationResponse = await _notificationService.GetAllAsync(page, perPage, userId, false);
 
                 if (paginationResponse.Data.Count <= 0 && paginationResponse.PrevPage != null) {
