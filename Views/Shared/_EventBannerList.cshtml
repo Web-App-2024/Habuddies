@@ -47,7 +47,7 @@
             </div>
             <div class="evt-body">
                 <span class="evt-description">@evt.Description</span>
-                <span class="evt-enddate">Close Date<br>@evt.EndDate.ToString("dd/MM/yyyy")</span>
+                <span class="evt-enddate">Close Date<br>@evt.EndDate.ToLocalTime().ToString("dd/MM/yyyy")</span>
             </div>
         </a>
         @if (!selfOwned) {
