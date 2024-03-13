@@ -15,7 +15,7 @@
 
 @foreach (Notification noti in Model.Data)
 
-{       string userId = noti.Id;
+{       string userId = noti.FromUserId;
         string imageProfilePath = ImageService.GetUserImageFileExtension(userId);
         var category = noti.Event.Category;
         var type = noti.Type;

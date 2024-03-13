@@ -1,0 +1,9 @@
+@import "./theme.css";
+
+.split {
+  margin: 10px;
+}
+
+.header-text {
+  margin-left: 30px;
+}

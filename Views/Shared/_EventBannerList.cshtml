@@ -1,9 +1,9 @@
-@model PaginationResponse<HaBuddies.Models.Event>
+@model IEnumerable<HaBuddies.Models.Event>;
 @using HaBuddies.Models
 @using HaBuddies.Constants
 @using static HaBuddies.Services.Utils.EventUtil
-@using Newtonsoft.Json;
 @inject HaBuddies.Services.ImageService ImageService;
+@using Newtonsoft.Json;
 
 @{
     string userExist = ViewContext.HttpContext.Session.GetString("user")!;
@@ -13,9 +13,8 @@
     }
 }
 
-@if (Model.Data.Count > 0) {
-    @foreach (Event evt in Model.Data)
-    {
+@foreach (Event evt in Model)
+{
     var category = evt.Category;
     int currentEnroll = evt.SubscribersId.Count + evt.QueueId.Count;
     string enrollMsg = evt.IsOpen?$"{currentEnroll}/{evt.EnrollSize}":$"{evt.SubscribersId.Count}";
@@ -51,7 +50,8 @@
                 <span class="evt-enddate">Close Date<br>@evt.EndDate.ToString("dd/MM/yyyy")</span>
             </div>
         </a>
-        @if (!selfOwned && evt.IsOpen) {
+        @if (!selfOwned) {
+            if (evt.IsOpen) {
                 @if (canJoin) {
                     <form method="post">
                         <button class="evt-join active @(currentlyJoin?"leave":"join")" asp-controller="Event" asp-action="Subscribe" asp-route-id="@evt.Id">
@@ -69,16 +69,20 @@
                         เข้าร่วม
                     </button>
                 }
+            }
             
         }
-    </div>
-    }
-}
-else {
-    <div class="no-event">
-        <img src="https://img.freepik.com/free-vector/group-therapy-illustration-concept_52683-45727.jpg?t=st=1709623373~exp=1709626973~hmac=78df7e8d67f4c5f6b0d06d0113b240ce820bf4d30f74051aaf195c505371a8d0" alt="no_event">
-        <h2>No events yet</h2>
-        <p>It has been quiet recently. Let's create some new events!</p>
-        <a class="create-event" asp-area="" asp-controller="Event" asp-action="Create">Create event</a>
+        else {
+            <form method="post">
+                <button class="evt-join active @(currentlyJoin?"leave":"join")" asp-controller="Event" asp-action="ToggleOpenStatus" asp-route-id="@evt.Id">
+                    @if (evt.IsOpen) {
+                        <text>ปิดรับ</text>
+                    }
+                    else {
+                        <text>เปิดรับ</text>
+                    }
+                </button>
+            </form>
+        }
     </div>
 }

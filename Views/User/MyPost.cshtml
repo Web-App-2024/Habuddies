@@ -1,18 +1,29 @@
+@model HaBuddies.DTOs.MyPostResponse;
+@using HaBuddies.Models;
+@using Newtonsoft.Json;
+
 @{
     ViewData["Title"] = "MyPost";
+
+    string userExist = ViewContext.HttpContext.Session.GetString("user")!;
+    UserNoPassword userObject = null!;
+    if (userExist != null) {
+        userObject = JsonConvert.DeserializeObject<UserNoPassword>(userExist)!;
+    }
 }
 @section Stylesheets {
-    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/my-post.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/banner.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/header-section.css" asp-append-version="true" />
 }
-<div class="text-center">
-    <h1 class="display-4">My Post</h1>
-    <hr class="split">
-</div>
-<partial name="../Shared/_MyCreatedPost.cshtml" />
 
-<div class="text-center">
-    <h1 class="display-4">Joined</h1>
+<div class="header-section">
+    <h1 class="header-text">Joined</h1>
     <hr class="split">
 </div>
-<partial name="../Shared/_MyJoinedPost.cshtml" />
+<partial name="../Shared/_EventBannerList.cshtml" model=@Model.Joined/>
+
+<div class="header-section">
+    <h1 class="header-text">My Post</h1>
+    <hr class="split">
+</div>
+<partial name="../Shared/_EventBannerList.cshtml" model=@Model.Owned/>
