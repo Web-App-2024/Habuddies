@@ -65,6 +65,13 @@ namespace HaBuddies.Controllers
         public IActionResult Create()
         {
             try {
+                UserNoPassword user = HttpContext.Session.Get<UserNoPassword>("user")!;
+
+                if (user == null) 
+                {
+                    return RedirectToAction("LoginAndRegister", "User");
+                }
+
                 return View();
             }
             catch (Exception ex)
