@@ -189,7 +189,11 @@ body {
     width: 100%;
     font-size: 16px;
 }
-
+.category-box.selected {
+    border-color: #0056b3;
+    background-color: #90ccf8; 
+    color: #fff; 
+}
 
 .postForm {
     display: flex;
@@ -214,6 +218,100 @@ input[type="submit"]:hover {
     background-color: #0056b3;
 }
 
+.dropdown-check-list {
+    display: inline-block;
+  }
+  
+  .dropdown-check-list .anchor {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px 50px 5px 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .dropdown-check-list .anchor:after {
+    position: absolute;
+    content: "";
+    border-left: 2px solid black;
+    border-top: 2px solid black;
+    padding: 5px;
+    right: 10px;
+    top: 20%;
+    -moz-transform: rotate(-135deg);
+    -ms-transform: rotate(-135deg);
+    -o-transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+    transform: rotate(-135deg);
+  }
+  
+  .dropdown-check-list .anchor:active:after {
+    right: 8px;
+    top: 21%;
+  }
+  
+  .dropdown-check-list ul.items {
+    padding: 2px;
+    display: none;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-top: none;
+  }
+  
+  .dropdown-check-list ul.items li {
+    list-style: none;
+  }
+  
+  .dropdown-check-list.visible .anchor {
+    color: #0094ff;
+  }
+  
+  .dropdown-check-list.visible .items {
+    display: block;
+  }
+  
+  
+
+@media screen and (max-width: 992px) {
+    .category-boxes {
+        grid-template-columns: repeat(2, 1fr); 
+    }
+    .requirement{
+        margin-bottom: 20px;
+        margin-left: 25px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); 
+        gap: 10px; 
+    }
+    .PropertyCategory {
+        margin-bottom: 20px;
+        margin-left: 25px;
+    }
+    .detailbox {
+        margin-bottom: 20px;
+        margin-left: 25px;
+        margin-right: 20px;
+        display: grid;
+        grid-template-columns: 45% 25% 30%; 
+        gap: 10px; 
+    }
+    .inputDescription {
+        margin-bottom: 10px;
+        margin-left: 25px;
+        display: grid;
+        width: 100%;
+        gap: 10px; 
+    }
+    .inputDescription {
+        border: 2px solid black; 
+        border-radius: 20px; 
+        font-size: 18px;
+        padding: 20px;
+        width: auto;
+        height: auto;
+    }
+    
+}
 
 @media screen and (max-width: 768px) {
     .category-boxes {
@@ -245,4 +343,59 @@ input[type="submit"]:hover {
         width: 100%;
         gap: 10px; 
     }
+    .inputDescription {
+        border: 2px solid black; 
+        border-radius: 20px; 
+        font-size: 18px;
+        padding: 20px;
+        width: auto;
+        height: auto;
+    }
+    
+}
+
+@media screen and (max-width: 500px) {
+    .category-boxes {
+        grid-template-columns: repeat(2, 1fr); 
+    }
+    .requirement{
+        margin-bottom: 20px;
+        margin-right: 20px;
+        margin-left: 10px;
+        display: grid;
+        grid-template-columns: repeat(1, 1fr); 
+        gap: 10px; 
+    }
+    .PropertyCategory {
+        margin-bottom: 20px;
+        margin-left: 10px;
+        margin-right: 20px;
+    }
+    .detailbox {
+        margin-bottom: 20px;
+        margin-left: 10px;
+        margin-right: 20px;
+        display: grid;
+        grid-template-columns: repeat(1, 1fr); 
+        gap: 10px; 
+    }
+    .inputDescription {
+        margin-bottom: 10px;
+        margin-left: 10px;
+        margin-right: 20px;
+        display: grid;
+        width: 100%;
+        gap: 10px; 
+    }
+    .inputDescription {
+        margin-right: 20px;
+        border: 2px solid black; 
+        border-radius: 20px; 
+        font-size: 18px;
+        padding: 20px;
+        width: auto;
+        height: auto;
+
+    }
+    
 }

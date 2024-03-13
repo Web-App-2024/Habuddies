@@ -18,16 +18,16 @@
             <div class="header"><h2>Property Category</h2></div>
             <div class="PropertyCategory">
                 <div class="category-boxes">
-                @foreach (var categoryKey in HaBuddies.Constants.Category.DataDict.Keys)
-                {
-                    <div class="category-box" data-category="@categoryKey.ToLower()">
-                        @Html.Raw(HaBuddies.Constants.Category.GetIconHtml(categoryKey))
-                        <br />
-                        @categoryKey
-                    </div>
-                }
-            </div>
-            <input type="hidden" class="category" name="Category" required>
+                    <div class="category-box" data-category="Meeting" ><i class="fa fa-heart-o" aria-hidden="true"></i><br>Meeting</div>
+                    <div class="category-box" data-category="exercise"><i class="fa-solid fa-dumbbell" aria-hidden="true"></i><br>Exercise</div>
+                    <div class="category-box" data-category="Exercise"><i class="fa-solid fa-utensils" aria-hidden="true"></i><br>Eating</div>
+                    <div class="category-box" data-category="Working"><i class="fa-solid fa-briefcase" aria-hidden="true"></i><br>Working</div>
+                    <div class="category-box" data-category="Concert"><i class="fa-solid fa-guitar" aria-hidden="true"></i><br>Concert</div>
+                    <div class="category-box" data-category="Karaoke"><i class="fa-solid fa-music" aria-hidden="true"></i><br>Karaoke</div>
+                    <div class="category-box" data-category="Party"><i class="fa-solid fa-champagne-glasses" aria-hidden="true"></i><br>Party</div>
+                    <div class="category-box" data-category="Tabletop"><i class="fa-solid fa-chess" aria-hidden="true"></i><br>Tabletop</div>
+                </div>
+                <input type="hidden" class="category" name="Category" required>
             </div>
             <div class="header"><h2>Detail</h2></div>
             <div class="detailbox">
@@ -60,40 +60,24 @@
                     <label for="MaxAgeRequirement">Maxage</label>
                     <input type="number" class="maxAge" id="MaxAgeRequirement" name="MaxAgeRequirement" value="" >
                 </div>
-                @* <div class="inputRequirement">
-                    <label>Gender</label>
-                    <div>
-                        <input type="checkbox" id="MaleGender" name="GenderRequirement" value="Male" @(Model?.Gender == "Male" ? "checked" : "")>
-                        <label for="MaleGender">Male</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="FemaleGender" name="GenderRequirement" value="Female" @(Model?.Gender == "Female" ? "checked" : "")>
-                        <label for="FemaleGender">Female</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="OthersGender" name="GenderRequirement" value="Others" @(Model?.Gender == "Others" ? "checked" : "")>
-                        <label for="OthersGender">Others</label>
-                    </div>
-                    <input type="hidden" name="GenderRequirement" value="null" />
-                </div> *@
                 <div class="inputRequirement">
                     <label for="GenderRequirement">Gender</label>
-                    <select class="gender" id="GenderRequirement" name="GenderRequirement" >
-                        <option value="Null"></option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Others">Others</option>
-                    </select>
+                    <div id="GenderRequirement" class="dropdown-check-list" name="GenderRequirement" tabindex="100">
+                    <span class="anchor">Select Gender</span>
+                    <ul class="items">
+                        <li><input type="checkbox" id="maleCheckbox" name="gender" value="Male"/> Male</li>
+                        <li><input type="checkbox" id="femaleCheckbox" name="gender" value="Female"/> Female</li>
+                        <li><input type="checkbox" id="otherCheckbox" name="gender" value="Other"/> Other</li>
+
+                    </ul>
+                </div> 
                 </div>
-
-                
-
             </div>
             <input type="submit" value="Create" >
 
         </form>
         <script>
-            @* document.querySelectorAll('.category-box').forEach(function(box) {
+            document.querySelectorAll('.category-box').forEach(function(box) {
                 box.addEventListener('click', function() {
                     document.querySelectorAll('.category-box').forEach(function(box) {
                         box.classList.remove('selected');
@@ -101,29 +85,15 @@
                     this.classList.add('selected');
                     document.querySelector('.category').value = this.getAttribute('data-category');
                 });
-            });   *@
+            });  
 
-            @* document.querySelectorAll('.category-box').forEach(function(box) {
-                box.addEventListener('click', function() {
-                    document.querySelectorAll('.category-box').forEach(function(box) {
-                        box.classList.remove('selected');
-                        box.style.backgroundColor = ""; 
-                        box.style.borderColor = ""; 
-                    });
-                    this.classList.add('selected');
-                    document.querySelector('.category').value = this.getAttribute('data-category');
-
-                    var category = this.getAttribute('data-category').toLowerCase();
-                    var colorHex = (HaBuddies.Constants.Category.GetColorHex(category);
-                    if (colorHex) {
-                        this.style.backgroundColor = colorHex;
-                        this.style.borderColor = colorHex; 
-                    }
-                });
-            }); *@
-
-
+            var checkList = document.getElementById('GenderRequirement');
+            checkList.getElementsByClassName('anchor')[0].onclick = function(evt) {
+            if (checkList.classList.contains('visible'))
+                checkList.classList.remove('visible');
+            else
+                checkList.classList.add('visible');
+            }
 
         </script>
     </div>
-
