@@ -25,7 +25,6 @@
             <div class="editbutton">
                 <button class="editProfileButton"><i class="fa fa-pencil" aria-hidden="true"></i></button>
                 <button class="editImageButton"><i class="fa fa-file-image-o" aria-hidden="true"></i></i></button>
-                @* <a class="editimage" asp-area="" asp-controller="image" asp-action="uploadImage"><i class="fa fa-file-image-o"></i></a> *@
             </div>
         </div>
         <hr>
@@ -39,7 +38,6 @@
             <label>Age</label><br>
             <span class="age">@Model.Age</span><br>
 
-            <label>Contact</label><br>
             <span class="contact">@Model.Email</span><br>
 
             <label>About Me</label><br>
@@ -54,7 +52,7 @@
                 <label for="editSurname">Surname</label><br>
                 <input type="text" class="editSurname" name="Surname" value="@Model.Surname"><br>
 
-                <label for="editGender">Gender:</label><br>
+                <label for="editGender">Gender</label><br>
                 <select class="editGender" name="Gender">
                     <option value="Gender" disabled>Gender</option>
                     <option value="Male" selected='@(Model.Gender == "Male")'>Male</option>
