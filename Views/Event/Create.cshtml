@@ -56,6 +56,22 @@
                     <label for="MaxAgeRequirement">Maxage</label>
                     <input type="number" class="maxAge" id="MaxAgeRequirement" name="MaxAgeRequirement" value="" >
                 </div>
+                @* <div class="inputRequirement">
+                    <label>Gender</label>
+                    <div>
+                        <input type="checkbox" id="MaleGender" name="GenderRequirement" value="Male" @(Model?.Gender == "Male" ? "checked" : "")>
+                        <label for="MaleGender">Male</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="FemaleGender" name="GenderRequirement" value="Female" @(Model?.Gender == "Female" ? "checked" : "")>
+                        <label for="FemaleGender">Female</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="OthersGender" name="GenderRequirement" value="Others" @(Model?.Gender == "Others" ? "checked" : "")>
+                        <label for="OthersGender">Others</label>
+                    </div>
+                    <input type="hidden" name="GenderRequirement" value="null" />
+                </div> *@
                 <div class="inputRequirement">
                     <label for="GenderRequirement">Gender</label>
                     <select class="gender" id="GenderRequirement" name="GenderRequirement" >
@@ -65,6 +81,9 @@
                         <option value="Others">Others</option>
                     </select>
                 </div>
+
+                
+
             </div>
             <input type="submit" value="Create" >
 
