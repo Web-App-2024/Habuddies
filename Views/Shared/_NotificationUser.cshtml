@@ -1,0 +1,49 @@
+@model PaginationResponse<HaBuddies.Models.Notification>
+@using HaBuddies.Models
+@using HaBuddies.Constants
+@using static HaBuddies.Services.Utils.EventUtil
+@using Newtonsoft.Json;
+@inject HaBuddies.Services.ImageService ImageService;
+
+@{
+    string userExist = ViewContext.HttpContext.Session.GetString("user")!;
+    UserNoPassword userObject = null!;
+    if (userExist != null) {
+        userObject = JsonConvert.DeserializeObject<UserNoPassword>(userExist)!;
+    }
+}
+
+@foreach (Notification noti in Model.Data)
+
+{       string userId = noti.Id;
+        string imageProfilePath = ImageService.GetUserImageFileExtension(userId);
+        var category = noti.Event.Category;
+        var type = noti.Type;
+
+        <div class="noti-user" id="@noti.Event.Id">
+            <a draggable="false" asp-controller="Event" asp-action="Details" asp-route-id="@noti.Event.Id">
+            <div class="noti-heading">
+                <div class="category" style="background-color: @Category.GetColorHex(category)">
+                    @Html.Raw(Category.GetIconHtml(category))
+                    <span class="noti-category">@category</span>
+                </div>
+                <h2 class="noti-title">@noti.Event.Title</h2>
+            </div>
+            <hr>
+            <div class="noti-body">
+                @if (type == TypeStatus.Deleted)
+                    {
+                        <p>This event your entered has been deleted from the owner :(</p>
+                    }
+                    else if (type == TypeStatus.ClosedJoin)
+                    {
+                        <p>You have been accept from owner event clicked for detail.</p>
+                    }
+                    else if (type == TypeStatus.ClosedQueue)
+                    {
+                        <p>Sorry For this event is full. Please come join us next time :(</p>
+                    }
+            </div>
+        </a>
+        </div>
+}

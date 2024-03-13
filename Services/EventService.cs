@@ -386,5 +386,28 @@ namespace HaBuddies.Services
                 throw;
             }
         }
+        
+        public async Task ToggleOpenStatus(string eventId)
+        {
+            try
+            {
+                var filter = Builders<Event>.Filter.Eq(e => e.Id, eventId);
+                var eventToUpdate = await _eventsCollection.Find(filter).FirstOrDefaultAsync();
+
+                if (eventToUpdate == null)
+                {
+                    throw new Exception("Event Not Found");
+                }
+
+                eventToUpdate.IsOpen = !eventToUpdate.IsOpen;
+                await _eventsCollection.ReplaceOneAsync(filter, eventToUpdate);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+        }
+
     }
 }
