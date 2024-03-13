@@ -14,7 +14,7 @@ namespace HaBuddies.Services.Utils
         public static bool IsJoinable(UserNoPassword userObj, Event evt) {
             if (userObj != null) {
                 if (evt.MinAgeRequirement != null && evt.MaxAgeRequirement != null) {
-                    if (userObj.Age >= evt.MinAgeRequirement && userObj.Age <= evt.MaxAgeRequirement) {
+                    if (userObj.Age < evt.MinAgeRequirement || userObj.Age > evt.MaxAgeRequirement) {
                         return false;
                     }
                 }
