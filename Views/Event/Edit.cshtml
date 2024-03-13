@@ -9,7 +9,7 @@
 }
 
 <div class="EditPost">
-    <div class="header"><h2>EditPost</h2></div>
+    <div class="header"><h2>Edit Post</h2></div>
     <hr><br>
     <form class="editForm" method="post" action='@Url.Action("Edit", "Event", new { id = Model.Id })'>
         <div class="header"><h2>Property Category</h2></div>
@@ -18,13 +18,13 @@
                 @foreach (var category in HaBuddies.Constants.Category.DataDict)
                     {
                         string categoryName = category.Key;
-                        <div class="category-box" data-category="@categoryName" color="@Category.GetColorHex(categoryName)">
+                        <input type="radio" name="Category" id="@categoryName" class="category-radio" value="@categoryName" required />
+                        <label for="@categoryName" class="category-box" color="@Category.GetColorHex(categoryName)">
                             @Html.Raw(category.Value.IconHtml)
                             <br>@categoryName
-                        </div>
+                        </label>
                     }
             </div>
-            <input type="hidden" class="category" name="Category" value="@Model.Category" required>
         </div>
         <div class="header"><h2>Detail</h2></div>
         <div class="detailbox">
@@ -71,24 +71,17 @@
         <input type="submit" value="Update" >
     </form>
     <script>
-        document.querySelectorAll('.category-box').forEach(function(box) {
-            box.addEventListener('click', function() {
+        document.getElementsByName('Category').forEach((radio) => {
+            var selector = 'label[for=' + radio.id + ']';
+            var label = document.querySelector(selector);
+            label.addEventListener('click', function(){
                 document.querySelectorAll('.category-box').forEach(function(box) {
                     box.style.backgroundColor = null;
                 });
                 const color = this.getAttribute('color');
                 this.style.backgroundColor = color;
-                document.querySelector('.category').value = this.getAttribute('data-category');
             });
-        });
-
-        document.querySelector('.category').value = "@Model.Category";
-            document.querySelectorAll('.category-box').forEach(function(box) {
-                if (box.getAttribute('data-category') === "@Model.Category") {
-                    box.style.backgroundColor = box.getAttribute('color');
-                }
-            });
-
+        })
 
         var checkList = document.getElementById('GenderRequirement');
         checkList.getElementsByClassName('anchor')[0].onclick = function(evt) {
