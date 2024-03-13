@@ -1,3 +1,5 @@
+@using HaBuddies.Constants;
+
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -16,21 +18,14 @@
             <div class="header"><h2>Property Category</h2></div>
             <div class="PropertyCategory">
                 <div class="category-boxes">
-                    @foreach (var category in HaBuddies.Constants.Category.DataDict)
+                    @foreach (var category in Category.DataDict)
                     {
-                        <div class="category-box" data-category="@category.Key">
+                        string categoryName = category.Key;
+                        <div class="category-box" data-category="@categoryName" color="@Category.GetColorHex(categoryName)">
                             @Html.Raw(category.Value.IconHtml)
-                            <br>@category.Key
+                            <br>@categoryName
                         </div>
                     }
-                    @* <div class="category-box" data-category="Meeting" ><i class="fa fa-heart-o" aria-hidden="true"></i><br>Meeting</div>
-                    <div class="category-box" data-category="exercise"><i class="fa-solid fa-dumbbell" aria-hidden="true"></i><br>Exercise</div>
-                    <div class="category-box" data-category="Exercise"><i class="fa-solid fa-utensils" aria-hidden="true"></i><br>Eating</div>
-                    <div class="category-box" data-category="Working"><i class="fa-solid fa-briefcase" aria-hidden="true"></i><br>Working</div>
-                    <div class="category-box" data-category="Concert"><i class="fa-solid fa-guitar" aria-hidden="true"></i><br>Concert</div>
-                    <div class="category-box" data-category="Karaoke"><i class="fa-solid fa-music" aria-hidden="true"></i><br>Karaoke</div>
-                    <div class="category-box" data-category="Party"><i class="fa-solid fa-champagne-glasses" aria-hidden="true"></i><br>Party</div>
-                    <div class="category-box" data-category="Tabletop"><i class="fa-solid fa-chess" aria-hidden="true"></i><br>Tabletop</div> *@
                 </div>
                 <input type="hidden" class="category" name="Category" required>
             </div>
@@ -70,9 +65,9 @@
                     <div id="GenderRequirement" class="dropdown-check-list" name="GenderRequirement" tabindex="100">
                     <span class="anchor">Select Gender</span>
                     <ul class="items">
-                        <li><input type="checkbox" id="maleCheckbox" name="gender" value="Male"/> Male</li>
-                        <li><input type="checkbox" id="femaleCheckbox" name="gender" value="Female"/> Female</li>
-                        <li><input type="checkbox" id="otherCheckbox" name="gender" value="Other"/> Other</li>
+                        <li><input type="checkbox" id="maleCheckbox" name="GenderRequirement" value="Male"/> Male</li>
+                        <li><input type="checkbox" id="femaleCheckbox" name="GenderRequirement" value="Female"/> Female</li>
+                        <li><input type="checkbox" id="otherCheckbox" name="GenderRequirement" value="Other"/> Other</li>
 
                     </ul>
                 </div> 
@@ -85,9 +80,10 @@
             document.querySelectorAll('.category-box').forEach(function(box) {
                 box.addEventListener('click', function() {
                     document.querySelectorAll('.category-box').forEach(function(box) {
-                        box.classList.remove('selected');
+                        box.style.backgroundColor = null;
                     });
-                    this.classList.add('selected');
+                    const color = this.getAttribute('color');
+                    this.style.backgroundColor = color;
                     document.querySelector('.category').value = this.getAttribute('data-category');
                 });
             });  
