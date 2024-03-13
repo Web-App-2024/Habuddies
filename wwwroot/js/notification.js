@@ -1,30 +1,118 @@
-var block = document.getElementById("block");
-var down = false;
+function NotiManager(NotiDiv, MessageScroll) {
+  this.display = false;
+  this.showMyNoti = true;
+  this.div = NotiDiv
+  this.MessageScroll = MessageScroll;
+  var self = this;
 
-function toggleNotification() {
-  if (down) {
-    block.style.height = "0px";
-    block.style.opacity = 0;
-    down = false;
-  } else {
-    block.style.height = "510px";
-    block.style.opacity = 1;
-    down = true;
+  this.loadNotification = function (refresh = false) {
+    if (self.display) {
+      if (self.showMyNoti) {
+        self.MessageScroll.setRouteOwner();
+      }
+      else {
+        self.MessageScroll.setRouteJoin();
+      }
+      self.MessageScroll.loadNoti(self.div.notiMessage, refresh);
+    }
+  }
+
+  this.toggleNotification = function () {
+    if (self.display) {
+      self.div.block.style.height = "0px";
+      self.div.block.style.opacity = 0;
+      self.display = false;
+    } else {
+      self.div.block.style.height = "510px";
+      self.div.block.style.opacity = 1;
+      self.display = true;
+      self.loadNotification(true);
+    }
+  }
+
+  self.div.button.addEventListener('click', function() {
+    self.toggleNotification();
+  });
+
+  self.div.myNoti.addEventListener('click', function() {
+    self.div.showButton.style.left = "0";
+    self.showMyNoti = true;
+    self.loadNotification(true);
+  });
+
+  self.div.myPost.addEventListener('click', function() {
+    self.div.showButton.style.left = "125px";
+    self.showMyNoti = false;
+    self.loadNotification(true);
+  });
+
+  self.div.block.addEventListener("scroll", function () {
+    if (self.div.block.scrollTop*2 >= self.div.block.scrollHeight) {
+      self.loadNotification();
+    }
+  });
+}
+
+class NotificationDiv {
+  constructor(toggleButtonId ,notiBlockId, myNotiButtonId, myPostButtonId, showButtonId, notiMessageId) {
+    this.button = document.getElementById(toggleButtonId);
+    this.block = document.getElementById(notiBlockId);
+    this.myNoti = document.getElementById(myNotiButtonId);
+    this.myPost = document.getElementById(myPostButtonId);
+    this.showButton = document.getElementById(showButtonId);
+    this.notiMessage = document.getElementById(notiMessageId);
   }
 }
 
-var btn = document.getElementById("btn");
-var owner = document.getElementById("notification-owner");
-var user = document.getElementById("notification-user");
+function NotiMessageLoader(routeOwner, routeJoin) { 
+  var xmlhttp = new XMLHttpRequest();
+  this.routeOwner = routeOwner;
+  this.routeJoin = routeJoin;
+  this.route = routeOwner;
+  this.loading = false;
+  this.hasItem = true;
+  this.page = 1;
+  this.perPage = 10;
+  this.data = "";
+  var self = this;
 
-function leftClick() {
-  btn.style.left = "0";
-  user.style.display = "Block";
-  owner.style.display = "None";
-}
+  this.setRouteOwner = function () {
+    self.route = self.routeOwner;
+  }
 
-function rightClick() {
-  btn.style.left = "125px";
-  user.style.display = "None";
-  owner.style.display = "Block";
+  this.setRouteJoin = function () {
+    self.route = self.routeJoin;
+  }
+
+  this.loadNoti = function (divBody, refresh = false) {
+    xmlhttp.onreadystatechange = function () {
+      if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+        if (xmlhttp.status == 200) {
+          divBody.insertAdjacentHTML("beforeEnd", xmlhttp.responseText);
+          self.loading = false;
+          self.page += 1;
+        } else if (xmlhttp.status == 204) {
+          self.hasItem = false;
+        }
+      }
+    };
+
+    if (refresh) {
+      divBody.innerHTML = "";
+      self.page = 1;
+      self.hasItem = true;
+    }
+
+    if (self.hasItem) {
+      self.data =
+        "&page=" +
+        encodeURIComponent(self.page) +
+        "&perPage=" +
+        encodeURIComponent(self.perPage);
+
+      self.loading = true;
+      xmlhttp.open("GET", self.route + "?" + self.data, true);
+      xmlhttp.send();
+    }
+  };
 }

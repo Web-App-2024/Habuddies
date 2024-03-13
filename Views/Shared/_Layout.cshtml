@@ -30,16 +30,15 @@
                 <a class="new-post-button" asp-area="" asp-controller="Event" asp-action="Create"><i class="fa-regular fa-plus"></i><span>New</span></a>
             </li>
             <li>
-                <a class="notification-button" onclick="toggleNotification()"><i class="fa-solid fa-bell"></i></a>
+                <a class="notification-button" id="notification-button"><i class="fa-solid fa-bell"></i></a>
                 <div class ="notification-block" id="block">
                     <div class="button-box">
-			        <div id="btn"></div>
-			        <button type="button" class="toggle-btn" onclick="leftClick()">Notification</button>
-			        <button type="button" class="toggle-btn" onclick="rightClick()" style="margin-left: 10px;">My Post</button>
+                        <div id="btn"></div>
+                        <button type="button" class="toggle-btn" id="my-noti-button">Notification</button>
+                        <button type="button" class="toggle-btn" id="my-post-button" style="margin-left: 10px;">My Post</button>
 		            </div>
                     <hr>
-                    <div id="notification-owner" style="display:None;"></div>
-                    <div id="notification-user"  style="display:block;"></div> 
+                    <div id="notification-msg"></div>
                 </div>
             </li>
             <li>
@@ -96,22 +95,6 @@
                 <a class="logout-button" onclick="logout();">
                     Logout
                 </a>
-                <script>
-                    function logout() {
-                        var xmlhttp = new XMLHttpRequest();
-
-                        xmlhttp.onreadystatechange = function() {
-                            if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200) {
-                                alert("You have logged out!")
-                                window.location.href = '@Url.Action("LoginAndRegister", "User")';
-                            }
-                        };
-
-                        xmlhttp.open("POST", '@Url.Action("Logout", "User")', true);
-                        xmlhttp.send();
-                    }
-                </script>
-                <script src ="~/js/notification.js"></script>
             </div>
         }
     </div>
@@ -123,13 +106,25 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/InfiniteScroll.js" asp-append-version="true"></script>
+    <script src ="~/js/notification.js"></script>
     <script>
-        var infiniteScroll = new EventInfiniteScroll("notification-owner", '@Url.Action("LoadOwnerNotification", "Notification")');
-        infiniteScroll.loadEvent(false);
-    </script>
-    <script>
-        var infiniteScroll = new EventInfiniteScroll("notification-user", '@Url.Action("LoadJoinNotification", "Notification")');
-        infiniteScroll.loadEvent(false);
+        var NotiDiv = new NotificationDiv("notification-button", "block", "my-noti-button", "my-post-button", "btn", "notification-msg")
+        var NotiScroll = new NotiMessageLoader('@Url.Action("LoadOwnerNotification", "Notification")', '@Url.Action("LoadJoinNotification", "Notification")');
+        var Notification = new NotiManager(NotiDiv, NotiScroll);
+
+        function logout() {
+            var xmlhttp = new XMLHttpRequest();
+
+            xmlhttp.onreadystatechange = function() {
+                if (xmlhttp.readyState == XMLHttpRequest.DONE && xmlhttp.status == 200) {
+                    alert("You have logged out!")
+                    window.location.href = '@Url.Action("LoginAndRegister", "User")';
+                }
+            };
+
+            xmlhttp.open("POST", '@Url.Action("Logout", "User")', true);
+            xmlhttp.send();
+        }
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
