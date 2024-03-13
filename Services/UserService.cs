@@ -44,10 +44,14 @@ namespace HaBuddies.Services
                 throw new Exception("User Not Found");
             }
 
+            var age = DateTime.Today.Year - editUserDTO.BirthDate.Year;
+            editUserDTO.Age = age - (editUserDTO.BirthDate.Date > DateTime.Today.Date.AddYears(-age) ? 1 : 0);
+
             var update = Builders<User>.Update
                 .Set("Name", editUserDTO.Name)
                 .Set("Surname", editUserDTO.Surname)
                 .Set("Password", editUserDTO.Password)
+                .Set("BirthDate", editUserDTO.BirthDate)
                 .Set("Age", editUserDTO.Age)
                 .Set("Gender", editUserDTO.Gender)
                 .Set("Bio", editUserDTO.Bio);
@@ -64,6 +68,9 @@ namespace HaBuddies.Services
             {
                 return null;
             }
+
+            var age = DateTime.Today.Year - createUserDTO.BirthDate.Year;
+            createUserDTO.Age = age - (createUserDTO.BirthDate.Date > DateTime.Today.Date.AddYears(-age) ? 1 : 0);
 
             User newUser = _mapper.Map<User>(createUserDTO);
             newUser.JoinedEvent = [];

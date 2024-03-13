@@ -325,7 +325,9 @@ namespace HaBuddies.Services
         public async Task UpdateEventsAsync()
         {
             var filter = Builders<Event>.Filter.Eq(evt => evt.IsOpen, true);
+            var filterUserAge = Builders<User>.Filter.Empty;
             var events = await _eventsCollection.Find(filter).ToListAsync();
+            var users = await _usersCollection.Find(filterUserAge).ToListAsync();
 
             foreach (var evt in events)
             {
@@ -358,6 +360,14 @@ namespace HaBuddies.Services
                         evt.OwnerId
                     );
                 }
+            }
+
+            foreach (var user in users) {
+                var age = DateTime.Today.Year - user.BirthDate.Year;
+                user.Age = age - (user.BirthDate.Date > DateTime.Today.Date.AddYears(-age) ? 1 : 0);
+                var filterUser = Builders<User>.Filter.Eq(u => u.Id, user.Id);
+                var updateAge = Builders<User>.Update.Set(u => u.Age, user.Age);
+                await _usersCollection.UpdateOneAsync(filterUser, updateAge);
             }
         }
 

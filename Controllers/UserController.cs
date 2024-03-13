@@ -1,10 +1,7 @@
-using System.Text;
 using HaBuddies.DTOs;
 using HaBuddies.Models;
 using HaBuddies.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.WebEncoders.Testing;
-using Newtonsoft.Json;
 
 namespace HaBuddies.Controllers
 {
