@@ -1,0 +1,25 @@
+
+@using Newtonsoft.Json;
+@inject HaBuddies.Services.ImageService ImageService;
+@{
+    ViewData["Title"] = "Profile";
+}
+<link rel="stylesheet" href="~/css/bio.css" asp-append-version="true" />
+@{
+                    string userId = ViewBag.UserDetails.Id;
+                string imageProfilePath = ImageService.GetUserImageFileExtension(userId);
+}
+<div class="bio-frame">
+    <img alt="Profile picture" src="~/@imageProfilePath" draggable="false">
+    <div class="data">
+        <div class="data-info">
+            <h1>Name: @ViewBag.UserDetails.Name </h1>
+            <p>Gender: @ViewBag.UserDetails.Gender</p>
+            <p>Age: @ViewBag.UserDetails.Age</p>
+            <p>Contact: @ViewBag.UserDetails.Email</p>
+        </div>
+        <div class="data-description">
+            <p>About us: @ViewBag.UserDetails.Bio</p>
+        </div>
+    </div>
+</div>
