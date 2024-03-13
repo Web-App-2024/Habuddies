@@ -33,10 +33,17 @@ body {
 }
 
 .profile-header {
-    margin-top: 10px;
-    margin-left: 10px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
 }
 
+.editbutton{
+    display: flex;
+    margin-right: 30px;
+    height: 20px;
+    width: 20px;
+}
 
 .profile-info {
     margin-top: 10px;
