@@ -14,12 +14,17 @@ namespace HaBuddies.Constants
         public static readonly string Meeting = "Meeting";
         public static readonly string Exercise = "Exercise";
         public static readonly string Working = "Working";
+        public static readonly string Eating = "Eating";
+        public static readonly string Concert = "Concert";
+        public static readonly string Karaoke = "Karaoke";
+        public static readonly string Party = "Party";
+        public static readonly string Tabletop = "Tabletop";
 
         public static readonly Dictionary<string, ICategoryData> DataDict = new Dictionary<string, ICategoryData>(){
             { 
                 Meeting, new CategoryData {
                     IconHtml = "<i class=\"fa-solid fa-heart\"></i>", 
-                    ColorHex = "#f6678b"
+                    ColorHex = "#ff70f0"
                 } 
             },
             { 
@@ -31,9 +36,39 @@ namespace HaBuddies.Constants
             { 
                 Working, new CategoryData {
                     IconHtml = "<i class=\"fa-solid fa-briefcase\"></i>", 
-                    ColorHex = "#f1bd00"
+                    ColorHex = "#f8b800"
                 } 
-            }
+            },
+            { 
+                Eating, new CategoryData {
+                    IconHtml = "<i class=\"fa-solid fa-utensils\"></i>", 
+                    ColorHex = "#ff9135"
+                } 
+            },
+            { 
+                Concert, new CategoryData {
+                    IconHtml = "<i class=\"fa-solid fa-guitar\"></i>", 
+                    ColorHex = "#6382ff"
+                } 
+            },
+            { 
+                Karaoke, new CategoryData {
+                    IconHtml = "<i class=\"fa-solid fa-music\"></i>", 
+                    ColorHex = "#6fd9f5"
+                } 
+            },
+            { 
+                Party, new CategoryData {
+                    IconHtml = "<i class=\"fa-solid fa-champagne-glasses\"></i>", 
+                    ColorHex = "#b369ff"
+                } 
+            },
+            { 
+                Tabletop, new CategoryData {
+                    IconHtml = "<i class=\"fa-solid fa-chess\"></i>", 
+                    ColorHex = "#ff5672"
+                } 
+            },
         };
 
         public static string? GetIconHtml(string category) {

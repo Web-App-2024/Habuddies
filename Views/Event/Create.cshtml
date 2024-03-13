@@ -3,9 +3,82 @@
 }
 
 @section Stylesheets {
-    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/create.css" asp-append-version="true" />
 }
+
 
 <div class="filter-section">
     <button type="button" class="filter"><i class="fa-solid fa-sliders"></i></button>
 </div>
+
+    <div class="createPost">
+        <div class="header"><h2>Create Post</h2></div>
+        <hr><br>
+        <form class="postForm" method="post" action='@Url.Action("Create", "Event")'>
+            <div class="header"><h2>Property Category</h2></div>
+            <div class="PropertyCategory">
+                <div class="category-boxes">
+                    <div class="category-box" data-category="meeting" ><i class="fa fa-heart-o" aria-hidden="true"></i><br>Meeting</div>
+                    <div class="category-box" data-category="exercising"><i class="fa fa-futbol-o" aria-hidden="true"></i><br>Exercising</div>
+                    <div class="category-box" data-category="eating"><i class="fa fa-cutlery" aria-hidden="true"></i><br>Eating</div>
+                    <div class="category-box" data-category="working"><i class="fa fa-briefcase" aria-hidden="true"></i><br>Working</div>
+                </div>
+                <input type="hidden" class="category" name="Category" required>
+            </div>
+            <div class="header"><h2>Detail</h2></div>
+            <div class="detailbox">
+                <div class="inputtitle">
+                    <label for="Title">Title</label>
+                    <input type="text" class="title" id="Title" name="Title" required>
+                </div>
+                <div class="inputPeople">
+                    <label for="EnrollSize">People</label>
+                    <input type="number" class="enrollSize" id="EnrollSize" name="EnrollSize" required>
+                </div>
+                <div class="inputdate">
+                    <label for="EndDate">Closedate</label>
+                    <input type="datetime-local" class="endDate" id="EndDate" name="EndDate" required>
+                </div>
+            </div>
+
+                <div class="inputDescription">
+                    <label for="description">Description</label>
+                    <input type="text"class="description" id="Description" name="Description" required>
+                </div>
+            
+            <div class="header"><h2>Requirement</h2></div>
+            <div class="requirement">
+                <div class="inputRequirement">
+                    <label for="MinAgeRequirement">Minage</label>
+                    <input type="number" class="minAge" id="MinAgeRequirement" name="MinAgeRequirement" value= "" >
+                </div>
+                <div class="inputRequirement">
+                    <label for="MaxAgeRequirement">Maxage</label>
+                    <input type="number" class="maxAge" id="MaxAgeRequirement" name="MaxAgeRequirement" value="" >
+                </div>
+                <div class="inputRequirement">
+                    <label for="GenderRequirement">Gender</label>
+                    <select class="gender" id="GenderRequirement" name="GenderRequirement" >
+                        <option value="Null"></option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+            </div>
+            <input type="submit" value="Create" >
+
+        </form>
+        <script>
+            document.querySelectorAll('.category-box').forEach(function(box) {
+                box.addEventListener('click', function() {
+                    document.querySelectorAll('.category-box').forEach(function(box) {
+                        box.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    document.querySelector('.category').value = this.getAttribute('data-category');
+                });
+            });  
+        </script>
+    </div>
+
