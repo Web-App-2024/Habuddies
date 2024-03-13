@@ -19,10 +19,15 @@
     }
 
     int currentEnroll = Model.SubscribersId.Count + Model.QueueId.Count;
+    string enrollMsg = Model.IsOpen?$"{currentEnroll}/{Model.EnrollSize}":$"{Model.SubscribersId.Count}";
+
     bool selfOwned = IsOwnedEvent(userObject, Model);
     bool canJoin = IsJoinable(userObject, Model);
     bool currentlyJoin = IsCurrentlyJoined(userObject, Model);
     string imageOwnerPath = ImageService.GetUserImageFileExtension(Model.OwnerId);
+
+    string OwnerName = Model.Owner.Email;
+    if (Model.Owner.Name != null) OwnerName = Model.Owner.Name + " " + Model.Owner.Surname;
 }
 
 <div class="evt-detail" id="@Model.Id">
@@ -36,26 +41,36 @@
             <div class="owner-picture" onclick="ClickProfile('@Model.OwnerId')">
                 <img alt="Owner picture" src="~/@imageOwnerPath" draggable="false">
             </div>
-            <span class="owner-name" onclick="ClickProfile('@Model.OwnerId')">@Model.Owner.Name @Model.Owner.Surname</span>
+            <span class="owner-name" onclick="ClickProfile('@Model.OwnerId')">@OwnerName</span>
         </div>
     </div>
     <div class="evt-body">
         <p class="evt-description">@Model.Description</p>
         <span class="evt-enddate">Close Date<br>@Model.EndDate.ToString("dd/MM/yyyy")</span>
-        <span class="evt-enrollsize @(currentEnroll<Model.EnrollSize?"vacant":"full")">
-            @currentEnroll/@Model.EnrollSize <i class="fa-solid fa-user-group"></i>
+        <span class="evt-enrollsize @(Model.IsOpen?(currentEnroll<Model.EnrollSize?"vacant":"full"):"close")">
+            @enrollMsg <i class="fa-solid fa-user-group"></i>
         </span>
         @if (!selfOwned) {
-            <form method="post">
-                <button class="evt-join @(canJoin?"active":"") @(currentlyJoin?"leave":"join")" asp-controller="Event" asp-action="Subscribe" asp-route-id="@Model.Id">
-                    @if (currentlyJoin) {
-                        <text>ออก</text>
-                    }
-                    else {
-                        <text>เข้าร่วม</text>
-                    }
-                </button>
-            </form>
+            if (Model.IsOpen) {
+                @if (canJoin) {
+                    <form method="post">
+                        <button class="evt-join active @(currentlyJoin?"leave":"join")" asp-controller="Event" asp-action="Subscribe" asp-route-id="@Model.Id">
+                            @if (currentlyJoin) {
+                                <text>ออก</text>
+                            }
+                            else {
+                                <text>เข้าร่วม</text>
+                            }
+                        </button>
+                    </form>
+                } 
+                else {
+                    <button class="evt-join">
+                        เข้าร่วม
+                    </button>
+                }
+            }
+            
         }
         else {
             <form method="post">

@@ -1,5 +1,15 @@
+@model IEnumerable<HaBuddies.Models.Event>;
+@using HaBuddies.Models;
+@using Newtonsoft.Json;
+
 @{
     ViewData["Title"] = "MyPost";
+
+    string userExist = ViewContext.HttpContext.Session.GetString("user")!;
+    UserNoPassword userObject = null!;
+    if (userExist != null) {
+        userObject = JsonConvert.DeserializeObject<UserNoPassword>(userExist)!;
+    }
 }
 @section Stylesheets {
     <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
@@ -9,10 +19,14 @@
     <h1 class="display-4">My Post</h1>
     <hr class="split">
 </div>
-<partial name="../Shared/_MyCreatedPost.cshtml" />
+
+@{var a = Model.Where(evt => evt.OwnerId.Contains(userObject.Id));}
+<partial name="../Shared/_EventBannerList.cshtml" model=@a/>
+
 
 <div class="text-center">
     <h1 class="display-4">Joined</h1>
     <hr class="split">
 </div>
-<partial name="../Shared/_MyJoinedPost.cshtml" />
+@{var b = Model.Where(evt => evt.SubscribersId.Contains(userObject.Id));}
+<partial name="../Shared/_EventBannerList.cshtml" model=@b/>
