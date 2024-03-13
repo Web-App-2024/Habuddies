@@ -51,36 +51,29 @@
             @enrollMsg <i class="fa-solid fa-user-group"></i>
         </span>
         @if (!selfOwned) {
-            if (Model.IsOpen) {
-                @if (canJoin) {
-                    <form method="post">
-                        <button class="evt-join active @(currentlyJoin?"leave":"join")" asp-controller="Event" asp-action="Subscribe" asp-route-id="@Model.Id">
-                            @if (currentlyJoin) {
-                                <text>ออก</text>
-                            }
-                            else {
-                                <text>เข้าร่วม</text>
-                            }
-                        </button>
-                    </form>
-                } 
-                else {
-                    <button class="evt-join">
-                        เข้าร่วม
+            @if (canJoin) {
+                <form method="post">
+                    <button class="evt-join active @(currentlyJoin?"leave":"join")" asp-controller="Event" asp-action="Subscribe" asp-route-id="@Model.Id">
+                        @if (currentlyJoin) {
+                            <text>ออก</text>
+                        }
+                        else {
+                            <text>เข้าร่วม</text>
+                        }
                     </button>
-                }
+                </form>
+            } 
+            else {
+                <button class="evt-join">
+                    เข้าร่วม
+                </button>
             }
             
         }
-        else {
+        else if (Model.IsOpen) {
             <form method="post">
                 <button class="evt-toggle" asp-controller="Event" asp-action="ToggleOpenStatus" asp-route-id="@Model.Id">
-                    @if (Model.IsOpen) {
-                        <text>ปิดรับ</text>
-                    }
-                    else {
-                        <text>เปิดรับ</text>
-                    }
+                    ปิดรับ
                 </button>
             </form>
             <form method="post">
