@@ -18,10 +18,14 @@
             <div class="header"><h2>Property Category</h2></div>
             <div class="PropertyCategory">
                 <div class="category-boxes">
-                    <div class="category-box" data-category="meeting" ><i class="fa fa-heart-o" aria-hidden="true"></i><br>Meeting</div>
-                    <div class="category-box" data-category="exercising"><i class="fa fa-futbol-o" aria-hidden="true"></i><br>Exercising</div>
-                    <div class="category-box" data-category="eating"><i class="fa fa-cutlery" aria-hidden="true"></i><br>Eating</div>
-                    <div class="category-box" data-category="working"><i class="fa fa-briefcase" aria-hidden="true"></i><br>Working</div>
+                    <div class="category-box" data-category="Meeting" ><i class="fa fa-heart-o" aria-hidden="true"></i><br>Meeting</div>
+                    <div class="category-box" data-category="exercise"><i class="fa-solid fa-dumbbell" aria-hidden="true"></i><br>Exercise</div>
+                    <div class="category-box" data-category="Exercise"><i class="fa-solid fa-utensils" aria-hidden="true"></i><br>Eating</div>
+                    <div class="category-box" data-category="Working"><i class="fa-solid fa-briefcase" aria-hidden="true"></i><br>Working</div>
+                    <div class="category-box" data-category="Concert"><i class="fa-solid fa-guitar" aria-hidden="true"></i><br>Concert</div>
+                    <div class="category-box" data-category="Karaoke"><i class="fa-solid fa-music" aria-hidden="true"></i><br>Karaoke</div>
+                    <div class="category-box" data-category="Party"><i class="fa-solid fa-champagne-glasses" aria-hidden="true"></i><br>Party</div>
+                    <div class="category-box" data-category="Tabletop"><i class="fa-solid fa-chess" aria-hidden="true"></i><br>Tabletop</div>
                 </div>
                 <input type="hidden" class="category" name="Category" required>
             </div>
@@ -37,7 +41,7 @@
                 </div>
                 <div class="inputdate">
                     <label for="EndDate">Closedate</label>
-                    <input type="datetime-local" class="endDate" id="EndDate" name="EndDate" required>
+                    <input type="date" class="endDate" id="EndDate" name="EndDate" required>
                 </div>
             </div>
 
@@ -58,12 +62,15 @@
                 </div>
                 <div class="inputRequirement">
                     <label for="GenderRequirement">Gender</label>
-                    <select class="gender" id="GenderRequirement" name="GenderRequirement" >
-                        <option value="Null"></option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Others">Others</option>
-                    </select>
+                    <div id="GenderRequirement" class="dropdown-check-list" name="GenderRequirement" tabindex="100">
+                    <span class="anchor">Select Gender</span>
+                    <ul class="items">
+                        <li><input type="checkbox" id="maleCheckbox" name="gender" value="Male"/> Male</li>
+                        <li><input type="checkbox" id="femaleCheckbox" name="gender" value="Female"/> Female</li>
+                        <li><input type="checkbox" id="otherCheckbox" name="gender" value="Other"/> Other</li>
+
+                    </ul>
+                </div> 
                 </div>
             </div>
             <input type="submit" value="Create" >
@@ -79,6 +86,14 @@
                     document.querySelector('.category').value = this.getAttribute('data-category');
                 });
             });  
+
+            var checkList = document.getElementById('GenderRequirement');
+            checkList.getElementsByClassName('anchor')[0].onclick = function(evt) {
+            if (checkList.classList.contains('visible'))
+                checkList.classList.remove('visible');
+            else
+                checkList.classList.add('visible');
+            }
+
         </script>
     </div>
-
