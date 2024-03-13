@@ -111,7 +111,7 @@ namespace HaBuddies.Services
             return historyEvents.ToArray();
         }
 
-        public async Task<Event[]> GetMyPost(string Id)
+        public async Task<MyPostResponse> GetMyPost(string Id)
         {
             var existingUser = await _userCollection.Find(_user => _user.Id == Id).SingleOrDefaultAsync();
             var myEvents = await _eventsCollection.Find(
@@ -135,8 +135,12 @@ namespace HaBuddies.Services
                 UserNoPassword userNoPassword = (UserNoPassword)user;
                 evt.Owner = userNoPassword;
             }
-
-            return myEvents.Concat(joinedEvents).ToArray();
+            var response = new MyPostResponse
+            {
+                Owned = myEvents,
+                Joined = joinedEvents
+            };
+            return response;
         }
     }
 }
