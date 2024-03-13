@@ -53,12 +53,11 @@ body {
     margin-bottom: 5px;
 }
 
-
-/* .category-box.selected {
-  background-color: #afe3fc;
-  border: 2px solid #0080ff;
-  color: black;
-} */
+.category-radio {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
 
 .detailbox {
   margin-bottom: 20px;
