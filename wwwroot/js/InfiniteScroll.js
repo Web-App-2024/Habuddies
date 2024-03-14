@@ -50,7 +50,7 @@ function EventInfiniteScroll(divId, route) {
 
   window.onscroll = function (ev) {
     if (
-      window.innerHeight + window.scrollY >=
+      window.innerHeight + window.scrollY + 50 >=
       document.documentElement.scrollHeight
     ) {
       if (!self.loading) {
