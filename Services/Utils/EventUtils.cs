@@ -28,7 +28,9 @@ namespace HaBuddies.Services.Utils
 
         public static bool IsCurrentlyJoined(UserNoPassword userObj, Event evt) {
             if (userObj != null) {
-                if (evt.SubscribersId.Any(s => s.Contains(userObj.Id.ToString()))) return true;
+                if (evt.SubscribersId.Any(s => s.Contains(userObj.Id.ToString())) ||
+                evt.QueueId.Any(s => s.Contains(userObj.Id.ToString()))) 
+                return true;
             }
             return false;
         }
