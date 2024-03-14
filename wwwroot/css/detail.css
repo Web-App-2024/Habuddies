@@ -320,8 +320,8 @@
 
 @media (max-width: 992px) {
   .evt-detail {
-    margin-left: 2rem;
-    margin-right: 2rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
   }
   .evt-detail .evt-description {
     grid-area: 1 / 1 / 2 / 3;
@@ -351,6 +351,8 @@
   .evt-body .evt-enddate {
     justify-self: left;
     padding: 0.8rem 1rem;
+    font-size: 16px;
+    min-width: auto;
     width: auto;
   }
   .evt-body .evt-enddate br {
