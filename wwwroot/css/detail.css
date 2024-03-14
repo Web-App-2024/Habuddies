@@ -261,6 +261,14 @@
   border-bottom: 2px solid var(--light-grey);
 }
 
+.evt-member a {
+  text-decoration: none;
+}
+
+.evt-q-user a {
+  text-decoration: none;
+}
+
 .evt-member .member,
 .evt-q-user .q-user {
   position: relative;

@@ -95,7 +95,7 @@ namespace HaBuddies.Controllers
             {
                 return RedirectToAction("LoginAndRegister");
             }
-
+            HttpContext.Session.Set("user", user);
             return RedirectToAction(nameof(MyProfile), new { user });
         }
 

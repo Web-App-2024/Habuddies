@@ -6,7 +6,7 @@ function EventInfiniteScroll(divId, route) {
   this.hasItem = true;
   this.category = "";
   this.page = 1;
-  this.perPage = 10;
+  this.perPage = 5;
   this.data = "";
   var self = this;
 
