@@ -59,7 +59,6 @@ label {
   font-size: 15px;
   font-weight: 500;
   padding: 0.5rem 0.7rem;
-  margin-left: 10px;
   border: 2px solid var(--border-color);
   border-radius: 25px;
 }
@@ -257,4 +256,15 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
   background-color: #0056b3;
+}
+
+@media (max-width: 992px) {
+  .profile-header img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .profile-name h2 {
+    font-size: 20px;
+  }
 }
